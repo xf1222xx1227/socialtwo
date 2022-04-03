@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let x = Symbol();
+        // let x1 = Array(111);
+        var arr = new Array();
+        let arr2 = new Array(2); //规定了数组的长度为2 
+        var arr3 = new Array(true, 123, false);
+        console.log(typeof undefined, typeof null, typeof "String", typeof true, typeof 1, typeof x, typeof arr);
+        // undefined object string boolean number symbol object
+
+        let obj = {
+            "name": "111"
+        };
+        let arr1 = [1, 2, 3];
+        console.log(Object.prototype.toString.call(obj));
+        console.log(Object.prototype.toString.call(arr1));
+
+        function log() {
+            console.log("-----------");
+        }
+        log();
+
+
+        function f1() {
+            let x1 = new Boolean();
+            let x2 = new Boolean(0);
+            let x3 = new Boolean("");
+            let x4 = new Boolean(NaN);
+            let x5 = new Boolean(null);
+            console.log(x1, x2, x3, x4, x5);
+            // false false false false false
+        }
+        f1();
+        log();
+
+        function f2() {
+            console.log(isNaN(undefined));
+        }
+        f2();
+    </script>
+</body>
+
+</html>

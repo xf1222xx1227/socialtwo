@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function main(n) {
+            let rabbits = [1];
+            for (let i = 0; i < n; i++) {
+                for (let j = 0; j < rabbits.length; j++) {
+                    if (rabbits[j] == 3) {
+                        rabbits.push(1);
+                    } else {
+                        rabbits[j]++
+                    }
+                }
+            }
+            console.log(rabbits.length);
+        }
+        main(10);
+        console.log(111, parseInt("as"));
+        console.log(222, NaN === NaN);
+        console.log(333, isNaN([123]));
+    </script>
+</body>
+
+</html>

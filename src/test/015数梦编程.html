@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        console.log("最长长度");
+
+        function f1() {
+            let data = "assdfafdgfafgvvqwerty";
+            let resda = [];
+            let len = 0;
+            let max = 0;
+            let maxstr = "";
+            for (let i = 0; i < data.length; i++) {
+                let ifin = 0;
+                let index = 0;
+                for (let j = 0; j < resda.length; j++) {
+                    if (resda[j] == data[i]) {
+                        index = j;
+                        ifin = 1;
+                        break;
+                    }
+                }
+                if (ifin == 0) {
+                    resda.push(data[i]);
+                    len = resda.length;
+                } else {
+                    if (max < len) {
+                        max = len;
+                        maxstr = resda.join();
+                    }
+                    resda.splice(0, index + 1);
+                    resda.push(data[i]);
+                    len = resda.length;
+                }
+                if (i == data.length - 1) {
+                    if (max < len) {
+                        max = len;
+                        maxstr = resda.join();
+                    }
+                }
+            }
+            console.log(maxstr, max);
+        }
+        f1();
+
+        console.log("数组去重");
+
+        function f2() {
+            let data = [1, 1, 1, 2, 2, 3, 3, 5, 5, 5, 5, 6, 8, 9, 9, 10];
+            for (let i = data.length - 1; i > 0; i--) {
+                for (let j = 0; j < i; j++) {
+                    if (data[i] == data[j]) {
+                        data.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+            console.log(data);
+        }
+        f2();
+    </script>
+</body>
+
+</html>

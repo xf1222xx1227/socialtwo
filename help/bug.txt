@@ -1,0 +1,35 @@
+1.error  Component name "content" should always be multi-word  vue/multi-word-component-names:
+    解答：
+        启动了ESLint检查，命名需要为多单词驼峰式
+        或者关闭eslint: vue.config.js里面加上lintOnSave:false
+
+2. 无法将“nodemon”项识别为 cmdlet、函数、脚本/文件或可运行程序的名称。请检查名称的拼写，如果包括路径 ，请确保路径正确，然后再试一次。
+        解答：
+            解答来源：https://blog.csdn.net/yan_danfeng/article/details/109306687
+                     可能未进行全局安装导致。全局安装命令 npm install -g nodemon
+
+
+3. rror: ER_NOT_SUPPORTED_AUTH_MODE: Client does not support authentication protocol requested by server; consider upgrading MySQL client
+(错误：ER_不受支持\u身份验证模式：客户端不支持服务器请求的身份验证协议；考虑升级MySQL客户端)
+    解决：
+        数据库执行下列语句
+        alter user 'root'@'localhost' identified with mysql_native_password by 'sql2008';
+        flush privileges;
+
+4. Error: Cannot enqueue Query after fatal error.（错误：致命错误后无法将查询排队。）
+    解决： 
+        配置数据库时增加一句（mysql.js里面）       useConnectionPooling: true
+
+5. WebSocket connection to 'ws://192.168.43.42:8080/ws' failed:
+    解决：
+        vue.config.js里面的ws值改为false
+            ws:false,
+5. Error in v-on handler: "TypeError: handler.apply is not a function"
+    解决：
+        方法和变量名重复
+
+
+
+
+
+

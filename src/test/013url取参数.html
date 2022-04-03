@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var url = "www.abc.com/javascript?page=2&sort=votes&pagesize=15";
+        let data = url.split("?")[1]; // page=2&sort=votes&pagesize=15
+        data = data.split("&") //["page=2", "sort=votes", "pagesize=15"]
+        let result = {};
+        for (let i = 0; i < data.length; i++) {
+            let xdata = data[i].split("=");
+            if (parseInt(xdata[1]) + "" == xdata[1]) {
+                result[xdata[0]] = parseInt(xdata[1]);
+            } else {
+                result[xdata[0]] = xdata[1];
+            }
+
+        }
+        console.log(result);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .q {
+            height: 20px;
+            width: 20px;
+            border: 1px solid red;
+
+        }
+
+        .p1:hover {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class="div1 q"></div>
+        <p class="p1 q"></p>
+        <hr />
+        <p id="test">te
+            <span>st</span>
+        </p>
+
+    </div>
+
+    <script>
+        const shape = {
+            ra: 10,
+            di() {
+                return this.ra * 2;
+            },
+            per: () => 2 * Math.PI * this.ra
+        };
+        console.log(shape.di());
+        console.log(shape.per());
+
+        function f1() {
+            console.log("-----------");
+        }
+        f1();
+
+        function bark() {
+            console.log("woof");
+        }
+        bark.animal = "dog"
+        f1();
+        // document.querySelector("#test").innerHTML;
+        // document.querySelector("#test").innerText;
+        // document.querySelector("#test").textContent;
+        document.querySelector("#test").value;
+    </script>
+</body>
+
+</html>

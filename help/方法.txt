@@ -1,0 +1,404 @@
+1.连数据库
+    npm i express -S
+    npm i mysql -S
+    npm install -g nodemon
+
+    1.1主目录建立server文件夹->
+        1.1.1 下面建立index.js
+            // 搭建expree服务
+            const express = require("express")
+            const app= express()
+            //路由
+            const router = require('./router')
+            //设置跨域访问
+            app.all("*",function(req,res,next){
+                //设置允许跨域的域名，*代表允许任意域名跨域
+                res.header("Access-Control-Allow-Origin","*");
+                //允许的header类型
+                res.header("Access-Control-Allow-Headers","content-type");
+                //跨域允许的请求方式 
+                res.header("Access-Control-Allow-Methods","DELETE,PUT,POST,GET,OPTIONS");
+                if (req.method.toLowerCase() == 'options')
+                    res.send(200);  //让options尝试请求快速结束
+                else
+                    next();
+            })
+            app.use('/api',router)
+            app.listen(8989,()=>{
+                console.log(8989);
+            })
+        1.1.2 建立mysql.js
+            // 连接数据库 1.安装MySQL  2.创建连接
+            const mysql=require('mysql')
+            // 创建数据库连接
+            const client=mysql.createConnection({
+                host:'localhost', // 数据域名 地址
+                user:'root', //数据名称
+                password:'sql2008',  
+                database: 'social',
+                useConnectionPooling: true
+                // port:'3306
+            })
+            // 封装数据库操作语句 sql语句 参数数组arr callback成功函数结果
+            function sqlFun(sql,arr,callback){
+                client.query(sql,arr,function(error,result){
+                    if(error){
+                        console.log(error);
+                        return;
+                    }
+                    callback(result);
+                })
+            }
+            module.exports=sqlFun
+        1.1.3 建立router.js
+            const express = require('express')
+            const router = express.Router()
+            // 导入数据库 sqlFn('sql',[].res=>{})
+            const sqlFn=require('./mysql')
+
+            // 接口
+            // 社科下属账户
+            router.get("/bidding_user",(req,res)=> {
+                const sql = "select * from bidding_user";
+                sqlFn(sql,null,(result)=>{
+                    if(result.length > 0){
+                        res.send({
+                            status: 200,
+                            result
+                        })
+                    }else{
+                        res.send({
+                            status:500,
+                            msg:"暂无数据"
+                        })
+                    }
+                })
+            })
+            // 添加测试
+            router.get("/add",(req,res)=> {
+                let userid = req.query.userid;
+                let username = req.query.username;
+                let password = req.query.password;
+                let address = req.query.address;
+                let phone = req.query.phone;
+                let b_id = req.query.b_id;
+                const sql = "insert into bidding_user values(?,?,?,?,?,?)";
+                const arr=[userid,username,password,address,phone,b_id];
+                sqlFn(sql,arr,(result)=>{
+                    if(result.affecteRows > 0){
+                        res.send({
+                            status: 200,
+                            msg:"添加成功"
+                        })
+                    }else{
+                        res.send({
+                            status:500,
+                            msg:"添加失败"
+                        })
+                    }
+                })
+            })
+            // 删除测试
+            router.get("/delete",(req,res)=> {
+                var userid = req.query.userid;
+                const sql = "delete from bidding_user where userid =?";
+                const arr=[userid];
+                sqlFn(sql,arr,(result)=>{
+                    if(result.length > 0){
+                        res.send({
+                            status: 200,
+                            msg:"删除成功"
+                        })
+                    }else{
+                        res.send({
+                            status:500,
+                            msg:"删除失败"
+                        })
+                    }
+                })
+            })
+            // 修改测试
+            router.get("/update",(req,res)=> {
+                let userid = req.query.userid;
+                let username = req.query.username;
+                let password = req.query.password;
+                let address = req.query.address;
+                let phone = req.query.phone;
+                let b_id = req.query.b_id;
+
+                const sql = "update bidding_user set username=?,password=?,address=?,phone=?,b_id=? where userid=?";
+                const arr=[username,password,address,phone,b_id,userid];
+                sqlFn(sql,arr,(result)=>{
+                    if(result.affecteRows > 0){
+                        res.send({
+                            status: 200,
+                            msg:"修改成功"
+                        })
+                    }else{
+                        res.send({
+                            status:500,
+                            msg:"修改失败"
+                        })
+                    }
+                })
+            })
+    1.2 src下面建立api文件夹
+        1.2.1 建立base.js
+            const base={
+                biddingUserList: 'api/api/bidding_user',  // 社科下属账户
+                addtest:'api/api/add',     // 添加测试
+                deletetest:'api/api/delete',     // 删除测试
+                updatetest:'api/api/update',     // 修改测试
+            }
+            export default base;
+        
+        1.2.2建立index.js
+            import axios from 'axios'
+            import base from './base'
+            const api={
+                // 社科下属人员信息
+                getbiduserList(params){
+                    return axios.get(base.biddingUserList,{
+                        params
+                    })
+                },
+                add(params){
+                    return axios.get(base.addtest,{
+                        params
+                    })
+                },
+                delete(params){
+                    return axios.get(base.deletetest,{
+                        params
+                    })
+                },
+                update(params){
+                    return axios.get(base.updatetest,{
+                        params
+                    })
+                },
+            }
+            export default api
+    1.3 main.js里面添加下列语句
+        import api from './api/index'
+        Vue.prototype.$api = api;
+    1.4 调用
+        // 查看
+        this.$api.getbiduserList({}).then((res) => {
+            console.log(222, res.data);
+        });
+        //删除测试
+        this.$api.deleteTest({
+            userid: "u00003",
+        }).then((res) => {});
+        //添加测试;
+        this.$api.addTest({
+            userid: "u00004",
+            username: "擦擦",
+            password: "1",
+            address: "浙江省杭州市余杭区",
+            phone: "12343245345",
+            b_id: "b12345678",
+        }).then((res) => {});
+        //修改测试
+        this.$api.updateTest({
+            userid: "u00003",
+            username: "打发打发",
+            password: "0",
+            address: "浙江省杭州市余杭区",
+            phone: "12343245345",
+            b_id: "b12345678",
+        }) .then((res) => {});
+
+    1.5 打开服务：server文件夹在终端打开，运行命令 nodemon
+
+2. 使用vuex传值
+    2.1 值的来源页面在其中一个方法里面加上  this.$store.commit("getUserid", this.userid);  // getUserid表示方法名，后续使用;this.userid表示需要传递的值
+    2.2 建立或者使用已有的store文件夹下面的index.js
+        import Vue from 'vue'
+        import Vuex from 'vuex'
+        Vue.use(Vuex)
+        export default new Vuex.Store({
+            state: {
+                userid:'',      // 最后获取的变量名
+                usertype:'',
+            },
+            getters: {          // 一般不用
+                getinfo(state){
+                    return state.userid;
+                }
+            },
+            mutations: {        // getUserid就是值来源处定义的方法，id是随便定义的一个变量去接收对应的值
+                getUserid(state,id){
+                    state.userid = id;
+                },
+            },
+            actions: {
+            },
+            modules: {
+            }
+        })
+    2.3 main.js里面引入store文件夹
+        // 默认已经引入
+        import store from './store'
+        new Vue({
+            store,
+        }).$mount('#app')
+    2.4 页面调用值
+        <script>
+            import { mapState } from "vuex";
+            export default {
+                computed: {
+                    ...mapState(["userid"]),    // userid是store/index.js的state里面定义的变量名
+                },
+                created() {
+                    console.log(111, this.userid);
+                },
+            };
+        </script>
+3. vscode设置清空控制台快捷键
+    3.1 使用快捷键ctrl+shift+p
+    3.2 搜索open keyboard shortcuts 点击enter
+    3.3 搜索workbench.action.terminal.clear,双击添加快捷键绑定ctrl+k或者其他;
+
+4. 文件上传
+    4.1. 下载multer模块(npm i multer -S)
+    4.2. server/router.js入口文件导入模块
+        const fs=require('fs');
+        const multer = require('multer')
+    4.3 server下面添加upload文件夹用于存储上传文件
+    4.4 router里面加入代码
+        var storage=multer.diskStorage({
+            destination :function(req,file,cb){
+                cb(null,"./upload");
+            },
+            filename: function (req,file,cb){
+                cb(null,Date.now() + "-" + file.originalname);
+            }
+        });
+        var createFolder = function(folder){
+            try{
+                fs.accessSync(folder);
+            }catch(e){
+                fs.mkdirSync(folder);
+            }
+        };
+        var uploadFolder = './upload/';
+        createFolder(uploadFolder);
+        var upload=multer({
+            storage: storage
+        });
+        router.post('/upload',upload.single('file'),function(req,res,next){
+            var file = req.file;
+            // console.log('文件类型:%s',file.mimetype);
+            console.log('原始文件名：%s',file.originalname);
+            console.log('文件大小：%s',file.size);
+            // console.log('文件保存路径：%s',file.path);
+            console.log("上传成功");
+            res.json({
+                res_code:'0',
+                name: file.originalname,
+                url:file.path
+            });
+        });
+    4.5 server/index.js里面加入以下代码
+        // 请求表单数据
+        app.use(express.urlencoded({extended:true}))
+        // 静态文件托管，为了后续访问上传到服务器的文件（localhost:8080/图片.jpg (等等)
+        app.use(express.static('upload'))
+    4.6 api/base.js加入以下代码
+        host:'http://localhost:8989',      // 基础域名
+        // 图片保存测试
+        upload: 'api/api/upload',
+
+    4.7 页面调用接口
+        el-upload控件属性
+        :action="url"
+
+        import base from "../../api/base";
+
+        url:base.upload,
+5. 文件读取与下载
+
+6. 父子组件传值
+    6.1 父传子
+        6.1.1 父组件使用v-bind绑定一个变量给子组件接收(v-bind:变量名="值")
+            <Invitation v-bind:visible="dialogVisible" @getData="getdata" />
+        6.1.2 子组件用props接收（与created同级）
+            props: ["visible"],
+    6.2 子传父
+        6.2.1 子组件使用this.$emit绑定一个事件和值
+            this.$emit("getData", this.data1);
+        6.2.2 父组件使用@子组件绑定事件=新方法名
+            <Invitation v-bind:visible="dialogVisible" @getData="getdata" />
+        6.2.3 定义新方法名接收值
+            getdata(val) {
+                console.log(99999, val);
+            },
+7. ref传值
+    7.1 子组件定义一个变量visible
+    7.2 父组件使用ref接收
+        <Invitation ref="dialog" />
+    7.3 父组件可修改值(visible是子组件的一个变量)
+        this.$refs.dialog.visible=true;
+
+8. elementUI的el-dialog上下左右居中
+    在app.vue的style里面添加下列代码
+        .el-dialog {
+            display: flex;
+            flex-direction: column;
+            margin: 0 !important;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .el-dialog .el-dialog__body {
+            flex: 1;
+            overflow: auto;
+        }
+9. 滚动条样式
+    scrollbar-arrow-color: color; /*三角箭头的颜色*/
+    scrollbar-face-color: color; /*立体滚动条的颜色（包括箭头部分的背景色）*/
+    scrollbar-3dlight-color: color; /*立体滚动条亮边的颜色*/
+    scrollbar-highlight-color: color; /*滚动条的高亮颜色（左阴影？）*/
+    scrollbar-shadow-color: color; /*立体滚动条阴影的颜色*/
+    scrollbar-darkshadow-color: color; /*立体滚动条外阴影的颜色*/
+    scrollbar-track-color: color; /*立体滚动条背景颜色*/
+    scrollbar-base-color:color; /*滚动条的基色*/
+    如：
+    /* 设置滚动条的样式 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        /* 滚动槽 */
+        ::-webkit-scrollbar-track {
+            border-radius: 10px;
+        }
+        /* 滚动条滑块 */
+        ::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        ::-webkit-scrollbar-thumb:window-inactive {
+            background: rgba(255, 0, 0, 0.4);
+        }
+
+10. 设置滚动条显示
+    10.1 水平方向
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;    // nowrap：文本不会换行，文本会在在同一行上继续，直到遇到 <br> 标签为止。
+    10.2 垂直方向
+        height: 100%;
+        overflow-y: auto;
+
+11. mysql取日期数据变成 2019-08-12T14:00:13.000Z
+    11.1 使用let d1=new Date(date)将date转换为标准时间
+    11.2 使用d1.getFullYear()获取年...
+12. 
+
+
+
+

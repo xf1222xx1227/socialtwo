@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .cmbnt-happy-birthday {
+            line-height: 60px;
+            font-size: 40px;
+            color: #c8152d;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 4px;
+            text-align: center;
+            display: inline-block;
+            padding-top: 40%;
+            padding-bottom: 60%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cmbnt-happy-birthday">生日快乐</div>
+
+    <!-- <script>
+        let bt = document.getElementById("id2");
+        bt.onclick = function () {
+            let dom = document.getElementById("id1");
+            console.log(111, dom.value);
+        }
+    </script> -->
+    <script>
+        function f1(a, n) {
+            let data = [];
+            // 第一次全为正
+            for (let i = 0; i < a; i++) {
+                data[i] = 1;
+            }
+            for (let j = 2; j <= n; j++) {
+                for (let i = 0; i < data.length; i++) {
+                    if ((i + 1) % j == 0) {
+                        data[i] = -1 * data[i];
+                    }
+                }
+            }
+            // 输出
+            let data2 = [];
+            for (let i = 0; i < data.length; i++) {
+                if (data[i] == 1) {
+                    data2.push(i + 1)
+                }
+            }
+            console.log(data2.join(" "));
+        }
+        f1(10, 3);
+    </script>
+
+</body>
+
+</html>

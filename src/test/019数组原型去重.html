@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        Array.prototype.removeCount = function () {
+            var that = this;
+            var arr = [];
+            for (var i = 0; i < that.length; i++) {
+                for (var j = i + 1; j < that.length; j++) {
+                    var count = 0;
+                    if (that[i] == that[j]) {
+                        if (count == 0) {
+                            arr.push(that.slice(j, j + 1)[0]);
+                        }
+                        count++;
+                    }
+                }
+            }
+            return arr;
+        }
+        console.log([1, 2, 2, 3, 3, 5, 7, 9, 0, 9, 0, 11, 'a', 'b', 'a'].removeCount());
+    </script>
+</body>
+
+</html>

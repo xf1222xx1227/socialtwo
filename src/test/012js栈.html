@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+    <script>
+        function Stack() {
+            var items = []; // 保存栈内元素
+
+            this.push = function (e) {
+                items.push(e);
+            }
+
+            this.pop = function () {
+                return items.pop();
+            }
+
+            this.getPeek = function () {
+                return item(item.length - 1);
+            }
+
+            this.isAmpty = function () {
+                return items.length == 0;
+            }
+
+            this.size = function () {
+                return items.length;
+            }
+
+            this.reset = function () {
+                items = [];
+            }
+
+            this.print = function () {
+                console.log(items.toString());
+            }
+        }
+    </script>
+</body>
+
+</html>

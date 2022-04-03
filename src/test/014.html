@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        let data = [];
+        for (let x = 11; x < 100; x++) {
+            for (let y = 11; y < 100; y++) {
+                for (let m = 11; m < 100; m++) {
+                    for (let n = 101; n < 1000; n++) {
+                        if (f3(x) != 0 && y % 10 != 0 && m % 10 != 0 && n % 10 != 0) {}
+                    }
+                }
+
+            }
+        }
+
+        function f1(q1, q2, q3, q4) {
+            let data = q1 + "" + q2 + q3 + q4;
+            // console.log(111, data);
+            let arr = [];
+            for (let i = 0; i < data.length; i++) {
+                let d1 = parseInt(data[i]);
+                let res = f2(d1, arr);
+                if (res == 1) {
+
+                }
+            }
+        }
+
+        function f2(q1, q2) {
+            let q1 = parseInt(q1);
+            for (let i = 0; i < q1.length; i++) {
+                if (q1 == parseInt(q2[i])) {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+
+        function f3(data) {
+            let data = data + "";
+            for (i = 0; i < data.length; i++) {
+                if (data[i] == "0") {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+        // f1(12, 14, 15, 16);
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

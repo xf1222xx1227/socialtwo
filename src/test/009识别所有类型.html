@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function getType(target) {
+            var ret = typeof (target);
+            var template = {
+                "[object Array]": "array",
+                "[object Date]": "date",
+                "[object RegExp]": "regexp",
+                "[object Object]": "object"
+            }
+            if (target === null) {
+                return 'null';
+            } else if (ret == "object") {
+                var str = Object.prototype.toString.call(target);
+                return template[str];
+            } else {
+                return ret;
+            }
+        }
+        console.log(getType(Symbol())); // symbol 有效
+        console.log(getType('')); // string 有效
+        console.log(getType(1)); // number 有效
+        console.log(getType(true)); //boolean 有效
+        console.log(getType(undefined)); //undefined 有效
+        console.log(getType(new Function())); // function 有效
+        console.log(getType(null)); //null 有效
+        console.log(getType([])); //array 有效
+        console.log(getType(new Date())); //data 有效
+        console.log(getType(new RegExp())); //regexp 有效
+    </script>
+
+</body>
+
+</html>
