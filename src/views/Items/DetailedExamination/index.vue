@@ -11,7 +11,6 @@
       <el-menu-item index="3">已审核</el-menu-item>
     </el-menu>
     <div class="content">
-      <!-- <ItemDetail ref="itemDetail" /> -->
       <Examineing ref="examineing" />
       <Examined ref="examined" />
     </div>
@@ -19,12 +18,10 @@
 </template>
 
 <script>
-import ItemDetail from "./itemDeatil.vue";
 import Examineing from "./examineing.vue";
 import Examined from "./examined.vue";
 export default {
   components: {
-    ItemDetail,
     Examineing,
     Examined,
   },

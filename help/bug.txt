@@ -9,7 +9,7 @@
                      可能未进行全局安装导致。全局安装命令 npm install -g nodemon
 
 
-3. rror: ER_NOT_SUPPORTED_AUTH_MODE: Client does not support authentication protocol requested by server; consider upgrading MySQL client
+3. error: ER_NOT_SUPPORTED_AUTH_MODE: Client does not support authentication protocol requested by server; consider upgrading MySQL client
 (错误：ER_不受支持\u身份验证模式：客户端不支持服务器请求的身份验证协议；考虑升级MySQL客户端)
     解决：
         数据库执行下列语句

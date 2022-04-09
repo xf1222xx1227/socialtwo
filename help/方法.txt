@@ -314,9 +314,7 @@
     4.7 页面调用接口
         el-upload控件属性
         :action="url"
-
         import base from "../../api/base";
-
         url:base.upload,
 5. 文件读取与下载
 
@@ -397,7 +395,20 @@
 11. mysql取日期数据变成 2019-08-12T14:00:13.000Z
     11.1 使用let d1=new Date(date)将date转换为标准时间
     11.2 使用d1.getFullYear()获取年...
-12. 
+
+12. css设置为默认样式
+    property: initial;
+
+13. outline属性来定义表单中文本框的轮廓线样式。
+    outline: width style color; // 类比border
+
+14. 使用calc()函数以计算的方式给元素的width、margin、padding、font-size等来定义属性值。
+    用法： 属性: calc(表达式)
+    （1）只能使用加（+）、减（-）、乘（*）和除（/）这4种运算。
+    （2）可以使用px、em、rem、百分比等单位。
+    （3）可以混合使用各种单位进行运算。
+    （4）表达式中有加号（+）和减号（-）时，其前后必须有空格。
+    （5）表达式中有乘号（*）和除号（/）时，其前后可以没有空格，但建议保留。
 
 
 

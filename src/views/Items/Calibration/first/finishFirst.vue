@@ -37,14 +37,14 @@
     </div>
 
     <span slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="Ok(1)">确 定</el-button>
+      <el-button type="primary" @click="Ok()">确 定</el-button>
       <el-button @click="visible = false">关 闭</el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
-import myFunctions from "../../../myFunctions";
+import myFunctions from "@/myFunctions";
 export default {
   props: ["datadetail"],
   components: {},
@@ -56,9 +56,12 @@ export default {
       detailfinishtime: "",
       addoruqdate: "add",
       successorerror: "0",
+      formData: {},
     };
   },
-  created() {},
+  created() {
+    this.successorerror = "0";
+  },
   methods: {
     // 控制只能点击确定或者取消关闭面板
     beforeHandleClose(done) {
@@ -76,6 +79,11 @@ export default {
         detailfinishtime = myFunctions.newDateToDate(this.detailfinishtime);
       }
       let it_id = this.datadetail.it_id;
+
+      this.formData.it_id = it_id;
+      this.formData.finishtime = finishtime;
+      this.formData.detailfinishtime = detailfinishtime;
+
       if (this.addoruqdate == "add") {
         this.$api
           .addFinishFirst({
@@ -130,10 +138,7 @@ export default {
                 this.addoruqdate = "update";
               } else {
                 this.finishdate = myFunctions.newDateToDate(new Date());
-                let date = myFunctions.newDateToDate(
-                  myFunctions.dateAddAndReduce(new Date(), "day", 10)
-                );
-                this.detailfinishtime = date;
+                this.detailfinishtime = myFunctions.newDateToDate(new Date());
                 this.addoruqdate = "add";
               }
             }
@@ -149,7 +154,8 @@ export default {
           message: "提交成功",
           type: "success",
         });
-        // this.$emit("getState", "success");
+        this.$emit("getState", "success");
+        this.$emit("getFormData", this.formData);
         this.successorerror = "0";
         this.visible = false;
       } else if (newval == "2") {
@@ -157,7 +163,8 @@ export default {
           message: "提交失败，请稍后再试",
           type: "error",
         });
-        // this.$emit("getState", "error");
+        this.$emit("getState", "error");
+        this.$emit("getFormData", this.formData);
         this.successorerror = "0";
         this.visible = false;
       }

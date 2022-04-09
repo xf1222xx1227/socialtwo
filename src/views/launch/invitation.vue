@@ -210,7 +210,6 @@ export default {
       maxIndex: 0,
       // tag标签
       dataTags: [],
-      dataSelectTag: [],
       defaultProps: {
         children: "children",
         label: "label",
@@ -577,6 +576,9 @@ export default {
     },
     // tag标签删除
     handleCloseTag(tag) {
+      // console.log(1, tag); // {}
+      // console.log(2, this.dataTags); //[{},{}]
+      // console.log(3, this.dataTags.indexOf(tag)); // 2
       this.dataTags.splice(this.dataTags.indexOf(tag), 1);
     },
     // handleClickTag tag点击

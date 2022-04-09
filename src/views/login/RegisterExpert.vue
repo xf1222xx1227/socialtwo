@@ -409,7 +409,7 @@ export default {
     },
     // 学历改变
     handleChangeEducation(val) {
-      console.log(111, val);
+      // console.log(111, val);
     },
     backLogin() {
       this.$router.push({ path: "/" });
@@ -546,16 +546,17 @@ export default {
   },
   watch: {
     education(newval, val) {
-      console.log(111, newval);
-      //   optionsDegree
-      // let data = [];
+      this.ruleForm.degree = "无";
       this.optionsDegree = [];
-      if (
-        newval == "本科" ||
-        newval == "硕士研究生" ||
-        newval == "博士研究生"
-      ) {
+      if (newval == "博士研究生" || newval == "硕士研究生") {
         newval = newval.substring(0, 2);
+        for (let i = 0; i < this.dataDegree.length; i++) {
+          if (this.dataDegree[i].name.indexOf(newval) != -1) {
+            this.optionsDegree.push(this.dataDegree[i]);
+          }
+        }
+      } else if (newval == "本科") {
+        newval = "学士";
         for (let i = 0; i < this.dataDegree.length; i++) {
           if (this.dataDegree[i].name.indexOf(newval) != -1) {
             this.optionsDegree.push(this.dataDegree[i]);

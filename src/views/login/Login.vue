@@ -48,11 +48,11 @@ import myFunctions from "@/myFunctions";
 export default {
   data() {
     return {
-      userid: "S00004",
+      userid: "u00000",
       password: "1",
       userdata: [],
       isorno: 1,
-      radio: "3",
+      radio: "1",
       dataExpert: [],
     };
   },
@@ -65,6 +65,7 @@ export default {
       }
     });
     // 项目投标结束后转成初审状态
+    // myFunctions.bidToFirst();
     let date = myFunctions.newDateToDatetime(new Date());
     this.$api.getAllBiddingItems({}).then((res) => {
       if (res.status == 200) {
@@ -88,14 +89,41 @@ export default {
       }
     });
     // 初审结束进入细审
+    // myFunctions.firstToDetail();
     this.$api.getFinishFirstTrial({}).then((res) => {
       if (res.status == 200) {
         if (res.data.status == 200) {
           let data = res.data.result;
           for (let i = 0; i < data.length; i++) {
-            if (data[i].finishtime < date) {
+            if (data[i].finishtime != "" && data[i].finishtime < date) {
               this.$api
                 .updateBiddindPreToDetail({
+                  it_id: data[i].it_id,
+                })
+                .then((res) => {
+                  if (res.status == 200) {
+                    if (res.data.status == 200) {
+                    }
+                  }
+                });
+            }
+          }
+        }
+      }
+    });
+    // 细审结束变成定标项目
+    // myFunctions.detailToCalibration();
+    this.$api.getFinishFirstTrial({}).then((res) => {
+      if (res.status == 200) {
+        if (res.data.status == 200) {
+          let data = res.data.result;
+          for (let i = 0; i < data.length; i++) {
+            if (
+              data[i].detailfinishtime != "" &&
+              data[i].detailfinishtime < date
+            ) {
+              this.$api
+                .updateDetailToCalibration({
                   it_id: data[i].it_id,
                 })
                 .then((res) => {

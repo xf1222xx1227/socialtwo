@@ -30,10 +30,6 @@
         <i class="el-icon-circle-plus-outline"></i>
         <span slot="title">项目申报</span>
       </el-menu-item>
-      <el-menu-item index="/examineex">
-        <i class="el-icon-edit"></i>
-        <span slot="title">我的审核</span>
-      </el-menu-item>
 
       <el-submenu index="/itemsex">
         <template slot="title">
@@ -53,8 +49,24 @@
             <i class="el-icon-cloudy"></i>
             <span slot="title">细审结果</span>
           </el-menu-item>
+          <el-menu-item index="/itemsex/calibrationex">
+            <i class="el-icon-position"></i>
+            <span slot="title">项目定标</span>
+          </el-menu-item>
+          <el-menu-item index="/itemsex/scheduleex">
+            <i class="el-icon-upload"></i>
+            <span slot="title">进度上传</span>
+          </el-menu-item>
+          <el-menu-item index="/itemsex/finishedex">
+            <i class="el-icon-switch-button"></i>
+            <span slot="title">完成项目</span>
+          </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
+      <el-menu-item index="/examineex">
+        <i class="el-icon-edit"></i>
+        <span slot="title">我的审核</span>
+      </el-menu-item>
 
       <el-menu-item index="/userex">
         <i class="el-icon-setting"></i>

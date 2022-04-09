@@ -9,10 +9,13 @@
     :before-close="beforeHandleClose"
   >
     <div id="declare">
-      <el-form label-width="100px" :label-position="labelPosition" class="form">
-        <!-- 
+      <el-form
+        label-width="100px"
+        :label-position="labelPosition"
+        class="form"
         :rules="rules"
-        ref="ruleForm" -->
+        ref="ruleForm"
+      >
         <el-row class="row" style="margin-top: 10px">
           <el-col :span="11" class="col">
             <el-form-item label="申请预算：" prop="money" class="form_item">
@@ -107,6 +110,11 @@ export default {
       visible: false,
       labelPosition: "right",
       ruleForm: { money: 0, finishtime: "", other: "" },
+      rules: {
+        finishtime: [
+          { required: true, message: "请选择预计完成日期", trigger: "blur" },
+        ],
+      },
       formData: {},
       fileList: [],
       successFlieList: [],
@@ -127,98 +135,107 @@ export default {
         return false;
       }
     },
-    Ok() {
+    Ok(formName) {
       let data = this.ruleForm;
-      data.finishtime = myFunctions.newDateToDate(data.finishtime);
+      data.finishtime =
+        data.finishtime == "" ? "" : myFunctions.newDateToDate(data.finishtime);
       data.it_id = this.datadetail.it_id;
       data.ex_id = sessionStorage.getItem("userid");
       data.bid_time = myFunctions.newDateToDate(new Date());
-      this.$confirm("确定申报?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "info",
-      })
-        .then(() => {
-          // 申报添加
-          this.$api
-            .addBidItems({
-              ex_id: data.ex_id,
-              it_id: data.it_id,
-              bid_time: data.bid_time,
-              budget: parseInt(data.money),
-              finilly_time: data.finishtime,
-              other: data.other,
-            })
-            .then((res) => {
-              if (res.status == 200) {
-                if (res.data.status == 200) {
-                }
-              }
-            });
-          // 申报文件添加
-          if (this.successFlieList.length > 0) {
-            for (let i = 0; i < this.successFlieList.length; i++) {
-              this.$api
-                .addBidItemFiles({
-                  ex_id: data.ex_id,
-                  it_id: data.it_id,
-                  name: this.successFlieList[i].name,
-                  upurl: this.successFlieList[i].upurl,
-                  uid: this.successFlieList[i].uid,
-                  url: this.successFlieList[i].url,
-                  size: this.successFlieList[i].size,
-                  uploadtime: myFunctions.newDateToDatetime(new Date()),
-                })
-                .then((res) => {});
-            }
-          }
-          // 检测是否添加成功
-          let havefile = this.successFlieList.length;
-          this.$api
-            .successAddBidItemAndFiles({
-              ex_id: data.ex_id,
-              it_id: data.it_id,
-              havefile: havefile,
-            })
-            .then((res) => {
-              if (res.status == 200) {
-                if (res.data.status == 200) {
-                  this.$message({
-                    type: "success",
-                    message: "申报成功!可前往<我的项目>查看",
-                    offset: 100,
-                  });
-                  // 申报后刷新表格
-                  this.refresh = "1";
-                  this.$emit("refresh", this.refresh);
-                  this.visible = false;
-                }
-                // 失败就删除成功的部分数据
-                else {
-                  this.$api
-                    .deleteBidItemAndFiles({
-                      ex_id: data.ex_id,
-                      it_id: data.it_id,
-                      table: "bid_items",
-                    })
-                    .then((res) => {});
-                  this.$api
-                    .deleteBidItemAndFiles({
-                      ex_id: data.ex_id,
-                      it_id: data.it_id,
-                      table: "bid_item_files",
-                    })
-                    .then((res) => {});
-                  this.$message({
-                    type: "error",
-                    message: "申报失败!请重新提交",
-                    offset: 100,
-                  });
-                }
-              }
-            });
+      // this.$refs[formName].validate((valid) => {
+      // if (valid) {
+      if (data.finishtime != "") {
+        this.$confirm("确定申报?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "info",
         })
-        .catch(() => {});
+          .then(() => {
+            // 申报添加
+            this.$api
+              .addBidItems({
+                ex_id: data.ex_id,
+                it_id: data.it_id,
+                bid_time: data.bid_time,
+                budget: parseInt(data.money),
+                finilly_time: data.finishtime,
+                other: data.other,
+              })
+              .then((res) => {
+                if (res.status == 200) {
+                  if (res.data.status == 200) {
+                  }
+                }
+              });
+            // 申报文件添加
+            if (this.successFlieList.length > 0) {
+              for (let i = 0; i < this.successFlieList.length; i++) {
+                this.$api
+                  .addBidItemFiles({
+                    ex_id: data.ex_id,
+                    it_id: data.it_id,
+                    name: this.successFlieList[i].name,
+                    upurl: this.successFlieList[i].upurl,
+                    uid: this.successFlieList[i].uid,
+                    url: this.successFlieList[i].url,
+                    size: this.successFlieList[i].size,
+                    uploadtime: myFunctions.newDateToDatetime(new Date()),
+                  })
+                  .then((res) => {});
+              }
+            }
+            // 检测是否添加成功
+            let havefile = this.successFlieList.length;
+            this.$api
+              .successAddBidItemAndFiles({
+                ex_id: data.ex_id,
+                it_id: data.it_id,
+                havefile: havefile,
+              })
+              .then((res) => {
+                if (res.status == 200) {
+                  if (res.data.status == 200) {
+                    this.$message({
+                      type: "success",
+                      message: "申报成功!可前往<我的项目>查看",
+                      offset: 100,
+                    });
+                    // 申报后刷新表格
+                    this.refresh = "1";
+                    this.$emit("refresh", this.refresh);
+                    this.visible = false;
+                  }
+                  // 失败就删除成功的部分数据
+                  else {
+                    this.$api
+                      .deleteBidItemAndFiles({
+                        ex_id: data.ex_id,
+                        it_id: data.it_id,
+                        table: "bid_items",
+                      })
+                      .then((res) => {});
+                    this.$api
+                      .deleteBidItemAndFiles({
+                        ex_id: data.ex_id,
+                        it_id: data.it_id,
+                        table: "bid_item_files",
+                      })
+                      .then((res) => {});
+                    this.$message({
+                      type: "error",
+                      message: "申报失败!请重新提交",
+                      offset: 100,
+                    });
+                  }
+                }
+              });
+          })
+          .catch(() => {});
+      } else {
+        this.$message.error("请选择预计完成日期");
+        return false;
+      }
+      // });
     },
     // 上传文件成功后的函数
     successUpload(response, file, fileList) {
@@ -242,7 +259,7 @@ export default {
     handleRemove(file, fileList) {
       // console.log(222, file);
       for (let i = 0; i < this.successFlieList.length; i++) {
-        if (this.successFlieList[i].id == file.uid) {
+        if (this.successFlieList[i].uid == file.uid) {
           this.successFlieList.splice(i, 1);
           break;
         }

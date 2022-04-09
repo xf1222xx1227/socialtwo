@@ -83,7 +83,7 @@
           </el-tooltip>
           <el-tooltip
             effect="light"
-            content="我的投标详情"
+            content="我的申报详情"
             placement="top"
             style="width: 18%"
           >

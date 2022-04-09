@@ -44,6 +44,16 @@ const api={
             params
         })
     },
+    updateDetailToCalibration(params){
+        return axios.get(base.updateDetailToCalibration,{
+            params
+        })
+    },
+    updateOpenToDinish(params){
+        return axios.get(base.updateOpenToDinish,{
+            params
+        })
+    },
 
 
 
@@ -276,6 +286,11 @@ const api={
             params
         })
     },
+    updateFinishFirst(params){               
+        return axios.get(base.updateFinishFirst,{
+            params
+        })
+    },
     getOneItemFinishFirst(params){               
         return axios.get(base.getOneItemFinishFirst,{
             params
@@ -364,6 +379,109 @@ const api={
             params
         })
     },
+
+
+    // ----------------------------定标page------------------------------
+    getCalibrationFirstItem(params){               
+        return axios.get(base.getCalibrationFirstItem,{
+            params
+        })
+    },
+    getCalibrationExaminedItem(params){               
+        return axios.get(base.getCalibrationExaminedItem,{
+            params
+        })
+    },
+    getCalibrationOneItemRank(params){               
+        return axios.get(base.getCalibrationOneItemRank,{
+            params
+        })
+    },
+    getCalibrationOneItemInfo(params){               
+        return axios.get(base.getCalibrationOneItemInfo,{
+            params
+        })
+    },
+    getOneItemCalibrationed(params){               
+        return axios.get(base.getOneItemCalibrationed,{
+            params
+        })
+    },
+    addCalibration(params){               
+        return axios.get(base.addCalibration,{
+            params
+        })
+    },
+    updateCalibration(params){               
+        return axios.get(base.updateCalibration,{
+            params
+        })
+    },
+    getOneItemOneExpertCalibrationed(params){               
+        return axios.get(base.getOneItemOneExpertCalibrationed,{
+            params
+        })
+    },
+
+    getCalibrationedItems(params){               
+        return axios.get(base.getCalibrationedItems,{
+            params
+        })
+    },
+    deleteCalibration(params){               
+        return axios.get(base.deleteCalibration,{
+            params
+        })
+    },
+    updateCalibrationToOpen(params){               
+        return axios.get(base.updateCalibrationToOpen,{
+            params
+        })
+    },
+    addBidOpening(params){               
+        return axios.get(base.addBidOpening,{
+            params
+        })
+    },
+
+
+
+
+
+    // -------------------------查看开标后查看进度页面---------------------------
+    getOneSocialPersonScheduleItems(params){               
+        return axios.get(base.getOneSocialPersonScheduleItems,{
+            params
+        })
+    },
+    addSchedulesUrge(params){               
+        return axios.get(base.addSchedulesUrge,{
+            params
+        })
+    },
+    updateApplyFinishItemPass(params){               
+        return axios.get(base.updateApplyFinishItemPass,{
+            params
+        })
+    },
+    updateApplyFinishItemNoPass(params){               
+        return axios.get(base.updateApplyFinishItemNoPass,{
+            params
+        })
+    },
+    addFinishItem(params){               
+        return axios.get(base.addFinishItem,{
+            params
+        })
+    },
+
+
+
+
+
+
+
+
 
 
 
@@ -459,15 +577,6 @@ const api={
     },
 
 
-    // --------------------------初审结果查询页面--------------
-    // 获取投标项目
-    getBidItemsFirstTrialResult(params){               
-        return axios.get(base.getBidItemsFirstTrialResult,{
-            params
-        })
-    },
-
-
 
     // -------------------------------细审参与界面-----------------
     getInvitationExpertItems(params){               
@@ -511,12 +620,126 @@ const api={
 
 
 
+    
+    // --------------------------初审结果查询页面--------------
+    // 获取投标项目
+    getBidItemsFirstTrialResult(params){               
+        return axios.get(base.getBidItemsFirstTrialResult,{
+            params
+        })
+    },
+
+
+
+
+
+    // --------------------------细审结果查询页面--------------------------
+    getOneExpertDetailExaminedItems(params){               
+        return axios.get(base.getOneExpertDetailExaminedItems,{
+            params
+        })
+    },
+
+
+
+
+
+    // --------------------------定标页面--------------------------
+    getOneExpertCalibrationingItems(params){               
+        return axios.get(base.getOneExpertCalibrationingItems,{
+            params
+        })
+    },
+    getOneItemInfo(params){               
+        return axios.get(base.getOneItemInfo,{
+            params
+        })
+    },
+    getOneExpertOneBidInfo(params){               
+        return axios.get(base.getOneExpertOneBidInfo,{
+            params
+        })
+    },
+    updateCalibrationAccept(params){               
+        return axios.get(base.updateCalibrationAccept,{
+            params
+        })
+    },
+
+    getOneExpertCalibrationingedItems(params){               
+        return axios.get(base.getOneExpertCalibrationingedItems,{
+            params
+        })
+    },
 
 
 
 
 
 
+    // --------------------------进度上传页面--------------------------
+    getOneExpertScheduleItems(params){
+        return axios.get(base.getOneExpertScheduleItems,{
+            params
+        })
+    },
+    getOneExpertSchedules(params){
+        return axios.get(base.getOneExpertSchedules,{
+            params
+        })
+    },
+    addSchedules(params){
+        return axios.get(base.addSchedules,{
+            params
+        })
+    },
+    addSchedulesFiles(params){
+        return axios.get(base.addSchedulesFiles,{
+            params
+        })
+    },
+    getSchedulesFiles(params){
+        return axios.get(base.getSchedulesFiles,{
+            params
+        })
+    },
+    getSchedulesUrge(params){
+        return axios.get(base.getSchedulesUrge,{
+            params
+        })
+    },
+    updateSchedulesUrge(params){
+        return axios.get(base.updateSchedulesUrge,{
+            params
+        })
+    },
+    getApplyFinishItem(params){
+        return axios.get(base.getApplyFinishItem,{
+            params
+        })
+    },
+    addApplyFinishItem(params){
+        return axios.get(base.addApplyFinishItem,{
+            params
+        })
+    },
+
+    getReceipt(params){
+        return axios.get(base.getReceipt,{
+            params
+        })
+    },
+
+
+
+
+
+
+
+
+
+
+    // --------------------------测试--------------------------
     addTest(params){
         return axios.get(base.addtest,{
             params

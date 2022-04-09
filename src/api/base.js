@@ -12,9 +12,11 @@ const base={
     biddingList: 'api/api/bidding_subject',    // 社科主体账户
     getExpertPersonal: 'api/api/getExpertPersonal',    // 专家账户
     getAllBiddingItems: 'api/api/getAllBiddingItems',    // 
-    updateBiddindToPre: 'api/api/updateBiddindToPre',
     getFinishFirstTrial: 'api/api/getFinishFirstTrial',    // 
+    updateBiddindToPre: 'api/api/updateBiddindToPre',
     updateBiddindPreToDetail: 'api/api/updateBiddindPreToDetail',
+    updateDetailToCalibration: 'api/api/updateDetailToCalibration',
+    updateOpenToDinish: 'api/api/updateOpenToDinish',
 
     // 注册页---------------------------------------
     getEducation: 'api/api/getEducation',
@@ -77,6 +79,7 @@ const base={
 
     // ---------------------------细审专家邀请页面-----------------------
     addFinishFirst:'api/api/addFinishFirst',
+    updateFinishFirst:'api/api/updateFinishFirst',
     getOneItemFinishFirst:'api/api/getOneItemFinishFirst',
     addReviewDetailsInvitation:'api/api/addReviewDetailsInvitation',
     addReviewDetailsInvitationSuccess:'api/api/addReviewDetailsInvitationSuccess',
@@ -97,6 +100,34 @@ const base={
     addDeatilExamineResult:'api/api/addDeatilExamineResult',
     getOneExpertOneItemDetailed:'api/api/getOneExpertOneItemDetailed',
     updateDeatilExamineResult:'api/api/updateDeatilExamineResult',
+
+
+    // ----------------------------定标page------------------------------
+    getCalibrationFirstItem:'api/api/getCalibrationFirstItem',
+    getCalibrationExaminedItem:'api/api/getCalibrationExaminedItem',
+    getCalibrationOneItemRank:'api/api/getCalibrationOneItemRank',
+    getCalibrationOneItemInfo:'api/api/getCalibrationOneItemInfo',
+    getOneItemCalibrationed:'api/api/getOneItemCalibrationed',
+    addCalibration:'api/api/addCalibration',
+    updateCalibration:'api/api/updateCalibration',
+    getOneItemOneExpertCalibrationed:'api/api/getOneItemOneExpertCalibrationed',
+
+    getCalibrationedItems:'api/api/getCalibrationedItems',
+    deleteCalibration:'api/api/deleteCalibration',
+    updateCalibrationToOpen:'api/api/updateCalibrationToOpen',
+    addBidOpening:'api/api/addBidOpening',
+
+
+
+
+    // -------------------------查看开标后查看进度页面---------------------------
+    getOneSocialPersonScheduleItems:'api/api/getOneSocialPersonScheduleItems',
+    addSchedulesUrge:'api/api/addSchedulesUrge',
+    updateApplyFinishItemPass:'api/api/updateApplyFinishItemPass',
+    updateApplyFinishItemNoPass:'api/api/updateApplyFinishItemNoPass',
+    addFinishItem:'api/api/addFinishItem',
+
+
 
 
 
@@ -121,9 +152,6 @@ const base={
     updateBidItem:'api/api/updateBidItem', 
 
 
-    // --------------------------初审结果查询页面--------------
-    // 获取投标项目
-    getBidItemsFirstTrialResult:'api/api/getBidItemsFirstTrialResult', 
 
 
     // -------------------------------细审参与界面-----------------
@@ -135,6 +163,55 @@ const base={
     // 表格数据
     getOneExpertOneItemNeedDetailExamine:'api/api/getOneExpertOneItemNeedDetailExamine', 
     getOneExpertOneItemNeedDetailedExamine:'api/api/getOneExpertOneItemNeedDetailedExamine', 
+
+
+
+
+    // --------------------------初审结果查询页面--------------
+    // 获取投标项目
+    getBidItemsFirstTrialResult:'api/api/getBidItemsFirstTrialResult', 
+
+
+
+
+
+    // --------------------------细审结果查询页面--------------------------
+    getOneExpertDetailExaminedItems:'api/api/getOneExpertDetailExaminedItems', 
+
+
+
+
+
+
+    // --------------------------定标页面--------------------------
+    getOneExpertCalibrationingItems:'api/api/getOneExpertCalibrationingItems', 
+    getOneItemInfo:'api/api/getOneItemInfo', 
+    getOneExpertOneBidInfo:'api/api/getOneExpertOneBidInfo', 
+    updateCalibrationAccept:'api/api/updateCalibrationAccept', 
+
+    getOneExpertCalibrationingedItems:'api/api/getOneExpertCalibrationingedItems', 
+
+
+
+
+
+
+    // --------------------------进度上传页面--------------------------
+    getOneExpertScheduleItems:'api/api/getOneExpertScheduleItems', 
+    getOneExpertSchedules:'api/api/getOneExpertSchedules', 
+    addSchedules:'api/api/addSchedules', 
+    addSchedulesFiles:'api/api/addSchedulesFiles', 
+    getSchedulesFiles:'api/api/getSchedulesFiles',
+    getSchedulesUrge:'api/api/getSchedulesUrge', 
+    updateSchedulesUrge:'api/api/updateSchedulesUrge', 
+    getApplyFinishItem:'api/api/getApplyFinishItem', 
+    addApplyFinishItem:'api/api/addApplyFinishItem', 
+
+    getReceipt:'api/api/getReceipt', 
+
+
+
+
 
 
 

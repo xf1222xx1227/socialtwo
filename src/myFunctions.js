@@ -147,6 +147,159 @@ const myFunctions={
         }
         return false;
     },
+    sortData(obj,column,type){
+      if(!type || type!="ascending"){
+        type = "descending";
+      }
+      let compare = function(obj1,obj2){
+        let data1 = obj1[column];
+        let data2 = obj2[column];
+        if(data1<data2){
+          if(type == "descending") return 1;
+          else return -1;
+        }else if(data1>data2){
+          if(type == "descending") return -1;
+          else return 1;
+        }else{
+          return 0;
+        }
+      }
+      obj = obj.sort(compare);
+      return obj
+    },
+    // 计算分数
+    calculationPoint(data){
+      for (let i = 0; i < data.length; i++) {
+        data[i].rate =
+          data[i].rate_economics +
+          data[i].rate_technology +
+          data[i].rate_comprehensive;
+        //   保留原来比例
+        data[i].rate_economics1 = data[i].rate_economics;
+        data[i].rate_technology1 = data[i].rate_technology;
+        data[i].rate_comprehensive1 = data[i].rate_comprehensive;
+        // 计算新比例
+        data[i].rate_economics =
+          data[i].rate_economics / parseInt(data[i].rate).toFixed(2);
+        data[i].rate_technology =
+          data[i].rate_technology / parseInt(data[i].rate).toFixed(2);
+        data[i].rate_comprehensive =
+          data[i].rate_comprehensive /
+          parseInt(data[i].rate).toFixed(2);
+        // 计算平均分
+        data[i].average_score_technology = (
+          parseInt(data[i].total_score_technology) /
+          parseInt(data[i].count)
+        ).toFixed(2);
+        data[i].average_score_economics = (
+          parseInt(data[i].total_score_economics) /
+          parseInt(data[i].count)
+        ).toFixed(2);
+        data[i].average_score_comprehensive = (
+          parseInt(data[i].total_score_comprehensive) /
+          parseInt(data[i].count)
+        ).toFixed(2);
+        data[i].average_total2 = (
+          parseInt(
+            data[i].rate_economics * data[i].average_score_economics
+          ) +
+          parseInt(
+            data[i].rate_technology * data[i].average_score_technology
+          ) +
+          parseInt(
+            data[i].rate_comprehensive *
+              data[i].average_score_comprehensive
+          )
+        ).toFixed(2);
+        // 计算整数得分
+        // data[i].average_total = Math.round(data[i].average_total2);
+        data[i].average_total = data[i].average_total2;
+      }
+      return data;
+    },
+
+
+
+
+
+
+
+
+
+
+
+    bidToFirst(){
+        let date = myFunctions.newDateToDatetime(new Date());
+        this.$api.getAllBiddingItems({}).then((res) => {
+            if (res.status == 200) {
+              if (res.data.status == 200) {
+                let data = res.data.result;
+                for (let i = 0; i < data.length; i++) {
+                  if (data[i].time_end < date) {
+                    this.$api
+                      .updateBiddindToPre({
+                        it_id: data[i].it_id,
+                      })
+                      .then((res) => {
+                        if (res.status == 200) {
+                          if (res.data.status == 200) {
+                          }
+                        }
+                      });
+                  }
+                }
+              }
+            }
+        });
+    },
+    firstToDetail(){
+        let date = myFunctions.newDateToDatetime(new Date());
+        this.$api.getFinishFirstTrial({}).then((res) => {
+            if (res.status == 200) {
+              if (res.data.status == 200) {
+                let data = res.data.result;
+                for (let i = 0; i < data.length; i++) {
+                  if (data[i].finishtime < date) {
+                    this.$api
+                      .updateBiddindPreToDetail({
+                        it_id: data[i].it_id,
+                      })
+                      .then((res) => {
+                        if (res.status == 200) {
+                          if (res.data.status == 200) {
+                          }
+                        }
+                      });
+                  }
+                }
+              }
+            }
+        });
+    },
+    detailToCalibration(){
+        let date = myFunctions.newDateToDatetime(new Date());
+        this.$api.getFinishFirstTrial({}).then((res) => {
+            if (res.status == 200) {
+              if (res.data.status == 200) {
+                let data = res.data.result;
+                for (let i = 0; i < data.length; i++) {
+                  if (data[i].detailfinishtime=="" && data[i].detailfinishtime < date) {
+                    this.$api
+                      .updateDetailToCalibration({
+                        it_id: data[i].it_id,
+                      })
+                      .then((res) => {
+                        if (res.status == 200) {
+                          if (res.data.status == 200) {
+                          }
+                        }
+                      });
+                  }
+                }
+              }
+            }
+        });
+    }
     
 }
 

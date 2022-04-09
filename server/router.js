@@ -110,7 +110,7 @@ router.get("/updateBiddindToPre", (req, res) => {
 })
 // 正在招标全部项目
 router.get("/getFinishFirstTrial", (req, res) => {
-    const sql = `select * from finish_first_trial;`;
+    const sql = `select * from finish_first_trial a join item_state b where a.it_id = b.it_id and b.state < 5;`;
     sqlFn(sql, null, (result) => {
         if (result.length > 0) {
             res.send({
@@ -134,6 +134,82 @@ router.get("/updateBiddindPreToDetail", (req, res) => {
     let state = req.query.state || 4;
     const sql = "update item_state set bid=?, release_items=?,review_details=?,state=? where it_id=?";
     const arr = [ bid,release_items,review_details,state, it_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+// 细审状态变成定标
+router.get("/updateDetailToCalibration", (req, res) => {
+    let it_id = req.query.it_id;
+    let bid = req.query.bid || 2;
+    let release_items = req.query.release_items || 2;
+    let review_details = req.query.review_details || 2;
+    let calibratio = req.query.calibratio || 1;
+    let state = req.query.state || 5;
+    const sql = "update item_state set bid=?, release_items=?,review_details=?,calibratio=?,state=? where it_id=?";
+    const arr = [ bid,release_items,review_details,calibratio,state, it_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+// 开标，修改项目状态为开标状态
+router.get("/updateCalibrationToOpen", (req, res) => {
+    let it_id = req.query.it_id;
+    let release_items = req.query.release_items || 2;
+    let review_details = req.query.review_details || 2;
+    let calibratio = req.query.calibratio || 2;
+    let bid_opening = req.query.bid_opening || 1; 
+    let state = req.query.state || 6;
+
+    const sql = `update item_state set release_items=?,review_details=?,calibratio=?,bid_opening=?,state=? 
+        where it_id = ?;`;
+    const arr = [release_items,review_details,calibratio,bid_opening,state,it_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+// 开标状态变成完成状态
+router.get("/updateOpenToDinish", (req, res) => {
+    let it_id = req.query.it_id;
+    let bid = req.query.bid || 2;
+    let release_items = req.query.release_items || 2;
+    let review_details = req.query.review_details || 2;
+    let calibratio = req.query.calibratio || 2;
+    let bid_opening = req.query.bid_opening || 2;
+    let finish = req.query.finish || 2
+    let state = req.query.state || 7;
+    const sql = "update item_state set calibratio=?,bid_opening=?,finish=?,state=? where it_id=?";
+    const arr = [ calibratio,bid_opening,finish,state, it_id];
     sqlFn(sql, arr, (result) => {
         if (result.affecteRows > 0) {
             res.send({
@@ -528,11 +604,13 @@ router.get("/getAllExpertPersonalHave", (req, res) => {
 	expert_personal.address_province,expert_personal.address_city,expert_personal.address_county,expert_personal.address_detail,expert_personal.email,
 	honor.name as honorname,honor.pid as honorpid,
     degree.name as degreename,
-    count(*) as count ,sum(money) as money
-    from expert_personal join honor join degree join expert_achievements join release_items join item_state join achievements join research_direction
-	where expert_personal.honor=honor.h_id and expert_personal.degree=degree.de_id and expert_personal.ex_id=expert_achievements.ex_id 
+    count(*) as count ,sum(a.budget) as money
+    from expert_personal join honor join degree join release_items join calibration a 
+    join item_state join research_direction
+	where expert_personal.honor=honor.h_id and expert_personal.degree=degree.de_id 
     and expert_personal.research_specialty=research_direction.re_id
-    and expert_achievements.it_id=release_items.it_id and release_items.it_id = item_state.it_id and release_items.it_id=achievements.it_id 
+    and release_items.it_id = item_state.it_id 
+    and release_items.it_id = a.it_id and a.ex_id = expert_personal.ex_id 
     and item_state.state = 7
     group by expert_personal.ex_id; `;
     // const sql = "select * from expert_personal;";
@@ -564,9 +642,10 @@ router.get("/getAllExpertPersonalNo", (req, res) => {
     and expert_personal.ex_id not in
     (
 		select expert_personal.ex_id
-		from expert_personal join honor join degree join expert_achievements join release_items join item_state join achievements
-        where expert_personal.honor=honor.h_id and expert_personal.degree=degree.de_id and expert_personal.ex_id=expert_achievements.ex_id 
-        and expert_achievements.it_id=release_items.it_id and release_items.it_id = item_state.it_id and release_items.it_id=achievements.it_id 
+		from expert_personal join honor join degree  join release_items join item_state join calibration a 
+        where expert_personal.honor=honor.h_id and expert_personal.degree=degree.de_id  
+        and release_items.it_id = item_state.it_id  
+        and release_items.it_id = a.it_id and a.ex_id = expert_personal.ex_id 
         and item_state.state = 7 
         group by expert_personal.ex_id
     )
@@ -597,11 +676,12 @@ router.get("/getOneExpertPersonalHave", (req, res) => {
 	expert_personal.address_province,expert_personal.address_city,expert_personal.address_county,expert_personal.address_detail,expert_personal.email,
 	honor.name as honorname,honor.pid as honorpid,
     degree.name as degreename,
-    count(*) as count ,sum(money) as money
-    from expert_personal join honor join degree join expert_achievements join release_items join item_state join achievements join research_direction join majors 
-	where expert_personal.honor=honor.h_id and expert_personal.degree=degree.de_id and expert_personal.ex_id=expert_achievements.ex_id 
-    and expert_personal.research_specialty=research_direction.re_id and expert_achievements.it_id=release_items.it_id 
-    and release_items.it_id = item_state.it_id and release_items.it_id=achievements.it_id and expert_personal.major = majors.id 
+    count(*) as count ,sum(a.budget) as money
+    from expert_personal join honor join degree join release_items join item_state join research_direction join majors join calibration a 
+	where expert_personal.honor=honor.h_id and expert_personal.degree=degree.de_id  
+    and expert_personal.research_specialty=research_direction.re_id  
+    and release_items.it_id = item_state.it_id  and expert_personal.major = majors.id 
+    and release_items.it_id = a.it_id and a.ex_id = expert_personal.ex_id 
     and item_state.state = 7 ` + str +
     ` group by expert_personal.ex_id;`;
     // console.log(111,sql);
@@ -637,10 +717,11 @@ router.get("/getOneExpertPersonalNo", (req, res) => {
     and expert_personal.ex_id not in
     (
 		select expert_personal.ex_id
-		from expert_personal join honor join degree join expert_achievements join release_items join item_state join achievements join majors 
-        where expert_personal.honor=honor.h_id and expert_personal.degree=degree.de_id and expert_personal.ex_id=expert_achievements.ex_id 
-        and expert_achievements.it_id=release_items.it_id and release_items.it_id = item_state.it_id and release_items.it_id=achievements.it_id 
+		from expert_personal join honor join degree join release_items join item_state  join majors join calibration a 
+        where expert_personal.honor=honor.h_id and expert_personal.degree=degree.de_id 
+        and release_items.it_id = item_state.it_id 
         and expert_personal.major = majors.id 
+        and release_items.it_id = a.it_id and a.ex_id = expert_personal.ex_id 
         and item_state.state = 7 ` + str +
         ` group by expert_personal.ex_id
     ) ` + str +
@@ -743,9 +824,10 @@ router.get("/addReleaseItemsInvitation", (req, res) => {
     // console.log("进入添加第三个");
     let it_id = req.query.it_id;
     let ex_id = req.query.ex_id;
+    let type = req.query.type || 1;
     console.log(33, it_id, ex_id);
-    const arr = [it_id, ex_id];
-    const sql = "insert into release_items_invitation values(?,?)";
+    const arr = [it_id, ex_id,type];
+    const sql = "insert into release_items_invitation values(?,?,?)";
     sqlFn(sql, arr, (result) => {
         if (result.affecteRows > 0) {
             res.send({
@@ -838,9 +920,8 @@ router.get("/deleteSomeSuccess", (req, res) => {
 
 
 
-// 招标项目页面
-// ------------------------------------------------------------------------------
-// 正在招标项目信息 14条
+// -------------------------------------招标项目页面-----------------------------------------
+// 正在招标项目信息
 router.get("/getBiddingItems", (req, res) => {
     let userid = req.query.userid;
     const sql = `select a.*, b.* ,c.categoryid,c.categoryname, d.name as typename 
@@ -1076,6 +1157,27 @@ router.get("/addFinishFirst", (req, res) => {
         }
     })
 })
+router.get("/updateFinishFirst", (req, res) => {
+    let it_id = req.query.it_id;
+    let finishtime = req.query.finishtime;
+    let updatetime = req.query.updatetime;
+    let detailfinishtime = req.query.detailfinishtime;
+    const sql = "update finish_first_trial set finishtime=?,updatetime=?,detailfinishtime=? where it_id=?";
+    const arr = [ finishtime, updatetime,detailfinishtime,it_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
 // 获取初审截至
 router.get("/getOneItemFinishFirst", (req, res) => {
     let it_id = req.query.it_id;
@@ -1163,12 +1265,13 @@ router.get("/getOneItemReviewDetailsInvitationExpert", (req, res) => {
 	expert_personal.address_province,expert_personal.address_city,expert_personal.address_county,expert_personal.address_detail,expert_personal.email,
 	honor.name as honorname,honor.pid as honorpid,
     degree.name as degreename, review_details_invitation.state as expertstate, 
-    count(*) as count ,sum(money) as money
-    from expert_personal join honor join degree join expert_achievements join release_items 
-    join item_state join achievements join research_direction join review_details_invitation 
-	where expert_personal.honor=honor.h_id and expert_personal.degree=degree.de_id and expert_personal.ex_id=expert_achievements.ex_id 
-    and expert_personal.research_specialty=research_direction.re_id and expert_achievements.it_id=release_items.it_id 
-    and release_items.it_id = item_state.it_id and release_items.it_id=achievements.it_id 
+    count(*) as count ,sum(a.budget) as money
+    from expert_personal join honor join degree join release_items join calibration a 
+    join item_state join research_direction join review_details_invitation 
+	where expert_personal.honor=honor.h_id and expert_personal.degree=degree.de_id 
+    and expert_personal.research_specialty=research_direction.re_id 
+    and release_items.it_id = item_state.it_id 
+    and release_items.it_id = a.it_id and a.ex_id = expert_personal.ex_id 
     and expert_personal.ex_id=review_details_invitation.ex_id  and review_details_invitation.it_id='`+it_id+`' 
     and item_state.state = 7  
     and expert_personal.ex_id in (select ex_id from review_details_invitation where it_id = '`+it_id+`') 
@@ -1188,13 +1291,13 @@ router.get("/getOneItemReviewDetailsInvitationExpert", (req, res) => {
     and expert_personal.ex_id not in
     (
 		select expert_personal.ex_id
-		from expert_personal join honor join degree join expert_achievements join release_items join item_state 
-        join achievements join review_details_invitation  
+		from expert_personal join honor join degree join release_items join item_state 
+        join review_details_invitation join calibration a 
         where expert_personal.honor=honor.h_id and expert_personal.degree=degree.de_id 
-        and expert_personal.ex_id=expert_achievements.ex_id  and expert_achievements.it_id=release_items.it_id 
-        and release_items.it_id = item_state.it_id and release_items.it_id=achievements.it_id 
+        and release_items.it_id = item_state.it_id 
         and expert_personal.ex_id=review_details_invitation.ex_id  and review_details_invitation.it_id='`+it_id+`' 
         and item_state.state = 7 
+        and release_items.it_id = a.it_id and a.ex_id = expert_personal.ex_id 
         and expert_personal.ex_id in (select ex_id from review_details_invitation where it_id = '`+it_id+`') 
         group by expert_personal.ex_id
     )
@@ -1253,7 +1356,7 @@ router.get("/getOneItemBid", (req, res) => {
     })
 })
 
-// --------------------细审页面------------------------------
+// ----------------------------细审页面------------------------------
 // 正在招标到细审的项目
 router.get("/getBiddingItemsToDetail", (req, res) => {
     let userid = req.query.userid;
@@ -1385,11 +1488,12 @@ router.get("/getOneExpertDetail", (req, res) => {
 	expert_personal.address_province,expert_personal.address_city,expert_personal.address_county,expert_personal.address_detail,expert_personal.email,
 	honor.name as honorname,honor.pid as honorpid,
     degree.name as degreename,
-    count(*) || 0 as count ,sum(money) as money
-    from expert_personal join honor join degree join expert_achievements join release_items join item_state join achievements join research_direction
-	where expert_personal.honor=honor.h_id and expert_personal.degree=degree.de_id and expert_personal.ex_id=expert_achievements.ex_id 
+    count(*) || 0 as count ,sum(a.budget) as money
+    from expert_personal join honor join degree join release_items join item_state join research_direction join calibration a 
+	where expert_personal.honor=honor.h_id and expert_personal.degree=degree.de_id 
     and expert_personal.research_specialty=research_direction.re_id
-    and expert_achievements.it_id=release_items.it_id and release_items.it_id = item_state.it_id and release_items.it_id=achievements.it_id 
+    and release_items.it_id = item_state.it_id 
+    and release_items.it_id = a.it_id and a.ex_id = expert_personal.ex_id 
     and item_state.state = 7 
     and expert_personal.ex_id = '`+ex_id+`';`;
     // group by expert_personal.ex_id; `;
@@ -1494,6 +1598,394 @@ router.get("/updateDeatilExamineResult", (req, res) => {
 })
 
 
+// ----------------------------定标page------------------------------
+// 获取还在初审阶段和细审的项目-定标处
+router.get("/getCalibrationFirstItem", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `select a.*, b.* ,c.categoryid,c.categoryname, d.name as typename 
+    from release_items a join item_state b join item_category c join research_direction d 
+	where a.it_id=b.it_id and a.cid = c.cid and a.type = d.re_id 
+    and (b.state = 2 or b.state = 3 or b.state = 4) and a.userid = '`+userid+`' order by a.it_id;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取审核结束需要定标的项目-定标处
+router.get("/getCalibrationExaminedItem", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `select a.*, b.* ,c.categoryid,c.categoryname, d.name as typename 
+    from release_items a join item_state b join item_category c join research_direction d 
+	where a.it_id=b.it_id and a.cid = c.cid and a.type = d.re_id 
+    and b.state = 5 and a.userid = '`+userid+`' order by a.it_id;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取某个项目当前总分排行榜
+router.get("/getCalibrationOneItemRank", (req, res) => {
+    let it_id = req.query.it_id;
+    const sql = `
+        select a.it_id,a.ex_id,sum(score_technology) as total_score_technology, sum(score_economics) as total_score_economics,
+        sum(score_comprehensive) as total_score_comprehensive,sum(score_system) as total_score_system,
+        count(*) as count,b.rate_economics,b.rate_technology,b.rate_comprehensive,c.*   
+        from review_details a join release_items b join expert_personal c 
+        where a.it_id = b.it_id and a.ex_id = c.ex_id 
+        and a.it_id = '`+it_id+`' 
+        group by a.ex_id
+    ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取某个项目当前细审信息
+router.get("/getCalibrationOneItemInfo", (req, res) => {
+    let it_id = req.query.it_id;
+    let ex_id = req.query.ex_id;
+    const sql = `
+        select a.*,b.name as exaname from review_details a join expert_personal b
+        where a.examineid = b.ex_id  
+        and a.ex_id = '`+ex_id+`' and a.it_id = '`+it_id+`' and a.examinetype = 1
+        union
+        select a.*,b.username as exaname from review_details a join bidding_user b
+        where a.examineid = b.userid  
+        and a.ex_id = '`+ex_id+`' and a.it_id = '`+it_id+`' and a.examinetype = 2
+    ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取某个项目定标情况
+router.get("/getOneItemCalibrationed", (req, res) => {
+    let it_id = req.query.it_id;
+    const sql = `select * from calibration where it_id = '`+it_id+`' ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 定标插入
+router.get("/addCalibration", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let it_id = req.query.it_id;
+    let time_calibration = req.query.time_calibration;
+    let time_finilly = req.query.time_finilly;
+    let budget = req.query.budget;
+    let userid = req.query.userid;
+    let state = req.query.state || 0;
+    let other = req.query.other;
+
+    const sql = "insert into calibration(ex_id,it_id,time_calibration,time_finilly,budget,userid,state,other) values(?,?,?,?,?,?,?,?)";
+    const arr = [ex_id, it_id, time_calibration,time_finilly, budget, userid, state,other];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// 定标修改
+router.get("/updateCalibration", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let it_id = req.query.it_id;
+    let time_calibration = req.query.time_calibration;
+    let time_finilly = req.query.time_finilly;
+    let budget = req.query.budget;
+    // let userid = req.query.userid;
+    // let state = req.query.state || 0;
+    let other = req.query.other;
+
+    const sql = `update calibration set time_calibration=?,time_finilly=?,budget=?,other=? 
+        where ex_id = '`+ex_id+`' and it_id = '`+it_id+`';`;
+    const arr = [time_calibration,time_finilly, budget,other,ex_id, it_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+// 获取某个项目某个专家定标情况
+router.get("/getOneItemOneExpertCalibrationed", (req, res) => {
+    let it_id = req.query.it_id;
+    let ex_id = req.query.ex_id;
+    const sql = `select a.*,b.state as states from calibration a join item_state b 
+         where a.it_id = b.it_id and a.it_id = '`+it_id+`' and a.ex_id = '`+ex_id+`' ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+
+// 获取审核结束需要定标的项目-定标处
+router.get("/getCalibrationedItems", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `select a.*, b.* ,c.categoryid,c.categoryname, d.name as typename 
+    from release_items a join item_state b join item_category c join research_direction d 
+	where a.it_id=b.it_id and a.cid = c.cid and a.type = d.re_id 
+    and b.state = 5 and a.userid = '`+userid+`' 
+    and a.it_id in (select distinct it_id from calibration where state != 0) 
+    order by a.it_id;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 删除邀请
+router.get("/deleteCalibration", (req, res) => {
+    let it_id = req.query.it_id;
+    let ex_id = req.query.ex_id;
+    const sql = "delete from calibration where it_id =? and ex_id=?;";
+    const arr = [it_id,ex_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                msg: "删除成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "删除失败"
+            })
+        }
+    })
+})
+// 开标插入
+router.get("/addBidOpening", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let it_id = req.query.it_id;
+    let time_open = req.query.time_open;
+    let userid = req.query.userid;
+    
+    const sql = "insert into bidopening(it_id,ex_id,time_open,userid) values(?,?,?,?)";
+    const arr = [it_id, ex_id, time_open,userid];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+
+
+
+
+
+
+// -------------------------查看开标后查看进度页面---------------------------
+// 获取某个社科人员开标项目
+router.get("/getOneSocialPersonScheduleItems", (req, res) => {    
+    // let ex_id = req.query.ex_id;
+    let userid = req.query.userid;
+    const sql = `select a.*,c.name from bidopening a join item_state b join release_items c 
+    where a.it_id = b.it_id and a.it_id = c.it_id and a.userid = '`+userid+`' and b.state = 6 
+        ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 进度催促
+router.get("/addSchedulesUrge", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let it_id = req.query.it_id;
+    let urgetime = req.query.urgetime;
+    let state = req.query.state || 0;
+    
+    const sql = "insert into schedules_urge(it_id,ex_id,urgetime,state) values(?,?,?,?)";
+    const arr = [it_id, ex_id, urgetime,state];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// 项目完成申请通过
+router.get("/updateApplyFinishItemPass", (req, res) => {
+    let it_id = req.query.it_id;
+    let ex_id = req.query.ex_id;
+    let answertime = req.query.answertime;
+    let state = req.query.state || 1;
+    let reason = req.query.reason || ""; 
+
+    const sql = `update apply_finish_item set answertime=?,state=?,reason=? 
+        where it_id = ? and ex_id = ?;`;
+    const arr = [answertime,state,reason,it_id,ex_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+// 项目完成申请不通过
+router.get("/updateApplyFinishItemNoPass", (req, res) => {
+    let it_id = req.query.it_id;
+    let ex_id = req.query.ex_id;
+    let answertime = req.query.answertime;
+    let state = req.query.state || 2;
+    let reason = req.query.reason || ""; 
+
+    const sql = `update apply_finish_item set answertime=?,state=?,reason=? 
+        where it_id = ? and ex_id = ?;`;
+    const arr = [answertime,state,reason,it_id,ex_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+// 完成项目
+router.get("/addFinishItem", (req, res) => {
+    let it_id = req.query.it_id;
+    let ex_id = req.query.ex_id;
+    let finilly_time = req.query.finilly_time;
+    let director = req.query.director || 1;
+    let userid = req.query.userid;
+    let score = req.query.score || 0;
+    let reasonscore = req.query.reasonscore || "";
+    let scoreonce = req.query.scoreonce || 0;
+    let reasonscoreonce = req.query.reasonscoreonce || "";
+
+    const sql = "insert into finish_item(it_id,ex_id,finilly_time,director,userid,score,reasonscore,scoreonce,reasonscoreonce) values(?,?,?,?,?,?,?,?,?);";
+    const arr = [it_id, ex_id, finilly_time, director,userid, score,reasonscore,scoreonce,reasonscoreonce];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+
+
+
 
 
 
@@ -1530,7 +2022,8 @@ router.get("/getAllItems", (req, res) => {
 	where release_items.it_id=item_state.it_id and release_items.cid = item_category.cid and release_items.type = research_direction.re_id 
     and release_items.userid=bidding_user.userid and bidding_user.b_id = bidding.b_id  
     and (item_state.state = 2 or item_state.state = 3) `+str+` 
-    and release_items.it_id not in (select it_id from bid_items where ex_id = '`+userid+`' )
+    and release_items.it_id not in (select it_id from bid_items where ex_id = '`+userid+`' ) 
+    and release_items.it_id not in (select it_id from review_details_invitation where ex_id = '`+userid+`' and state = '1') 
     order by release_items.it_id;`;
     sqlFn(sql, null, (result) => {
         if (result.length > 0) {
@@ -1671,8 +2164,9 @@ router.get("/getOneExpertReviewDetailsItem", (req, res) => {
 // 获取投标项目
 router.get("/getBidItems", (req, res) => {
     let ex_id = req.query.ex_id;
-    const sql = `select bid_items.*, release_items.name as itemname from bid_items join release_items 
-    where bid_items.it_id = release_items.it_id 
+    const sql = `select bid_items.*, release_items.name as itemname from bid_items join release_items join item_state 
+    where bid_items.it_id = release_items.it_id and bid_items.it_id = item_state.it_id 
+    and item_state.state < 5  
     and bid_items.ex_id = '` + ex_id + `';`;
     sqlFn(sql, null, (result) => {
         if (result.length > 0) {
@@ -1820,29 +2314,6 @@ router.get("/updateBidItem", (req, res) => {
 })
 
 
-// --------------------------初审结果查询页面--------------------------
-// 获取投标项目
-router.get("/getBidItemsFirstTrialResult", (req, res) => {
-    let ex_id = req.query.ex_id;
-    const sql = `select bid_items.*, release_items.name as itemname, release_items.time_release, first_trial.* 
-    from bid_items join release_items join first_trial 
-    where bid_items.it_id = release_items.it_id and bid_items.it_id = first_trial.it_id and bid_items.ex_id = first_trial.ex_id
-    and bid_items.ex_id = '` + ex_id + `';`;
-    sqlFn(sql, null, (result) => {
-        if (result.length > 0) {
-            res.send({
-                status: 200,
-                result
-            })
-        } else {
-            res.send({
-                status: 500,
-                msg: "暂无数据"
-            })
-        }
-    })
-})
-
 
 
 // -------------------------------细审参与界面----------------------
@@ -1862,6 +2333,7 @@ router.get("/getInvitationExpertItems", (req, res) => {
     and release_items.it_id not in (select it_id from bid_items where ex_id = '`+userid+`' ) 
     and release_items.it_id in 
     (select it_id from review_details_invitation where ex_id = '`+userid+`' and state = 0) 
+    and release_items.it_id not in (select it_id from bid_items where ex_id = '`+userid+`') 
     order by release_items.it_id;`;
     sqlFn(sql, null, (result) => {
         if (result.length > 0) {
@@ -2010,6 +2482,431 @@ router.get("/getOneExpertOneItemNeedDetailedExamine", (req, res) => {
 
 
 
+
+
+
+
+
+// --------------------------初审结果查询页面--------------------------
+// 获取投标项目
+router.get("/getBidItemsFirstTrialResult", (req, res) => {
+    let ex_id = req.query.ex_id;
+    const sql = `select bid_items.*, release_items.name as itemname, release_items.time_release, first_trial.* 
+    from bid_items join release_items join first_trial 
+    where bid_items.it_id = release_items.it_id and bid_items.it_id = first_trial.it_id and bid_items.ex_id = first_trial.ex_id
+    and bid_items.ex_id = '` + ex_id + `';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+
+
+
+
+// --------------------------细审结果查询页面--------------------------
+// 获取专家正在细审的项目
+router.get("/getOneExpertDetailExaminedItems", (req, res) => {
+    let ex_id = req.query.ex_id;
+    const sql = `select a.it_id,a.name from release_items a join item_state b 
+        where a.it_id = b.it_id and b.state < 6 
+        and a.it_id in(select distinct it_id from review_details where ex_id = '`+ex_id+`') 
+        ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+
+
+
+
+
+
+// --------------------------定标页面--------------------------
+// 获取专家需要定标的项目
+router.get("/getOneExpertCalibrationingItems", (req, res) => {
+    let ex_id = req.query.ex_id;
+    const sql = `select * from calibration a join release_items b join item_state c 
+        where a.it_id = b.it_id and a.it_id = c.it_id and  ex_id = '`+ex_id+`' and a.state = 0 and c.state<6
+        ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 某个项目详情 
+router.get("/getOneItemInfo", (req, res) => {
+    let it_id = req.query.it_id;
+    // const sql = `select a.* ,c.categoryid,c.categoryname, d.name as typename 
+    // from release_items a join item_category c join research_direction d 
+	// where a.cid = c.cid and a.type = d.re_id 
+    // and a.it_id = '`+it_id+`';`;
+    const sql = `
+        select release_items.* ,item_category.categoryid,item_category.categoryname, 
+        research_direction.name as typename,bidding.b_id, bidding.name as bidname, 
+        bidding.address as bidaddress, bidding.phone as bidphone, 
+        bidding_user.username, bidding_user.phone as userphone ,bidding_user.address as useraddress  
+        from release_items   join item_category  join research_direction join bidding_user join bidding  
+        where release_items.cid = item_category.cid and release_items.type = research_direction.re_id 
+        and release_items.userid=bidding_user.userid and bidding_user.b_id = bidding.b_id    
+        and release_items.it_id = '`+it_id+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取某个专家某个项目申报信息
+router.get("/getOneExpertOneBidInfo", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let it_id = req.query.it_id;
+    const sql = `select * from bid_items where it_id = '`+it_id+`' and  ex_id = '`+ex_id+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 接受/拒绝项目
+router.get("/updateCalibrationAccept", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let it_id = req.query.it_id;
+    let state = req.query.state || 1;
+
+    const sql = `update calibration set state=? where ex_id = '`+ex_id+`' and it_id = '`+it_id+`';`;
+    const arr = [state,ex_id, it_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+
+// 获取专家已经定标的项目
+router.get("/getOneExpertCalibrationingedItems", (req, res) => {
+    let ex_id = req.query.ex_id;
+    const sql = `select *,c.state as states from calibration a join release_items b join item_state c 
+        where a.it_id = b.it_id and a.it_id = c.it_id and  ex_id = '`+ex_id+`' and a.state in (1,2)  and c.state < 7 
+        ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+
+
+
+
+// --------------------------进度上传页面--------------------------
+// 获取某个专家开标项目
+router.get("/getOneExpertScheduleItems", (req, res) => {    
+    let ex_id = req.query.ex_id;
+    const sql = `select a.*,c.name from bidopening a join item_state b join release_items c 
+    where a.it_id = b.it_id and a.it_id = c.it_id and a.ex_id = '`+ex_id+`' and b.state = 6 
+        ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取某个专家某个项目进度上传情况
+router.get("/getOneExpertSchedules", (req, res) => {    
+    let ex_id = req.query.ex_id;
+    let it_id = req.query.it_id;
+    const sql = `select * from schedules where ex_id = '`+ex_id+`' and it_id = '`+it_id+`' order by time_schedule desc
+        ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 进度上传
+router.get("/addSchedules", (req, res) => {
+    let it_id = req.query.it_id;
+    let ex_id = req.query.ex_id;
+    let title = req.query.title;
+    let schedules = req.query.schedules;
+    let other = req.query.other;
+    let time_schedule = req.query.time_schedule
+
+    const sql = "insert into schedules(it_id,ex_id,title,schedules,time_schedule,other) values(?,?,?,?,?,?)";
+    const arr = [it_id, ex_id, title, schedules,time_schedule, other];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// 进度文件上传
+router.get("/addSchedulesFiles", (req, res) => {
+    let it_id = req.query.it_id;
+    let ex_id = req.query.ex_id;
+    let upurl = req.query.upurl;
+    let uid = req.query.uid;
+    let url = req.query.url;
+    let name = req.query.name;
+    let uploadtime = req.query.uploadtime;
+    let size = req.query.size;
+
+    const arr = [it_id, ex_id,upurl,uid,url,name,uploadtime,size];
+    const sql = "insert into schedules_files values(?,?,?,?,?,?,?,?)";
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// 获取进度文件
+router.get("/getSchedulesFiles", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let it_id = req.query.it_id;
+    let uploadtime = req.query.uploadtime;
+    const sql = `select * from schedules_files where it_id = '`+it_id+`' and ex_id = '`+ex_id+`' and uploadtime = '`+uploadtime+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+
+// 获取催促
+router.get("/getSchedulesUrge", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let it_id = req.query.it_id;
+    const sql = `select * from schedules_urge where it_id = '`+it_id+`' and ex_id = '`+ex_id+`' and state = 0;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 催促接收
+router.get("/updateSchedulesUrge", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let it_id = req.query.it_id;
+    let state = req.query.state || 1;
+
+    const sql = `update schedules_urge set state=? where ex_id = '`+ex_id+`' and it_id = '`+it_id+`';`;
+    const arr = [state,ex_id, it_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+// 获取申请完成信息
+router.get("/getApplyFinishItem", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let it_id = req.query.it_id;
+    const sql = `select * from apply_finish_item 
+        where it_id = '`+it_id+`' and ex_id = '`+ex_id+`' 
+        order by applytime desc;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 申请完成项目
+router.get("/addApplyFinishItem", (req, res) => {
+    let it_id = req.query.it_id;
+    let ex_id = req.query.ex_id;
+    let applytime = req.query.applytime;
+    let answertime = req.query.answertime || "";
+    let state = req.query.state || 0;
+    let reason = req.query.reason || "";
+
+    const sql = "insert into apply_finish_item(it_id,ex_id,applytime,answertime,state,reason) values(?,?,?,?,?,?)";
+    const arr = [it_id, ex_id, applytime, answertime,state, reason];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// 获取回执
+router.get("/getReceipt", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let it_id = req.query.it_id;
+    const sql = `select * from apply_finish_item 
+        where it_id = '`+it_id+`' and ex_id = '`+ex_id+`' and state = 2 
+        order by answertime desc;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+
+
+
+
+
+// -------------------------项目完成页面---------------------------
+// 获取某个社科人员开标项目
+router.get("/getSocial", (req, res) => {    
+    // let ex_id = req.query.ex_id;
+    let userid = req.query.userid;
+    const sql = `select a.*,c.name from bidopening a join item_state b join release_items c 
+    where a.it_id = b.it_id and a.it_id = c.it_id and a.userid = '`+userid+`' and b.state = 6 
+        ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
 
 
 

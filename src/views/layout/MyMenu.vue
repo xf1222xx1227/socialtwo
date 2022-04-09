@@ -53,9 +53,13 @@
             <i class="el-icon-cloudy-and-sunny"></i>
             <span slot="title">申报细审</span>
           </el-menu-item>
-          <el-menu-item index="/items/bidopening">
+          <el-menu-item index="/items/calibration">
+            <i class="el-icon-position"></i>
+            <span slot="title">项目定标</span>
+          </el-menu-item>
+          <el-menu-item index="/items/schedule">
             <i class="el-icon-unlock"></i>
-            <span slot="title">开标项目</span>
+            <span slot="title">进度跟踪</span>
           </el-menu-item>
           <el-menu-item index="/items/finished">
             <i class="el-icon-switch-button"></i>

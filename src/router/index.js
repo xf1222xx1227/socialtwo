@@ -12,7 +12,8 @@ import Bidding from '../views/Items/Bidding/index.vue'
 import PreliminaryExamination from '../views/Items/PreliminaryExamination/index.vue'
 import ExamineInvition from '../views/Items/ExamineInvitation/index.vue'
 import DetailedExamination from '../views/Items/DetailedExamination/index.vue'
-import BidOpening from '../views/Items/BidOpening/index.vue'
+import Calibration from "../views/Items/Calibration/index.vue"
+import Schedule from '../views/Items/Schedule/index.vue'
 import Finished from '../views/Items/Finished/index.vue'
 import User from '../views/users/index.vue'
 
@@ -26,6 +27,9 @@ import Itemsex from '../viewExpert/Items/index.vue'
 import Biddingex from "../viewExpert/Items/Bidding/index.vue"
 import DetailedExaminationex from '../viewExpert/Items/DetailedExamination/index.vue'
 import PreliminaryExaminationex from "../viewExpert/Items/PreliminaryExamination/index.vue"
+import Calibrationex from '../viewExpert/Items/Calibration/index.vue'
+import Scheduleex from '../viewExpert/Items/Schedule/index.vue'
+import Finishedex from '../viewExpert/Items/Finished/index.vue'
 
 
 Vue.use(VueRouter)
@@ -41,6 +45,7 @@ const routes = [
     name:'register',
     component:Register
   },
+  // 社科端口
   {
     path:'/layout',
     component: Layout,
@@ -76,9 +81,13 @@ const routes = [
             name:'detailedExamination',
             component:DetailedExamination
           },{
-            path:'bidopening',
-            name:'bidopening',
-            component:BidOpening
+            path:'schedule',
+            name:'schedule',
+            component:Schedule
+          },{
+            path:'calibration',
+            name:'calibration',
+            component:Calibration
           },{
             path:'finished',
             name:'finished',
@@ -92,6 +101,7 @@ const routes = [
       }
     ]
   },
+  // 专家端口
   {
     path:'/Layoutex',
     component: Layoutex,
@@ -122,7 +132,19 @@ const routes = [
           path:'detailedExaminationex',
           name:'detailedExaminationex',
           component:DetailedExaminationex
-        },
+        },{
+          path:'calibrationex',
+          name:'calibrationex',
+          component:Calibrationex
+        },{
+          path:'scheduleex',
+          name:'scheduleex',
+          component:Scheduleex
+        },{
+          path:'finishedex',
+          name:'finishedex',
+          component:Finishedex
+        }
       ]
     },
     {

@@ -106,6 +106,7 @@ export default {
     };
   },
   created() {
+    console.log(111, sessionStorage.getItem("userid"));
     this.$api
       .getInvitationExpertItems({
         userid: sessionStorage.getItem("userid"),
@@ -147,6 +148,7 @@ export default {
             .then((res) => {
               if (res.status == 200) {
                 this.dataTable.splice(index, 1);
+                this.dataTableLength = this.dataTable.length;
                 this.$message({
                   type: "success",
                   message: "提交成功!请前往待审核页面查看申报信息",
@@ -162,7 +164,7 @@ export default {
             });
         })
         .catch(() => {
-          console.log(11111);
+          // console.log(11111);
           this.$api
             .updateReviewDetailsInvitationState({
               state: 2,

@@ -193,7 +193,7 @@ export default {
           if (res.status == 200) {
             if (res.data.status == 200) {
               let data = res.data.result;
-              //   console.log(111, data);
+              // console.log(111, data);
               // 过滤已经审核的
               this.$api
                 .getOneItemNeedDetailedExamine({
@@ -204,7 +204,7 @@ export default {
                   if (res.status == 200) {
                     if (res.data.status == 200) {
                       let xdata = res.data.result;
-                      console.log(222, xdata);
+                      // console.log(222, xdata);
                       let resultdata = [];
                       for (let i = 0; i < data.length; i++) {
                         let ins = 0;

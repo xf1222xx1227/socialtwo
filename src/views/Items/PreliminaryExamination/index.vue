@@ -6,11 +6,21 @@
     <div class="search">
       <div class="textboxp">
         <div class="p">项目名称：</div>
-        <el-input v-model="dataSearch.name" clearable class="text"></el-input>
+        <el-input
+          v-model="dataSearch.name"
+          clearable
+          class="text"
+          @keyup.enter.native="search"
+        ></el-input>
       </div>
       <div class="textboxp">
         <div class="p">专家姓名：</div>
-        <el-input v-model="dataSearch.exname" clearable class="text"></el-input>
+        <el-input
+          v-model="dataSearch.exname"
+          clearable
+          class="text"
+          @keyup.enter.native="search"
+        ></el-input>
       </div>
       <div class="textboxp">
         <div class="p"></div>
