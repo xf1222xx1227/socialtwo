@@ -59,6 +59,13 @@ const myFunctions={
         // return data;
         return date;
     },
+    twoDateReduce(date1,date2){
+      date1 = new  Date(date1);
+      date2 = new Date(date2);
+      let days = date1.getTime()-date2.getTime();
+      let day = parseInt(days/(1000*60*60*24));
+      return day;
+    },
     getNewId(data) {
         let len = data.length;
         let result="";

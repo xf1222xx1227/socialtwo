@@ -130,6 +130,16 @@ const base={
 
 
 
+    // -------------------------项目完成页面---------------------------
+    getOneSocialUserFinishItemsCount:'api/api/getOneSocialUserFinishItemsCount', 
+    getOneSocialUserFinishItems:'api/api/getOneSocialUserFinishItems',
+    getOneSocialUserOneItemTimeLine:'api/api/getOneSocialUserOneItemTimeLine',
+    getOneItemFirstTrial:'api/api/getOneItemFirstTrial',
+    getOneItemReviewDetails:'api/api/getOneItemReviewDetails',
+
+
+
+
 
 
     // --------------------------------------------------------社科专家端口--------------------------------------------------------------
@@ -214,8 +224,12 @@ const base={
 
 
 
-
-
+    // -------------------------项目完成页面---------------------------
+    getOneExpertFinishItemsCount:'api/api/getOneExpertFinishItemsCount', 
+    getOneExpertFinishItems:'api/api/getOneExpertFinishItems', 
+    getOneItemTimeLine:'api/api/getOneItemTimeLine',
+    getOneExpertOneItem:'api/api/getOneExpertOneItem',
+    getOneExpertOneItemFirstResult:'api/api/getOneExpertOneItemFirstResult',
 
 
 

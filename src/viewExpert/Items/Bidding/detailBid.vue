@@ -81,7 +81,7 @@ export default {
     visible(newval, val) {
       this.files = "";
       if (newval == true) {
-        console.log(111, this.datadetail);
+        // console.log(111, this.datadetail);
         this.formData = this.datadetail;
 
         this.$api

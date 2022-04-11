@@ -243,6 +243,7 @@ export default {
                           this.ruleForm.address4,
                         phone: this.ruleForm.phone,
                         b_id: this.ruleForm.bidding,
+                        register_time: myFunctions.newDateToDate(new Date()),
                       })
                       .then((res) => {
                         this.$alert("申请已提交，请等待审核同通过", "提示", {
@@ -252,25 +253,9 @@ export default {
                   }
                 } else if (res.data.status == 500) {
                   this.$api.getbiduserList({}).then((res1) => {
-                    // this.user = res1.data.result[
-                    //   res1.data.result.length - 1
-                    // ].userid.replace(/[^0-9]/gi, "");
-
-                    // this.user = parseInt(this.user) + 1;
-                    // this.user = this.user + "";
-                    // let len = 6 - this.user.length - 1;
-                    // let user1 = "u";
-                    // if (len > 0) {
-                    //   for (let i = 0; i < len; i++) {
-                    //     user1 += "0";
-                    //   }
-                    // }
-                    // user1 += this.user;
-                    // this.userid = user1;
                     this.userid = myFunctions.getNewId(
                       res1.data.result[res1.data.result.length - 1].userid
                     );
-
                     this.$api
                       .addBiddingUserApply({
                         userid: this.userid,
@@ -283,6 +268,7 @@ export default {
                           this.ruleForm.address4,
                         phone: this.ruleForm.phone,
                         b_id: this.ruleForm.bidding,
+                        register_time: myFunctions.newDateToDate(new Date()),
                       })
                       .then((res) => {
                         this.$alert("申请已提交，请等待审核同通过", "提示", {

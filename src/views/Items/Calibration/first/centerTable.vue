@@ -208,14 +208,6 @@ export default {
       this.dataTable = [];
       this.dataTableAll = [];
       this.dataTableLength = 0;
-      //   console.log(11, newval);
-      //   if (this.dataexid != "" && this.dataitid != "") {
-      //     this.getTableData(this.dataitid, this.dataexid);
-      //   } else {
-      //     this.dataTable = [];
-      //     this.dataTableAll = [];
-      //     this.dataTableLength = 0;
-      //   }
     },
     dataexid(newval, val) {
       //   console.log(11, newval, this.dataitid);

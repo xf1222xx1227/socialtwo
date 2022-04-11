@@ -109,6 +109,9 @@ export default {
                   parseInt(data[i].total_score_comprehensive) /
                   parseInt(data[i].count)
                 ).toFixed(2);
+                data[i].average_score_system = (
+                  parseInt(data[i].total_score_system) / parseInt(data[i].count)
+                ).toFixed(2);
                 data[i].average_total2 = (
                   parseInt(
                     data[i].rate_economics * data[i].average_score_economics
@@ -119,7 +122,8 @@ export default {
                   parseInt(
                     data[i].rate_comprehensive *
                       data[i].average_score_comprehensive
-                  )
+                  ) +
+                  parseInt(data[i].average_score_system)
                 ).toFixed(2);
                 // 计算整数得分
                 // data[i].average_total = Math.round(data[i].average_total2);

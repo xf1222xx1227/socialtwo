@@ -106,7 +106,7 @@ export default {
     };
   },
   created() {
-    console.log(111, sessionStorage.getItem("userid"));
+    // console.log(111, sessionStorage.getItem("userid"));
     this.$api
       .getInvitationExpertItems({
         userid: sessionStorage.getItem("userid"),

@@ -480,6 +480,38 @@ const api={
 
 
 
+    // -------------------------项目完成页面---------------------------
+    getOneSocialUserFinishItemsCount(params){
+        return axios.get(base.getOneSocialUserFinishItemsCount,{
+            params
+        })
+    },
+    getOneSocialUserFinishItems(params){
+        return axios.get(base.getOneSocialUserFinishItems,{
+            params
+        })
+    },
+    getOneSocialUserOneItemTimeLine(params){
+        return axios.get(base.getOneSocialUserOneItemTimeLine,{
+            params
+        })
+    },
+    getOneItemFirstTrial(params){
+        return axios.get(base.getOneItemFirstTrial,{
+            params
+        })
+    },
+    getOneItemReviewDetails(params){
+        return axios.get(base.getOneItemReviewDetails,{
+            params
+        })
+    },
+
+
+
+
+
+
 
 
 
@@ -726,6 +758,37 @@ const api={
 
     getReceipt(params){
         return axios.get(base.getReceipt,{
+            params
+        })
+    },
+
+
+
+
+
+    // -------------------------项目完成页面---------------------------
+    getOneExpertFinishItemsCount(params){
+        return axios.get(base.getOneExpertFinishItemsCount,{
+            params
+        })
+    },
+    getOneExpertFinishItems(params){
+        return axios.get(base.getOneExpertFinishItems,{
+            params
+        })
+    },
+    getOneItemTimeLine(params){
+        return axios.get(base.getOneItemTimeLine,{
+            params
+        })
+    },
+    getOneExpertOneItem(params){
+        return axios.get(base.getOneExpertOneItem,{
+            params
+        })
+    },
+    getOneExpertOneItemFirstResult(params){
+        return axios.get(base.getOneExpertOneItemFirstResult,{
             params
         })
     },

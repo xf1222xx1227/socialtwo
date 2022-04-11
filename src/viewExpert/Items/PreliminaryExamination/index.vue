@@ -162,7 +162,7 @@
 </template>
 
 <script>
-import myFunctions from "../../../myFunctions";
+import myFunctions from "@/myFunctions";
 import ItemDetail from "../../bid/detail.vue"; // 申报页面详情页
 import BidDetail from "../Bidding/detailBid"; // 我的投标详情页
 import Declare from "../../bid/declare.vue";
