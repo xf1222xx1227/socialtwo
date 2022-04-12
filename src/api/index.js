@@ -24,6 +24,11 @@ const api={
             params
         })
     },
+    geAdmins(params){
+        return axios.get(base.geAdmins,{
+            params
+        })
+    },
     getAllBiddingItems(params){
         return axios.get(base.getAllBiddingItems,{
             params
@@ -101,10 +106,6 @@ const api={
         })
     },
 
-
-
-    
-
     addBiddingUserApply(params){
         return axios.get(base.add_bidding_user_apply,{
             params
@@ -121,7 +122,12 @@ const api={
 
 
 
-
+    // -----------------------------------------------------------社科下属端-------------------------------------------------------
+    getOneBiddingUserInfo(params){              
+        return axios.get(base.getOneBiddingUserInfo,{
+            params
+        })
+    },
     //--------------------项目新增page-------------------------
     getResearchDirection(params){             
         return axios.get(base.getResearchDirection,{
@@ -140,7 +146,7 @@ const api={
         })
     },
     getDegree(params){               // 学位分类
-        return axios.get(base.degree,{
+        return axios.get(base.getDegree,{
             params
         })
     },
@@ -789,6 +795,94 @@ const api={
     },
     getOneExpertOneItemFirstResult(params){
         return axios.get(base.getOneExpertOneItemFirstResult,{
+            params
+        })
+    },
+
+
+
+
+
+
+    // -------------------------个人中心页面---------------------------
+    getOneExpertInfo(params){
+        return axios.get(base.getOneExpertInfo,{
+            params
+        })
+    },
+    updateExpertInfo(params){
+        return axios.get(base.updateExpertInfo,{
+            params
+        })
+    },
+    updateExpertPassword(params){
+        return axios.get(base.updateExpertPassword,{
+            params
+        })
+    },
+    updateExpertCancellation(params){
+        return axios.get(base.updateExpertCancellation,{
+            params
+        })
+    },
+
+
+
+
+
+
+    // ----------------------------------------------------------------社科端口--------------------------------------------------------
+    getOneBiddingInfo(params){
+        return axios.get(base.getOneBiddingInfo,{
+            params
+        })
+    },
+
+
+
+
+
+
+
+
+
+
+    // ----------------------------------------------------------------管理员端口--------------------------------------------------------
+    getOneAdminInfo(params){
+        return axios.get(base.getOneAdminInfo,{
+            params
+        })
+    },
+    // -------------------------专家管理------------------------------------
+    getOneExpertPassword(params){
+        return axios.get(base.getOneExpertPassword,{
+            params
+        })
+    },
+    updateExpertfrozen(params){
+        return axios.get(base.updateExpertfrozen,{
+            params
+        })
+    },
+
+
+
+    // -------------------------社科管理------------------------------------
+    updateSocialPassword(params){
+        return axios.get(base.updateSocialPassword,{
+            params
+        })
+    },
+
+
+    // -------------------------社科账户管理------------------------------------
+    getOneSocialUser(params){
+        return axios.get(base.getOneSocialUser,{
+            params
+        })
+    },
+    updateSocialUserPassword(params){
+        return axios.get(base.updateSocialUserPassword,{
             params
         })
     },

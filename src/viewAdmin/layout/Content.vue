@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <p class="headerRow title">社科项目揭榜挂帅系统--专家用户端</p>
+      <p class="headerRow title">社科项目揭榜挂帅系统--管理员端</p>
       <div class="hello">{{ this.userdata.name }}&nbsp;{{ hello }}</div>
       <div class="headerRow backBt">
         <el-button
@@ -31,7 +31,7 @@ export default {
   },
   created() {
     this.$api
-      .getOneExpertInfo({
+      .getOneAdminInfo({
         userid: sessionStorage.getItem("userid"),
       })
       .then((res) => {
@@ -63,7 +63,8 @@ export default {
   //   flex: 1;
   // }
   .title {
-    flex: 2.5;
+    flex: 3;
+    // border: 1px solid red;
     margin-left: 20px;
     font-size: 23px;
     text-shadow: -1px 0 0 white, /*向左阴影*/ 0 -1px 0 white,
@@ -78,13 +79,15 @@ export default {
   }
   .hello {
     // width: 200px;
-    flex: 2.5;
+    flex: 2;
     font-size: 19px;
     text-align: right;
-    // color: linear-gradient(to bottom, blue, yellow);
+    color: linear-gradient(to bottom, blue, yellow);
   }
   .backBt {
     flex: 1;
+    // border: 1px solid red;
+
     text-align: right;
     height: 100%;
     .bt {

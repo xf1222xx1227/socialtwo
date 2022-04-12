@@ -175,7 +175,7 @@ export default {
                 } else {
                   this.$message({
                     type: "error",
-                    message: "提交失败，项请稍候再试",
+                    message: "提交失败，请稍候再试",
                     offset: 150,
                   });
                 }

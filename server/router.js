@@ -67,6 +67,23 @@ router.get("/getExpertPersonal", (req, res) => {
         }
     })
 })
+// 管理员账户
+router.get("/geAdmins", (req, res) => {
+    const sql = "select * from admins ";
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
 // 正在招标全部项目
 router.get("/getAllBiddingItems", (req, res) => {
     const sql = `select a.*, b.* ,c.categoryid,c.categoryname, d.name as typename from release_items a join item_state b join item_category c join research_direction d 
@@ -441,7 +458,24 @@ router.get("/getResearchDirection", (req, res) => {
 
 
 //----------------------项目新增page--------------------------------
-// 
+// 获取某个社科账户信息
+router.get("/getOneBiddingUserInfo", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `select * from bidding_user where userid = '` + userid + `';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
 // 项目分类
 router.get("/itemCategory", (req, res) => {
     const sql = "select * from item_category group by categoryid;";
@@ -496,7 +530,7 @@ router.get("/getAllItemCategory", (req, res) => {
 })
 
 // 学位类别 degree
-router.get("/degree", (req, res) => {
+router.get("/getDegree", (req, res) => {
     const sql = "select * from degree;";
     sqlFn(sql, null, (result) => {
         if (result.length > 0) {
@@ -602,6 +636,7 @@ router.get("/getAllExpertPersonal", (req, res) => {
 router.get("/getAllExpertPersonalHave", (req, res) => {
     const sql = `
     select expert_personal.ex_id,expert_personal.name,expert_personal.birthdate,research_direction.name as research_specialty,
+    expert_personal.cancellation_time,expert_personal.frozen,
 	expert_personal.phone,expert_personal.accept_invitation,expert_personal.accept_recommend,
 	expert_personal.address_province,expert_personal.address_city,expert_personal.address_county,expert_personal.address_detail,expert_personal.email,
 	honor.name as honorname,honor.pid as honorpid,
@@ -615,7 +650,6 @@ router.get("/getAllExpertPersonalHave", (req, res) => {
     and release_items.it_id = a.it_id and a.ex_id = expert_personal.ex_id 
     and item_state.state = 7
     group by expert_personal.ex_id; `;
-    // const sql = "select * from expert_personal;";
     sqlFn(sql, null, (result) => {
         if (result.length > 0) {
             res.send({
@@ -634,6 +668,7 @@ router.get("/getAllExpertPersonalHave", (req, res) => {
 router.get("/getAllExpertPersonalNo", (req, res) => {
     const sql = `
     select expert_personal.ex_id,expert_personal.name,expert_personal.birthdate,research_direction.name as research_specialty,
+    expert_personal.cancellation_time,expert_personal.frozen,
 	expert_personal.phone,expert_personal.accept_invitation,expert_personal.accept_recommend,
 	expert_personal.address_province,expert_personal.address_city,expert_personal.address_county,expert_personal.address_detail,expert_personal.email,
 	honor.name as honorname,honor.pid as honorpid,
@@ -668,13 +703,11 @@ router.get("/getAllExpertPersonalNo", (req, res) => {
 })
 // 一二级菜单专家（有项目） expert_personal
 router.get("/getOneExpertPersonalHave", (req, res) => {
-    // var search = req.query.search;
     let str = req.query.str;
-    // let id=req.query.id;
-    // console.log(111,column,id);
     const sql = `
     select expert_personal.ex_id,expert_personal.name,expert_personal.birthdate,research_direction.name as research_specialty,expert_personal.honor as honorid,
 	expert_personal.phone,expert_personal.accept_invitation,expert_personal.accept_recommend,
+    expert_personal.cancellation_time,expert_personal.frozen,
 	expert_personal.address_province,expert_personal.address_city,expert_personal.address_county,expert_personal.address_detail,expert_personal.email,
 	honor.name as honorname,honor.pid as honorpid,
     degree.name as degreename,
@@ -709,6 +742,7 @@ router.get("/getOneExpertPersonalNo", (req, res) => {
     const sql = `
     select expert_personal.ex_id,expert_personal.name,expert_personal.birthdate,research_direction.name as research_specialty,
 	expert_personal.phone,expert_personal.accept_invitation,expert_personal.accept_recommend,
+    expert_personal.cancellation_time,expert_personal.frozen,
 	expert_personal.address_province,expert_personal.address_city,expert_personal.address_county,expert_personal.address_detail,expert_personal.email,
 	honor.name as honorname,honor.pid as honorpid,
     degree.name as degreename,
@@ -3159,6 +3193,281 @@ router.get("/getOneExpertOneItemFirstResult", (req, res) => {
 
 
 
+// -------------------------个人中心页面---------------------------
+// 获取某个专家信息
+router.get("/getOneExpertInfo", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `select * from expert_personal where ex_id = '` + userid + `';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+//专家信息修改
+router.get("/updateExpertInfo", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let name = req.query.name;
+    let honor = req.query.honor;
+    let birthdate = req.query.birthdate;
+    let research_specialty = req.query.research_specialty;
+    let education = req.query.education;
+    let degree = req.query.degree;
+    let major = req.query.major;
+    let phone = req.query.phone;
+    let email = req.query.email;
+    let address_province = req.query.address_province;
+    let address_city = req.query.address_city;
+    let address_county = req.query.address_county;
+    let address_detail = req.query.address_detail;
+    let company = req.query.company || "";
+    let accept_invitation = req.query.accept_invitation;
+    let accept_recommend = req.query.accept_recommend;
+    let tags = req.query.tags || "";
+
+    const sql = `update expert_personal set name=?,honor=?,birthdate=?,research_specialty=?,
+        education=?,degree=?,major=?,phone=?,email=?,address_province=?,address_city=?,address_county=?,
+        address_detail=?,company=?,accept_invitation=?,accept_recommend=?,tags=? 
+        where ex_id = ?;`;
+    const arr = [name,honor, birthdate,research_specialty,education,degree,major,phone,email,address_province,address_city,address_county,address_detail,company,accept_invitation,accept_recommend,tags,ex_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+//专家密码修改
+router.get("/updateExpertPassword", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let password = req.query.password;
+
+    const sql = `update expert_personal set password=? where ex_id = ?;`;
+    const arr = [password,ex_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+//账户注销
+router.get("/updateExpertCancellation", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let time = req.query.time;
+
+    const sql = `update expert_personal set cancellation_time=? where ex_id = ?;`;
+    const arr = [time,ex_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+
+
+
+
+
+
+// ----------------------------------------------------------------社科端口------------------------------------------------------------
+// 获取某个社科信息
+router.get("/getOneBiddingInfo", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `select * from bidding where b_id = '` + userid + `';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+
+
+
+
+
+
+
+
+
+
+// ----------------------------------------------------------------管理员端口-------------------------------------------------------
+// 获取某个管理员信息
+router.get("/getOneAdminInfo", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `select * from admins where id = '` + userid + `';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// -------------------------专家管理------------------------------------
+// 获取专家密码
+router.get("/getOneExpertPassword", (req, res) => {
+    let ex_id = req.query.ex_id;
+    const sql = `select password from expert_personal where ex_id = '` + ex_id + `';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+//账户冻结
+router.get("/updateExpertfrozen", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let frozen = req.query.frozen;
+    let frozen_reason = req.query.frozen_reason
+
+    const sql = `update expert_personal set frozen=?,frozen_reason=? where ex_id = ?;`;
+    const arr = [frozen,frozen_reason,ex_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+
+
+
+
+
+// -------------------------社科管理------------------------------------
+//社科密码修改
+router.get("/updateSocialPassword", (req, res) => {
+    let b_id = req.query.b_id;
+    let password = req.query.password;
+
+    const sql = `update bidding set password=? where b_id = ?;`;
+    const arr = [password,b_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+
+
+
+
+// -------------------------社科账户管理------------------------------------
+// 某个社科账号获取
+router.get("/getOneSocialUser", (req, res) => {
+    let b_id = req.query.b_id;
+    let sql="";
+    if(b_id != "all"){
+        sql = `select a.*,b.name as bname, b.phone as bphone from bidding_user a join bidding b 
+        where a.b_id = b.b_id and a.b_id = '`+b_id+`';`;
+    }else{
+        sql = `select a.*,b.name as bname, b.phone as bphone from bidding_user a join bidding b 
+        where a.b_id = b.b_id;`;
+    }
+
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+//社科账号密码修改
+router.get("/updateSocialUserPassword", (req, res) => {
+    let userid = req.query.userid;
+    let password = req.query.password;
+
+    const sql = `update bidding_user set password=? where userid = ?;`;
+    const arr = [password,userid];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
 
 
 

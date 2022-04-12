@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Layout from '../views/layout/Layout.vue'
+
 import Login from '../views/login/Login.vue'
 import Register from '../views/login/Register.vue'
 
-// 社科
+// 社科用户
+import Layout from '../views/layout/Layout.vue'
 import Home from '../views/home/Home.vue'
 import Launch from '../views/launch/ItemLaunch.vue'
 import Items from '../views/Items/index.vue'
@@ -16,6 +17,19 @@ import Calibration from "../views/Items/Calibration/index.vue"
 import Schedule from '../views/Items/Schedule/index.vue'
 import Finished from '../views/Items/Finished/index.vue'
 import User from '../views/users/index.vue'
+
+// 社科
+import Layoutso from '../viewSocial/layout/Layout.vue'
+import Homeso from '../viewSocial/home/Home.vue'
+import Itemsso from '../viewSocial/Items/index.vue'
+import Biddingso from '../viewSocial/Items/Bidding/index.vue'
+// import PreliminaryExamination from '../views/Items/PreliminaryExamination/index.vue'
+// import ExamineInvition from '../views/Items/ExamineInvitation/index.vue'
+// import DetailedExamination from '../views/Items/DetailedExamination/index.vue'
+// import Calibration from "../views/Items/Calibration/index.vue"
+// import Schedule from '../views/Items/Schedule/index.vue'
+import Finishedso from '../viewSocial/Items/Finished/index.vue'
+import Userso from '../viewSocial/users/index.vue'
 
 // 专家
 import Layoutex from '../viewExpert/layout/Layout.vue'
@@ -31,6 +45,14 @@ import Calibrationex from '../viewExpert/Items/Calibration/index.vue'
 import Scheduleex from '../viewExpert/Items/Schedule/index.vue'
 import Finishedex from '../viewExpert/Items/Finished/index.vue'
 
+// 管理员
+import Layoutad from '../viewAdmin/layout/Layout.vue'
+import Homead from '../viewAdmin/home/home.vue'
+import Expertad from '../viewAdmin/expert/index.vue'
+import Socialad from '../viewAdmin/social/index.vue'
+import Userad from '../viewAdmin/users/index.vue'
+import Socialuserad from '../viewAdmin/socialuser/index.vue'
+
 
 Vue.use(VueRouter)
 
@@ -45,7 +67,7 @@ const routes = [
     name:'register',
     component:Register
   },
-  // 社科端口
+  // 社科用户端口
   {
     path:'/layout',
     component: Layout,
@@ -98,6 +120,60 @@ const routes = [
         path:'/user',
         name:'user',
         component:User
+      }
+    ]
+  },
+  // 社科用户端口
+  {
+    path:'/layoutso',
+    component: Layoutso,
+    children:[
+      {
+        path:'/homeso',
+        name:"homeso",
+        component:Homeso
+      },{
+        path:'/itemsso',
+        name:'itemsso',
+        component:Itemsso,
+        redirect:'/itemsso/biddingso',
+        children:[
+          {
+            path:'biddingso',
+            name:'biddingso',
+            component:Biddingso
+          },
+          // {
+          //   path:'preliminaryexamination',
+          //   name:'preliminaryexamination',
+          //   component:PreliminaryExamination
+          // },{
+          //   path:'examineinvition',
+          //   name:'examineinvition',
+          //   component:ExamineInvition
+          // },{
+          //   path:'detailedExamination',
+          //   name:'detailedExamination',
+          //   component:DetailedExamination
+          // },{
+          //   path:'schedule',
+          //   name:'schedule',
+          //   component:Schedule
+          // },{
+          //   path:'calibration',
+          //   name:'calibration',
+          //   component:Calibration
+          // },
+          {
+            path:'finishedso',
+            name:'finishedso',
+            component:Finishedso
+          }
+        ]
+      },{
+        path:'/userso',
+        name:'userso',
+        component:Userso
       }
     ]
   },
@@ -157,6 +233,36 @@ const routes = [
       path:'/userex',
       name:'Userex',
       component:Userex
+    },]
+  },
+  // 管理员端口
+  {
+    path:'/Layoutad',
+    component: Layoutad,
+    children:[{
+      path:'/homead',
+      name:'homead',
+      component:Homead
+    },
+    {
+      path:'/expertad',
+      name:'expertad',
+      component:Expertad
+    },
+    {
+      path:'/socialad',
+      name:'socialad',
+      component:Socialad
+    },
+    {
+      path:'/socialuserad',
+      name:'socialuserad',
+      component:Socialuserad
+    },
+    {
+      path:'/userad',
+      name:'Userad',
+      component:Userad
     },]
   }
   

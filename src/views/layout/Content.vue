@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="header">
-      <p class="headerRow title">社科项目揭榜挂帅系统</p>
+      <p class="headerRow title">社科项目揭榜挂帅系统--社科用户端</p>
+      <div class="hello">{{ this.userdata.username }}&nbsp;{{ hello }}</div>
       <div class="headerRow backBt">
         <el-button
           type="primary"
@@ -20,9 +21,28 @@
 </template>
 
 <script>
+import myFunctions from "@/myFunctions";
 export default {
   data() {
-    return {};
+    return {
+      userdata: {},
+      hello: "",
+    };
+  },
+  created() {
+    this.$api
+      .getOneBiddingUserInfo({
+        userid: sessionStorage.getItem("userid"),
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          if (res.data.status == 200) {
+            let data = res.data.result;
+            this.userdata = data[0];
+          }
+        }
+      });
+    this.hello = myFunctions.gethello();
   },
   methods: {
     backLogin() {
@@ -39,10 +59,11 @@ export default {
   display: flex;
   align-items: center;
   flex-flow: row;
-  .headerRow {
-    flex: 1;
-  }
+  // .headerRow {
+  //   flex: 1;
+  // }
   .title {
+    flex: 2.5;
     margin-left: 20px;
     font-size: 23px;
     text-shadow: -1px 0 0 white, /*向左阴影*/ 0 -1px 0 white,
@@ -55,7 +76,15 @@ export default {
       color是“阴影颜色”，表示阴影的颜色。
     */
   }
+  .hello {
+    // width: 200px;
+    flex: 2.5;
+    font-size: 19px;
+    text-align: right;
+    // color: linear-gradient(to bottom, blue, yellow);
+  }
   .backBt {
+    flex: 1;
     text-align: right;
     height: 100%;
     .bt {

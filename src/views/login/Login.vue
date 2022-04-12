@@ -20,10 +20,10 @@
         @keyup.enter.native="login"
       ></el-input>
       <div class="textbox mybt">
-        <el-radio v-model="radio" label="1">社科成员</el-radio>
-        <!-- <el-radio v-model="radio" label="2">社科账户</el-radio> -->
+        <!-- <el-radio v-model="radio" label="1">社科成员</el-radio>
+        <el-radio v-model="radio" label="2">社科账户</el-radio>
         <el-radio v-model="radio" label="3">社科专家</el-radio>
-        <el-radio v-model="radio" label="4">管理员</el-radio>
+        <el-radio v-model="radio" label="4">管理员</el-radio> -->
       </div>
       <div class="textbox mybt">
         <el-button
@@ -48,11 +48,21 @@ import myFunctions from "@/myFunctions";
 export default {
   data() {
     return {
-      userid: "u00000",
+      // userid: "u00000",
+      // radio: "1",
+
+      userid: "b00000000",
+      radio: "2",
+
+      // userid: "S00000",
+      // radio: "3",
+
+      // userid: "A00",
+      // radio: "4",
+
       password: "1",
       userdata: [],
       isorno: 1,
-      radio: "1",
       dataExpert: [],
     };
   },
@@ -140,6 +150,7 @@ export default {
   },
   methods: {
     login() {
+      // 社科成员
       if (this.radio == "1") {
         this.$api.getbiduserList({}).then((res) => {
           if (res.status == 200) {
@@ -179,31 +190,34 @@ export default {
             this.$message.error("服务器出错！");
           }
         });
-      } else if (this.radio == "2") {
+      }
+      // 社科
+      else if (this.radio == "2") {
         this.$api.getbidList({}).then((res) => {
           if (res.status == 200) {
             this.userdata = [];
             this.isorno = 1;
-            for (let i = 0; i < res.data.result.length; i++) {
-              this.userdata.push(res.data.result[i]);
-            }
+            // for (let i = 0; i < res.data.result.length; i++) {
+            //   this.userdata.push(res.data.result[i]);
+            // }
+            this.userdata = res.data.result;
             for (let i = 0; i < this.userdata.length; i++) {
-              if (this.userdata[i].userid == this.userid) {
+              if (this.userdata[i].b_id == this.userid) {
                 let datauser = {};
                 datauser.userid = this.userid;
                 datauser.usertype = this.radio;
-                datauser.usertypename = "社科下属";
+                datauser.usertypename = "社科";
                 if (this.userdata[i].password != this.password) {
                   this.$message.error("密码出错了！");
                   this.isorno = 2;
                   break;
                 } else {
-                  this.isorno = 2;
+                  this.isorno = 3;
                   sessionStorage.setItem("userdata", datauser);
                   sessionStorage.setItem("userid", datauser.userid);
                   sessionStorage.setItem("usertype", datauser.usertype);
                   sessionStorage.setItem("usertypename", datauser.usertypename);
-                  this.$router.push({ path: "/home" });
+                  this.$router.push({ path: "/homeso" });
                 }
               }
             }
@@ -214,10 +228,13 @@ export default {
             this.$message.error("服务器出错！");
           }
         });
-      } else if (this.radio == "3") {
+      }
+      // 专家
+      else if (this.radio == "3") {
         this.userdata = [];
         this.isorno = 1;
         this.userdata = this.dataExpert;
+        // console.log(111, this.userdata);
         for (let i = 0; i < this.userdata.length; i++) {
           if (this.userdata[i].ex_id == this.userid) {
             let datauser = {};
@@ -229,12 +246,33 @@ export default {
               this.isorno = 2;
               break;
             } else {
-              this.isorno = 3;
-              sessionStorage.setItem("userdata", datauser);
-              sessionStorage.setItem("userid", datauser.userid);
-              sessionStorage.setItem("usertype", datauser.usertype);
-              sessionStorage.setItem("usertypename", datauser.usertypename);
-              this.$router.push({ path: "/homeex" });
+              if (this.userdata[i].cancellation_time != "") {
+                // this.isorno = 4;
+                this.$message({
+                  type: "error",
+                  message: "账号已注销",
+                  offset: 150,
+                });
+              } else if (this.userdata[i].frozen != "") {
+                this.$alert(
+                  `此账户已被管理员冻结</br>
+                  冻结时间为：<b>${this.userdata[i].frozen}</b>
+                  冻结原因为：${this.userdata[i].frozen_reason}`,
+                  "冻结提醒",
+                  {
+                    dangerouslyUseHTMLString: true,
+                    confirmButtonText: "收到",
+                    cancelButtonText: "关闭",
+                  }
+                ).then(() => {});
+              } else {
+                this.isorno = 3;
+                sessionStorage.setItem("userdata", datauser);
+                sessionStorage.setItem("userid", datauser.userid);
+                sessionStorage.setItem("usertype", datauser.usertype);
+                sessionStorage.setItem("usertypename", datauser.usertypename);
+                this.$router.push({ path: "/homeex" });
+              }
             }
             break;
           }
@@ -242,6 +280,41 @@ export default {
         if (this.isorno == 1) {
           this.$message.error("账号有误！");
         }
+      }
+      // 管理员
+      else if (this.radio == "4") {
+        this.$api.geAdmins({}).then((res) => {
+          if (res.status == 200) {
+            this.userdata = [];
+            this.isorno = 1;
+            this.userdata = res.data.result;
+            for (let i = 0; i < this.userdata.length; i++) {
+              if (this.userdata[i].id == this.userid) {
+                let datauser = {};
+                datauser.userid = this.userid;
+                datauser.usertype = this.radio;
+                datauser.usertypename = "管理员";
+                if (this.userdata[i].password != this.password) {
+                  this.$message.error("密码出错了！");
+                  this.isorno = 2;
+                  break;
+                } else {
+                  this.isorno = 3;
+                  sessionStorage.setItem("userdata", datauser);
+                  sessionStorage.setItem("userid", datauser.userid);
+                  sessionStorage.setItem("usertype", datauser.usertype);
+                  sessionStorage.setItem("usertypename", datauser.usertypename);
+                  this.$router.push({ path: "/homead" });
+                }
+              }
+            }
+            if (this.isorno == 1) {
+              this.$message.error("账号有误！");
+            }
+          } else {
+            this.$message.error("服务器出错！");
+          }
+        });
       }
     },
     register() {

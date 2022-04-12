@@ -62,8 +62,16 @@ const myFunctions={
     twoDateReduce(date1,date2){
       date1 = new  Date(date1);
       date2 = new Date(date2);
-      let days = date1.getTime()-date2.getTime();
-      let day = parseInt(days/(1000*60*60*24));
+      let days;
+      let day;
+      if(date1>date2){
+        days = date1.getTime()-date2.getTime();
+        day = parseInt(days/(1000*60*60*24));
+      }else{
+        days = date2.getTime()-date1.getTime();
+        day = Math.ceil(days/(1000*60*60*24));
+        day = day*-1;
+      } 
       return day;
     },
     getNewId(data) {
@@ -306,6 +314,23 @@ const myFunctions={
               }
             }
         });
+    },
+    gethello(){
+      let date = new Date();
+      let hour = date.getHours();
+      if(hour>=0 && hour<6){
+        return "夜深了，该休息了!"
+      }
+      else if(hour>=6 && hour <10){
+        return "早上好！"
+      }else if(hour>=10 && hour< 14){
+        return "中午好！"
+      }
+      else if(hour>=14 && hour< 19){
+        return "下午好！"
+      }else{
+        return "晚上好！"
+      }
     }
     
 }

@@ -23,8 +23,8 @@
                 v-model="ruleForm.password"
                 type="text"
                 clearable
-                placeholder="请输入原密码"
                 class="input"
+                disabled
               ></el-input>
             </el-form-item>
           </el-col>
@@ -35,7 +35,7 @@
             <el-form-item label="新密码：" prop="password1" class="form_item">
               <el-input
                 v-model="ruleForm.password1"
-                show-password
+                type="text"
                 clearable
                 placeholder="请输入新密码"
                 class="input"
@@ -44,29 +44,6 @@
           </el-col>
           <el-col :span="1"></el-col>
         </el-row>
-        <el-row class="row" style="margin-top: 10px">
-          <el-col :span="22" class="col">
-            <el-form-item label="新密码：" prop="password2" class="form_item">
-              <el-input
-                v-model="ruleForm.password2"
-                show-password
-                clearable
-                placeholder="请确定新密码"
-                class="input"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="1"></el-col>
-        </el-row>
-        <div
-          v-show="
-            this.ruleForm.password1 != '' &&
-            this.ruleForm.password1 != this.ruleForm.password2
-          "
-          style="color: red; font-size: 10px; text-align: center"
-        >
-          两次密码不一致
-        </div>
       </el-form>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -88,17 +65,10 @@ export default {
       ruleForm: {
         password: "",
         password1: "",
-        password2: "",
       },
       rules: {
-        password: [
-          { required: true, message: "请输入原密码", trigger: "blur" },
-        ],
         password1: [
           { required: true, message: "请输入新密码", trigger: "blur" },
-        ],
-        password2: [
-          { required: true, message: "请确定新密码", trigger: "blur" },
         ],
       },
 
@@ -117,42 +87,38 @@ export default {
     Ok(ruleForm) {
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
-          // console.log(111, this.datadetail);
-          if (this.ruleForm.password != this.datadetail.password) {
-            this.$message({
-              type: "error",
-              message: "原密码错误",
-              offset: 150,
+          this.$api
+            .updateSocialPassword({
+              b_id: this.datadetail.b_id,
+              password: this.ruleForm.password1,
+            })
+            .then((res) => {
+              if (res.status == 200) {
+                this.$message({
+                  type: "success",
+                  message: "修改成功",
+                  offset: 150,
+                });
+                this.$emit("refresh", "1");
+                this.visible = false;
+              } else {
+                this.$message({
+                  type: "error",
+                  message: "修改失败，请稍候再试",
+                  offset: 150,
+                });
+              }
             });
-          } else {
-            this.$api
-              .updateExpertPassword({
-                ex_id: sessionStorage.getItem("userid"),
-                password: this.ruleForm.password1,
-              })
-              .then((res) => {
-                // console.log(res);
-                if (res.status == 200) {
-                  this.$message({
-                    type: "success",
-                    message: "修改成功",
-                    offset: 150,
-                  });
-                } else {
-                  this.$message({
-                    type: "error",
-                    message: "修改失败，请稍候再试",
-                    offset: 150,
-                  });
-                }
-              });
-          }
         }
       });
     },
   },
   watch: {
-    visible(newval, val) {},
+    visible(newval, val) {
+      if (newval == true) {
+        this.ruleForm.password = this.datadetail.password;
+      }
+    },
   },
 };
 </script>

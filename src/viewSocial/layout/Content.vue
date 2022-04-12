@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <p class="headerRow title">社科项目揭榜挂帅系统--专家用户端</p>
+      <p class="headerRow title">社科项目揭榜挂帅系统--社科端</p>
       <div class="hello">{{ this.userdata.name }}&nbsp;{{ hello }}</div>
       <div class="headerRow backBt">
         <el-button
@@ -31,7 +31,7 @@ export default {
   },
   created() {
     this.$api
-      .getOneExpertInfo({
+      .getOneBiddingInfo({
         userid: sessionStorage.getItem("userid"),
       })
       .then((res) => {

@@ -11,6 +11,7 @@ const base={
     biddingUserList: 'api/api/bidding_user',  // 社科下属账户
     biddingList: 'api/api/bidding_subject',    // 社科主体账户
     getExpertPersonal: 'api/api/getExpertPersonal',    // 专家账户
+    geAdmins: 'api/api/geAdmins',    // 
     getAllBiddingItems: 'api/api/getAllBiddingItems',    // 
     getFinishFirstTrial: 'api/api/getFinishFirstTrial',    // 
     updateBiddindToPre: 'api/api/updateBiddindToPre',
@@ -37,6 +38,8 @@ const base={
     bidding_user_apply: 'api/api/bidding_user_apply',
 
 
+    // -----------------------------------------------------------社科下属端-------------------------------------------------------
+    getOneBiddingUserInfo: 'api/api/getOneBiddingUserInfo',
     //---------------------------------------------
     // 项目新增page
     itemCategory: 'api/api/itemCategory',           // 项目分类
@@ -50,7 +53,7 @@ const base={
     deleteSomeSuccess:'api/api/deleteSomeSuccess',      // 失败后删除成功的部分
     // 选择专家
     itemCategoryname: 'api/api/itemCategoryname',           // 项目类别名称
-    degree:'api/api/degree',            // 学位类别
+    getDegree:'api/api/getDegree',            // 学位类别
     research_specialty:'api/api/research_specialty',            // 研究专长类别
     honor:'api/api/honor',          // 荣誉称号 honor
     getMajorOneTwo:'api/api/getMajorOneTwo',          // 学科 
@@ -232,6 +235,46 @@ const base={
     getOneExpertOneItemFirstResult:'api/api/getOneExpertOneItemFirstResult',
 
 
+
+
+
+    // -------------------------个人中心页面---------------------------
+    getOneExpertInfo:'api/api/getOneExpertInfo',
+    updateExpertInfo:'api/api/updateExpertInfo',
+    updateExpertPassword:'api/api/updateExpertPassword',
+    updateExpertCancellation:'api/api/updateExpertCancellation',
+
+
+
+
+
+    // ------------------------------------------------------------社科端口------------------------------------------------------------
+    getOneBiddingInfo:'api/api/getOneBiddingInfo',
+
+
+
+
+
+
+
+    
+
+
+    // ----------------------------------------------------------------管理员端口----------------------------------------------------
+    getOneAdminInfo:'api/api/getOneAdminInfo',
+    // -------------------------专家管理------------------------------------
+    getOneExpertPassword:'api/api/getOneExpertPassword',
+    updateExpertfrozen:'api/api/updateExpertfrozen',
+
+
+    // -------------------------社科管理------------------------------------
+    updateSocialPassword:'api/api/updateSocialPassword',
+
+
+
+    // -------------------------社科账户管理------------------------------------
+    getOneSocialUser:'api/api/getOneSocialUser',
+    updateSocialUserPassword:'api/api/updateSocialUserPassword',
 
 
 

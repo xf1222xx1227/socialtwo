@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <h2>编辑个人信息</h2>
-  </div>
+  <div class="total">首页</div>
 </template>
 
 <script>

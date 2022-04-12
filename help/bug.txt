@@ -28,6 +28,8 @@
     解决：
         方法和变量名重复
 
+6. Uncaught Error: Module build failed (from ./node_modules/babel-loader/lib/in
+
 
 
 
