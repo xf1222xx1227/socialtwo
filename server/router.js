@@ -3301,6 +3301,7 @@ router.get("/updateExpertCancellation", (req, res) => {
 
 
 // ----------------------------------------------------------------社科端口------------------------------------------------------------
+// ---------------------------发布统计------------------------------
 // 获取某个社科信息
 router.get("/getOneBiddingInfo", (req, res) => {
     let userid = req.query.userid;
@@ -3319,9 +3320,260 @@ router.get("/getOneBiddingInfo", (req, res) => {
         }
     })
 })
+// 获取某个社科下属成员项目发布情况
+router.get("/getOneBiddingUsersBidItems", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `
+        select a.*,count(*) as count from bidding_user a join bidding b join release_items c 
+        where a.b_id = b.b_id and b.b_id = '`+userid+`' and a.userid = c.userid 
+        group by a.userid 
+        union 
+        select a.*,0 as count from bidding_user a join bidding b 
+        where a.b_id = b.b_id and b.b_id = '`+userid+`' 
+        and a.userid not in (
+            select a.userid from bidding_user a join bidding b join release_items c 
+            where a.b_id = b.b_id and b.b_id = '`+userid+`' and a.userid = c.userid 
+            group by a.userid
+        )
+    ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取某个社科所有下属成员项目发布情况-分类
+router.get("/getOneBiddingUsersBidCategoryItems", (req, res) => {
+    let userid = req.query.userid;
+    let str = req.query.str;
+    let attribute = req.query.attribute;
+    let groupby = req.query.groupby;
+    const sql = `
+        select a.*,count(*) as count`+attribute+` from bidding_user a join bidding b join release_items c 
+        where a.b_id = b.b_id and b.b_id = '`+userid+`' and a.userid = c.userid `+str+` 
+        group by a.userid`+groupby+` 
+    ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取某个社科的所有下属人员
+router.get("/getOneBiddingUsers", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `select * from bidding_user where b_id = '` + userid + `';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
 
 
 
+
+// ---------------------------初审统计------------------------------
+// 获取某个社科下属成员项目发布情况
+router.get("/getOneBiddingUsersFirstItems", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `
+        select a.*,count(*) as count from bidding_user a join bidding b join first_trial c 
+        where a.b_id = b.b_id and b.b_id = '`+userid+`' and a.userid = c.userid 
+        group by a.userid 
+        union 
+        select a.*,0 as count from bidding_user a join bidding b 
+        where a.b_id = b.b_id and b.b_id = '`+userid+`' 
+        and a.userid not in (
+            select a.userid from bidding_user a join bidding b join first_trial c 
+            where a.b_id = b.b_id and b.b_id = '`+userid+`' and a.userid = c.userid 
+            group by a.userid
+        )
+    ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取某个社科所有下属成员项目初审情况-分类
+router.get("/getOneBiddingUsersFirstCategoryItems", (req, res) => {
+    let userid = req.query.userid;
+    let str = req.query.str;
+    let attribute = req.query.attribute;
+    let groupby = req.query.groupby;
+    const sql = `
+        select a.*,count(*) as count`+attribute+` from bidding_user a join bidding b join first_trial c 
+        where a.b_id = b.b_id and b.b_id = '`+userid+`' and a.userid = c.userid `+str+` 
+        group by a.userid`+groupby+` 
+    ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+
+
+
+
+// ---------------------------细审统计------------------------------
+// 获取某个社科下属成员项目发布情况
+router.get("/getOneBiddingUsersDetailItems", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `
+        select a.*,count(*) as count from bidding_user a join bidding b join review_details c 
+        where a.b_id = b.b_id and b.b_id = '`+userid+`' and a.userid = c.examineid 
+        group by a.userid 
+        union 
+        select a.*,0 as count from bidding_user a join bidding b 
+        where a.b_id = b.b_id and b.b_id = '`+userid+`' 
+        and a.userid not in (
+            select a.userid from bidding_user a join bidding b join review_details c 
+            where a.b_id = b.b_id and b.b_id = '`+userid+`' and a.userid = c.examineid 
+            group by a.userid
+        )
+    ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取某个社科所有下属成员项目初审情况-分类
+router.get("/getOneBiddingUsersDetailCategoryItems", (req, res) => {
+    let userid = req.query.userid;
+    let str = req.query.str;
+    let attribute = req.query.attribute;
+    let groupby = req.query.groupby;
+    const sql = `
+        select a.*,count(*) as count`+attribute+` from bidding_user a join bidding b join review_details c 
+        where a.b_id = b.b_id and b.b_id = '`+userid+`' and a.userid = c.examineid `+str+` 
+        group by a.userid`+groupby+` 
+    ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+
+
+
+
+// ---------------------------细审统计------------------------------
+// 获取某个社科下属成员项目完成情况
+router.get("/getOneBiddingUsersFinishItems", (req, res) => {
+    let userid = req.query.userid;
+    let str = req.query.str;
+    const sql = `
+        select a.*,count(*) as count from bidding_user a join bidding b join finish_item c 
+        where a.b_id = b.b_id and b.b_id = '`+userid+`' and a.userid = c.userid  `+str+` 
+        group by a.userid 
+        union 
+        select a.*,0 as count from bidding_user a join bidding b 
+        where a.b_id = b.b_id and b.b_id = '`+userid+`' 
+        and a.userid not in (
+            select a.userid from bidding_user a join bidding b join finish_item c 
+            where a.b_id = b.b_id and b.b_id = '`+userid+`' and a.userid = c.userid `+str+` 
+            group by a.userid
+        )
+    ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取某个社科所有下属成员项目完成情况-分类
+router.get("/getOneBiddingUsersFinishCategoryItems", (req, res) => {
+    let userid = req.query.userid;
+    let str = req.query.str;
+    let attribute = req.query.attribute;
+    let groupby = req.query.groupby;
+    const sql = `
+        select a.*,count(*) as count `+attribute+` from bidding_user a join bidding b join finish_item c 
+        where a.b_id = b.b_id and b.b_id = '`+userid+`' and a.userid = c.userid `+str+` 
+        group by a.userid`+groupby+` 
+    ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
 
 
 

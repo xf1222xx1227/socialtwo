@@ -25,21 +25,18 @@
         <el-menu-item-group>
           <el-menu-item index="/itemsso/biddingso">
             <i class="el-icon-s-operation"></i>
-            <span slot="title">招标项目</span>
+            <span slot="title">发布项目</span>
           </el-menu-item>
-          <!-- <el-menu-item index="/items/preliminaryexamination">
+          <el-menu-item index="/itemsso/firstExamineso">
             <i class="el-icon-cloudy"></i>
-            <span slot="title">申报初审</span>
+            <span slot="title">初审统计</span>
           </el-menu-item>
-          <el-menu-item index="/items/examineinvition">
-            <i class="el-icon-edit"></i>
-            <span slot="title">细审专家邀请</span>
-          </el-menu-item>
-          <el-menu-item index="/items/detailedexamination">
+
+          <el-menu-item index="/itemsso/deatilExamineso">
             <i class="el-icon-cloudy-and-sunny"></i>
-            <span slot="title">申报细审</span>
+            <span slot="title">细审统计</span>
           </el-menu-item>
-          <el-menu-item index="/items/calibration">
+          <!-- <el-menu-item index="/items/calibration">
             <i class="el-icon-position"></i>
             <span slot="title">项目定标</span>
           </el-menu-item>

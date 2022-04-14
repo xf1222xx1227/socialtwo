@@ -4,16 +4,18 @@ import router from './router'
 import store from './store'
 import './plugins/element.js'
 import './assets/css/app.css'   //css初始化
-// import echarts from "echarts"
+// import echarts from 'echarts'
+// import * as echarts from 'echarts';
 
 import api from './api/index'
 
 
 Vue.prototype.$api = api;
+// Vue.prototype.$echarts = echarts;
 
 Vue.config.productionTip = false;
 
-// Vue.prototype.$echarts = echarts;
+
 
 new Vue({
   router,

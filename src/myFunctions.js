@@ -331,8 +331,51 @@ const myFunctions={
       }else{
         return "晚上好！"
       }
-    }
+    },
+    randomcolor(){
+      let red = parseInt(Math.random()*255);
+      let green = parseInt(Math.random()*255);
+      let blue = parseInt(Math.random()*255);
+      let color = "rgb("+red+","+green+","+blue+")";
+      return color;
+    },
+
+    getNextDate(date){
+      date = new Date(date);
+
+      let now = new Date();
+      let day = now.getDate();
+      let daywx =date.getDate();
+      
+      if(day > daywx){
+        now.setMonth(now.getMonth()+1);
+      }
+      let year = now.getFullYear();
+      let month = now.getMonth()+1;
+      let maxday = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();  // 获取当月最后一天
+
+      let datenext ;    // 返回值
+      datenext = year + " " + month +" ";
+      if(daywx > maxday){
+        datenext += maxday;
+      }else{
+        if(daywx<10){
+          daywx = "0" + daywx;
+        } 
+        datenext += daywx;
+      }
+      return datenext;
+    },
+
+
     
+    getLastDay(date){
+      date = new Date(date);
+      let day = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+      return day;
+    }
+
+   
 }
 
 export default myFunctions;

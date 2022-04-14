@@ -832,13 +832,70 @@ const api={
 
 
     // ----------------------------------------------------------------社科端口--------------------------------------------------------
+    // ---------------------------发布统计------------------------------
     getOneBiddingInfo(params){
         return axios.get(base.getOneBiddingInfo,{
             params
         })
     },
+    getOneBiddingUsersBidItems(params){
+        return axios.get(base.getOneBiddingUsersBidItems,{
+            params
+        })
+    },
+    getOneBiddingUsersBidCategoryItems(params){
+        return axios.get(base.getOneBiddingUsersBidCategoryItems,{
+            params
+        })
+    },
+    getOneBiddingUsers(params){
+        return axios.get(base.getOneBiddingUsers,{
+            params
+        })
+    },
 
 
+
+
+    // ---------------------------初审统计------------------------------
+    getOneBiddingUsersFirstItems(params){
+        return axios.get(base.getOneBiddingUsersFirstItems,{
+            params
+        })
+    },
+    getOneBiddingUsersFirstCategoryItems(params){
+        return axios.get(base.getOneBiddingUsersFirstCategoryItems,{
+            params
+        })
+    },
+
+
+
+    // ---------------------------细审统计------------------------------
+    getOneBiddingUsersDetailItems(params){
+        return axios.get(base.getOneBiddingUsersDetailItems,{
+            params
+        })
+    },
+    getOneBiddingUsersDetailCategoryItems(params){
+        return axios.get(base.getOneBiddingUsersDetailCategoryItems,{
+            params
+        })
+    },
+
+
+
+    // ---------------------------完成统计------------------------------
+    getOneBiddingUsersFinishItems(params){
+        return axios.get(base.getOneBiddingUsersFinishItems,{
+            params
+        })
+    },  
+    getOneBiddingUsersFinishCategoryItems(params){
+        return axios.get(base.getOneBiddingUsersFinishCategoryItems,{
+            params
+        })
+    },
 
 
 

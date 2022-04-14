@@ -30,7 +30,38 @@
 
 6. Uncaught Error: Module build failed (from ./node_modules/babel-loader/lib/in
 
+7. util.js?d5c9:404 Uncaught Error: id duplicates: u00000
+    at assert (util.js?d5c9:404:1)
+    at eval (model.js?fea5:352:1)
+    at Array.forEach (<anonymous>)
+    at each (util.js?d5c9:205:1)
+    at makeIdAndName (model.js?fea5:349:1)
+    at Module.mappingToExists (model.js?fea5:197:1)
+    at GlobalModel.visitComponent (Global.js?05a0:294:1)
+    at Function.entity.topologicalTravel (component.js?58db:122:1)
+    at GlobalModel._mergeOption (Global.js?05a0:287:1)
+    at GlobalModel._resetOption (Global.js?05a0:203:1)
 
+    解决：
+        myChart.clear();
+        myChart.setOption(option);
+        myChart = null;             // 最重要的一句
+
+8. Uncaught TypeError: Cannot read properties of null (reading 'setOption')
+    at ECharts.eval (index.vue?806d:373:1)
+    at ECharts.Eventful.trigger (Eventful.js?8434:103:1)
+    at ECharts.handler (echarts.js?f2a6:847:1)
+    at Handler.Eventful.trigger (Eventful.js?8434:103:1)
+    at Handler.dispatchToElement (Handler.js?8e4e:145:1)
+    at Handler.<computed> [as click] (Handler.js?8e4e:220:1)
+    at HandlerDomProxy.Eventful.trigger (Eventful.js?8434:103:1)
+    at HandlerDomProxy.localDOMHandlers.<computed> (HandlerProxy.js?bc59:162:1)
+    at HTMLDivElement.eval (HandlerProxy.js?bc59:209:1)
+
+    解决：未获取到dom元素。去掉两行代码
+        // myChart.clear();
+        myChart.setOption(option);
+        // myChart = null;
 
 
 

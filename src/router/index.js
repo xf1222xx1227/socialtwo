@@ -23,8 +23,8 @@ import Layoutso from '../viewSocial/layout/Layout.vue'
 import Homeso from '../viewSocial/home/Home.vue'
 import Itemsso from '../viewSocial/Items/index.vue'
 import Biddingso from '../viewSocial/Items/Bidding/index.vue'
-// import PreliminaryExamination from '../views/Items/PreliminaryExamination/index.vue'
-// import ExamineInvition from '../views/Items/ExamineInvitation/index.vue'
+import FirstExamineso from '../viewSocial/Items/FirstExamine/index.vue'
+import DeatilExamineso from '../viewSocial/Items/DetailExamine/index.vue'
 // import DetailedExamination from '../views/Items/DetailedExamination/index.vue'
 // import Calibration from "../views/Items/Calibration/index.vue"
 // import Schedule from '../views/Items/Schedule/index.vue'
@@ -123,7 +123,7 @@ const routes = [
       }
     ]
   },
-  // 社科用户端口
+  // 社科端口
   {
     path:'/layoutso',
     component: Layoutso,
@@ -143,27 +143,16 @@ const routes = [
             name:'biddingso',
             component:Biddingso
           },
-          // {
-          //   path:'preliminaryexamination',
-          //   name:'preliminaryexamination',
-          //   component:PreliminaryExamination
-          // },{
-          //   path:'examineinvition',
-          //   name:'examineinvition',
-          //   component:ExamineInvition
-          // },{
-          //   path:'detailedExamination',
-          //   name:'detailedExamination',
-          //   component:DetailedExamination
-          // },{
-          //   path:'schedule',
-          //   name:'schedule',
-          //   component:Schedule
-          // },{
-          //   path:'calibration',
-          //   name:'calibration',
-          //   component:Calibration
-          // },
+          {
+            path:'firstExamineso',
+            name:'firstExamineso',
+            component:FirstExamineso
+          },
+          {
+            path:'deatilExamineso',
+            name:'deatilExamineso',
+            component:DeatilExamineso
+          },
           {
             path:'finishedso',
             name:'finishedso',

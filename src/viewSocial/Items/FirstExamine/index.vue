@@ -14,7 +14,7 @@
         @freshed="freshed"
       />
     </div>
-    <TableBar :userid="userid" :username="username" ref="drawerdetail" />
+    <!-- <TableBar :userid="userid" :username="username" ref="drawerdetail" /> -->
   </div>
 </template>
 
@@ -22,11 +22,12 @@
 import * as echarts from "echarts";
 import myFunctions from "@/myFunctions";
 
-import ChooseDate from "../../choosedate";
-import TableBar from "./tablebar.vue";
+import ChooseDate from "../../choosedate.vue";
+// import TableBar from "./tablebar.vue";
 import ChartLine from "./chartline.vue";
 export default {
-  components: { ChooseDate, TableBar, ChartLine },
+  components: { ChooseDate, ChartLine },
+  //   TableBar
   data() {
     return {
       datadate: {},
@@ -55,7 +56,7 @@ export default {
     // 获取每个社科成员的发布数据条数
     getBarData() {
       this.$api
-        .getOneBiddingUsersBidItems({
+        .getOneBiddingUsersFirstItems({
           userid: sessionStorage.getItem("userid"),
         })
         .then((res) => {
@@ -89,7 +90,7 @@ export default {
       let myChart = echarts.init(chartDom);
       let option = {
         title: {
-          text: "项目发布情况总览",
+          text: "项目初审总览",
         },
         xAxis: {
           type: "category",
@@ -123,18 +124,14 @@ export default {
         if (event.data) {
           this.userid = event.data.id;
           this.username = event.name;
-          this.$refs.drawerdetail.visible = true;
+          //   this.$refs.drawerdetail.visible = true;
         }
       });
       option && myChart.setOption(option);
     },
   },
   watch: {
-    userid(newval, val) {
-      // if (newval != "") {
-      //   this.$refs.drawerdetail.visible = true;
-      // }
-    },
+    userid(newval, val) {},
   },
 };
 </script>

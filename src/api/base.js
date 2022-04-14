@@ -249,7 +249,31 @@ const base={
 
 
     // ------------------------------------------------------------社科端口------------------------------------------------------------
+    // ---------------------------发布统计------------------------------
     getOneBiddingInfo:'api/api/getOneBiddingInfo',
+    getOneBiddingUsersBidItems:'api/api/getOneBiddingUsersBidItems',
+    getOneBiddingUsersBidCategoryItems:'api/api/getOneBiddingUsersBidCategoryItems',
+    getOneBiddingUsers:'api/api/getOneBiddingUsers',
+
+
+
+    // ---------------------------初审统计------------------------------
+    getOneBiddingUsersFirstItems:'api/api/getOneBiddingUsersFirstItems',
+    getOneBiddingUsersFirstCategoryItems:'api/api/getOneBiddingUsersFirstCategoryItems',
+
+
+
+    // ---------------------------细审统计------------------------------
+    getOneBiddingUsersDetailItems:'api/api/getOneBiddingUsersDetailItems',
+    getOneBiddingUsersDetailCategoryItems:'api/api/getOneBiddingUsersDetailCategoryItems',
+
+
+
+    // ---------------------------完成统计------------------------------
+    getOneBiddingUsersFinishItems:'api/api/getOneBiddingUsersFinishItems',
+    getOneBiddingUsersFinishCategoryItems:'api/api/getOneBiddingUsersFinishCategoryItems',
+    // getOneBiddingInfo:'api/api/getOneBiddingInfo',
+    // getOneBiddingInfo:'api/api/getOneBiddingInfo',
 
 
 
