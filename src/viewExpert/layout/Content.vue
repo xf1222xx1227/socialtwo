@@ -32,7 +32,7 @@ export default {
   created() {
     this.$api
       .getOneExpertInfo({
-        userid: sessionStorage.getItem("userid"),
+        ex_id: sessionStorage.getItem("userid"),
       })
       .then((res) => {
         if (res.status == 200) {

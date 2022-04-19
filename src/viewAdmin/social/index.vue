@@ -1,21 +1,16 @@
 <template>
   <div class="total">
-    <!-- <div class="search">
-      <div class="textboxp">
-        <div class="p">专家姓名：</div>
-        <el-input
-          v-model="name"
-          @keyup.enter.native="search"
-          clearable
-          class="text"
-        ></el-input>
-      </div>
+    <div class="search">
+      <div class="textboxp"></div>
       <div class="textboxp"></div>
       <div class="textboxp"></div>
 
       <div class="bt">
+        <el-button type="primary" @click="addsocial" icon="el-icon-plus" round
+          >添加</el-button
+        >
       </div>
-    </div> -->
+    </div>
     <el-table
       :data="
         dataTable.slice((currentPage - 1) * pageSize, currentPage * pageSize)
@@ -87,20 +82,20 @@
               <i class="el-icon-edit"></i>
             </el-button>
           </el-tooltip>
-          <!-- <el-tooltip
+          <el-tooltip
             effect="light"
-            content="账号冻结"
+            content="账号删除"
             placement="top"
             style="width: 30%"
           >
             <el-button
-              @click.native.prevent="frozen(scope.$index, dataTable)"
+              @click.native.prevent="deletesocial(scope.$index, dataTable)"
               type="text"
               size="small"
             >
               <i class="el-icon-close"></i>
             </el-button>
-          </el-tooltip> -->
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
@@ -109,13 +104,16 @@
       ref="dialogpassword"
       @refresh="reFresh"
     />
+    <AddSocial :dataitid="dataitid" ref="dialogaddsocial" @refresh="reFresh" />
   </div>
 </template>
 
 <script>
+import myFunctions from "@/myFunctions";
 import Password from "./password.vue";
+import AddSocial from "./addsocial.vue";
 export default {
-  components: { Password },
+  components: { Password, AddSocial },
   data() {
     return {
       dataTable: [],
@@ -126,6 +124,7 @@ export default {
       nowPageSize: 10,
 
       datadetail: {},
+      dataitid: "",
       fresh: "0",
     };
   },
@@ -136,8 +135,49 @@ export default {
     }
   },
   methods: {
-    search() {
-      // this.datadetail
+    addsocial() {
+      let data = this.dataTableAll;
+      let b_id = "";
+      if (!myFunctions.isEmpty(data)) {
+        b_id = myFunctions.getNewId(data[data.length - 1].b_id);
+      } else {
+        b_id = "b00000000";
+      }
+      this.dataitid = b_id;
+      this.$refs.dialogaddsocial.visible = true;
+    },
+    deletesocial(index, dataTable) {
+      let data = dataTable[index];
+      this.$confirm(
+        `是否确定将账号为《${data.b_id}》，账号名为《${data.name}》的账号删除?`,
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).then(() => {
+        this.$api
+          .deleteSocail({
+            b_id: data.b_id,
+          })
+          .then((res) => {
+            if (res.status == 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功",
+                offset: 150,
+              });
+              this.fresh = "1";
+            } else {
+              this.$message({
+                type: "error",
+                message: "删除失败，请稍候再试",
+                offset: 150,
+              });
+            }
+          });
+      });
     },
     changePassword(index, dataTable) {
       let data = dataTable[index];
@@ -196,31 +236,23 @@ export default {
   height: 92vh;
   display: flex;
   flex-flow: column;
-  // .search {
-  //   height: 8vh;
-  //   display: flex;
-  //   flex-flow: row;
-  //   align-items: center;
-  //   .textboxp {
-  //     flex: 4;
-  //     display: flex;
-  //     align-items: center;
-  //     flex-flow: row;
-  //     //   border: 1px solid blue;
-  //     .p {
-  //       flex: 2;
-  //       text-align: center;
-  //     }
-  //     .text {
-  //       flex: 4;
-  //     }
-  //   }
-  //   .bt {
-  //     flex: 1;
-  //     text-align: center;
-  //     margin-left: 5px;
-  //   }
-  // }
+  .search {
+    height: 8vh;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    .textboxp {
+      flex: 4;
+      display: flex;
+      align-items: center;
+      flex-flow: row;
+    }
+    .bt {
+      flex: 1;
+      text-align: center;
+      margin-left: 5px;
+    }
+  }
   .table {
     flex: 14;
     // border: 1px solid red;

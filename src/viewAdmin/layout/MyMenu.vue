@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-menu
-      default-active="/homead"
+      default-active="/expertad"
       class="el-menu-vertical-demo style"
       background-color="#317f87"
       text-color="#fff"

@@ -395,7 +395,7 @@ router.get("/addExpertRegister", (req, res) => {
 // 社科人员申请表
 router.get("/bidding_user_apply", (req, res) => {
     var search = req.query.search;
-    const sql = "select * from bidding_user_apply " + search;
+    const sql = "select * from bidding_user_apply where result = 0 " + search;
     sqlFn(sql, null, (result) => {
         if (result.length > 0) {
             res.send({
@@ -420,9 +420,11 @@ router.get("/add_bidding_user_apply", (req, res) => {
     let b_id = req.query.b_id;
     let register_time = req.query.register_time || "";
     let cancellation_time = req.query.cancellation_time || "";
+    let result = 0;
+    let reason = "";
 
     const sql = "insert into bidding_user_apply values(?,?,?,?,?,?,?,?)";
-    const arr = [userid, username, password, address, phone, b_id,register_time,cancellation_time];
+    const arr = [userid, username, password, address, phone, b_id,result,reason];
     sqlFn(sql, arr, (result) => {
         if (result.affecteRows > 0) {
             res.send({
@@ -2166,7 +2168,106 @@ router.get("/getOneItemReviewDetails", (req, res) => {
 
 
 // ----------------------------------------------------------------社科专家端口----------------------------------------------------------------
-// 项目投标页面------------------------
+// -----------------------首页----------------------------
+// 获取专家申报数量
+router.get("/getOneExpertBidCount", (req, res) => {
+    let ex_id = req.query.ex_id;
+    const sql = `select count(*) as count from bid_items where ex_id = '`+ex_id+`' group by ex_id ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取专家收到的细审邀请情况
+router.get("/getOneExpertDetailInvitation", (req, res) => {
+    let ex_id = req.query.ex_id;
+    const sql = `select * from review_details_invitation where ex_id = '`+ex_id+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取专家审核总条数
+router.get("/getOneExpertDetailExamineCount", (req, res) => {
+    let ex_id = req.query.ex_id;
+    const sql = `select count(*) as count from review_details 
+        where examineid = '`+ex_id+`' group by examineid;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取专家完成项目数据
+router.get("/getOneExpertFinishedItems", (req, res) => {
+    let ex_id = req.query.ex_id;
+    const sql = `select * from finish_item a join calibration b  
+        where a.it_id = b.it_id and  a.ex_id = '`+ex_id+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取专家正在进行项目进度
+router.get("/getOneExpertSchedule", (req, res) => {
+    let ex_id = req.query.ex_id;
+    const sql = `select * from schedules where ex_id = '`+ex_id+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+
+
+
+
+
+
+// 项目投标页面--------------------------------
 // 获取社科联
 router.get("/getSocial", (req, res) => {
     const sql = `select * from bidding order by b_id;`;
@@ -2494,7 +2595,6 @@ router.get("/updateBidItem", (req, res) => {
 // -------------------------------细审参与界面----------------------
 // 专家 细审邀请项目数据
 router.get("/getInvitationExpertItems", (req, res) => {
-    // let str = req.query.str || "";
     let userid = req.query.userid || "";
     const sql = `
     select release_items.*, item_state.* ,item_category.categoryid,item_category.categoryname, 
@@ -2668,7 +2768,8 @@ router.get("/getBidItemsFirstTrialResult", (req, res) => {
     let ex_id = req.query.ex_id;
     const sql = `select bid_items.*, release_items.name as itemname, release_items.time_release, first_trial.* 
     from bid_items join release_items join first_trial 
-    where bid_items.it_id = release_items.it_id and bid_items.it_id = first_trial.it_id and bid_items.ex_id = first_trial.ex_id
+    where bid_items.it_id = release_items.it_id and bid_items.it_id = first_trial.it_id 
+    and bid_items.ex_id = first_trial.ex_id 
     and bid_items.ex_id = '` + ex_id + `';`;
     sqlFn(sql, null, (result) => {
         if (result.length > 0) {
@@ -2693,7 +2794,7 @@ router.get("/getBidItemsFirstTrialResult", (req, res) => {
 router.get("/getOneExpertDetailExaminedItems", (req, res) => {
     let ex_id = req.query.ex_id;
     const sql = `select a.it_id,a.name from release_items a join item_state b 
-        where a.it_id = b.it_id and b.state < 6 
+        where a.it_id = b.it_id and b.state < 5 
         and a.it_id in(select distinct it_id from review_details where ex_id = '`+ex_id+`') 
         ;`;
     sqlFn(sql, null, (result) => {
@@ -3196,8 +3297,8 @@ router.get("/getOneExpertOneItemFirstResult", (req, res) => {
 // -------------------------个人中心页面---------------------------
 // 获取某个专家信息
 router.get("/getOneExpertInfo", (req, res) => {
-    let userid = req.query.userid;
-    const sql = `select * from expert_personal where ex_id = '` + userid + `';`;
+    let ex_id = req.query.ex_id;
+    const sql = `select * from expert_personal where ex_id = '` + ex_id + `';`;
     sqlFn(sql, null, (result) => {
         if (result.length > 0) {
             res.send({
@@ -3576,6 +3677,197 @@ router.get("/getOneBiddingUsersFinishCategoryItems", (req, res) => {
 })
 
 
+// ---------------------------下属管理------------------------------
+// 获取某个社科新注册账号
+router.get("/getOneBiddingUsersRegister", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `
+        select * from bidding_user_apply 
+        where b_id = '`+userid+`' and result = 0  
+    ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+//账户冻结
+router.get("/updateSocialUserfrozen", (req, res) => {
+    let userid = req.query.userid;
+    let frozen = req.query.frozen;
+    let frozen_reason = req.query.frozen_reason
+
+    const sql = `update bidding_user set frozen=?,frozen_reason=? where userid = ?;`;
+    const arr = [frozen,frozen_reason,userid];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+//账户申请审核结果
+router.get("/updateSocialUserApply", (req, res) => {
+    let userid = req.query.userid;
+    let result = req.query.result;
+    let reason = req.query.reason
+
+    const sql = `update bidding_user_apply set result=?,reason=? where userid = ?;`;
+    const arr = [result,reason,userid];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+// 审核通过添加到社科成员表
+router.get("/addBiddingUsers", (req, res) => {
+    let userid = req.query.userid;
+    let username = req.query.username;
+    let password = req.query.password;
+    let address = req.query.address;
+    let phone = req.query.phone;
+    let b_id = req.query.b_id;
+    let register_time = req.query.register_time || "";
+    let cancellation_time = req.query.cancellation_time || "";
+    let frozen = req.query.frozen || "";
+    let frozen_reason = req.query.frozen_reason||"";
+
+    const sql = "insert into bidding_user values(?,?,?,?,?,?,?,?,?,?)";
+    const arr = [userid, username, password, address, phone, b_id,register_time,cancellation_time,frozen,frozen_reason];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// 获取某个社科新注册未通过账号
+router.get("/getOneBiddingUsersRegisterEliminate", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `
+        select * from bidding_user_apply 
+        where b_id = '`+userid+`' and result = 2  
+    ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+
+
+
+
+// ---------------------------个人中心------------------------------
+// 修改账号信息
+router.get("/updateSocialInfo", (req, res) => {
+    let name = req.query.name;
+    let address = req.query.address;
+    let phone = req.query.phone
+    let representative = req.query.representative;
+    let representative_phone = req.query.representative_phone;
+    let representative_address = req.query.representative_address || ""
+    let b_id = req.query.b_id
+
+    const sql = `update bidding set name=?,address=?,phone=?,representative=?,representative_phone=?,representative_address=? where b_id = ?;`;
+    const arr = [name,address,phone,representative,representative_phone,representative_address,b_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+// 修改密码
+router.get("/updateSocialPassword", (req, res) => {
+    let password = req.query.password;
+    let b_id = req.query.b_id
+
+    const sql = `update bidding set password=? where b_id = ?;`;
+    const arr = [password,b_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+//账户注销
+router.get("/updateSocialCancellation", (req, res) => {
+    let b_id = req.query.b_id;
+    let time = req.query.time;
+
+    const sql = `update bidding set cancellation_time=? where b_id = ?;`;
+    const arr = [time,b_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+
+
 
 
 
@@ -3664,6 +3956,58 @@ router.get("/updateSocialPassword", (req, res) => {
             res.send({
                 status: 500,
                 msg: "修改失败"
+            })
+        }
+    })
+})
+// 删除社科
+router.get("/deleteSocail", (req, res) => {
+    var b_id = req.query.b_id;
+    const sql = "delete from bidding where b_id =?";
+    const arr = [b_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                msg: "删除成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "删除失败"
+            })
+        }
+    })
+})
+// 添加社科
+router.get("/addSocial", (req, res) => {
+    let b_id = req.query.b_id;
+    let name = req.query.name;
+    let password = req.query.password;
+    let address = req.query.address;
+    let phone = req.query.phone
+    let representative = req.query.representative;
+    let representative_phone = req.query.representative_phone;
+    let representative_address = req.query.representative_address || ""
+    let register_time = req.query.register_time;
+    let cancellation_time = req.cancellation_time || "";
+    let frozen = req.frozen || "";
+    let frozen_reason = req.frozen_reason || "";
+
+    const sql = `insert into bidding(b_id,name,password,address,phone,representative,
+            representative_phone,representative_address,register_time,cancellation_time,frozen,frozen_reason) 
+            values(?,?,?,?,?,?,?,?,?,?,?,?);`;
+    const arr = [b_id,name,password,address,phone,representative,representative_phone,representative_address,register_time,cancellation_time,frozen,frozen_reason];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
             })
         }
     })

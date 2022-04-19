@@ -23,7 +23,6 @@
       :key="item.ex_id"
       @click="itemClick(item.ex_id, item)"
     >
-      <!-- color: #ff00ff; -->
       <div class="rank" :class="'rank' + item.index">
         {{ item.index }}
       </div>

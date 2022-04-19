@@ -146,6 +146,17 @@ const base={
 
 
     // --------------------------------------------------------社科专家端口--------------------------------------------------------------
+    // -----------------------首页----------------------------
+    getOneExpertBidCount:'api/api/getOneExpertBidCount', 
+    getOneExpertDetailInvitation:'api/api/getOneExpertDetailInvitation',
+    getOneExpertDetailExamineCount:'api/api/getOneExpertDetailExamineCount',
+    getOneExpertFinishedItems:'api/api/getOneExpertFinishedItems',
+    getOneExpertSchedule:'api/api/getOneExpertSchedule',
+
+
+
+
+
     // 项目投标页面
     getSocial:'api/api/getSocial',            // 获取社科联
     getAllItemCategory:'api/api/getAllItemCategory',            // 全部项目类别
@@ -272,8 +283,27 @@ const base={
     // ---------------------------完成统计------------------------------
     getOneBiddingUsersFinishItems:'api/api/getOneBiddingUsersFinishItems',
     getOneBiddingUsersFinishCategoryItems:'api/api/getOneBiddingUsersFinishCategoryItems',
-    // getOneBiddingInfo:'api/api/getOneBiddingInfo',
-    // getOneBiddingInfo:'api/api/getOneBiddingInfo',
+
+
+
+    // ---------------------------下属管理------------------------------
+    getOneBiddingUsersRegister:'api/api/getOneBiddingUsersRegister',
+    updateSocialUserfrozen:'api/api/updateSocialUserfrozen',
+    updateSocialUserApply:'api/api/updateSocialUserApply',
+    addBiddingUsers:'api/api/addBiddingUsers',
+    getOneBiddingUsersRegisterEliminate:'api/api/getOneBiddingUsersRegisterEliminate',
+
+
+
+
+    // ---------------------------个人中心------------------------------
+    updateSocialInfo:'api/api/updateSocialInfo',
+    updateSocialPassword:'api/api/updateSocialPassword',
+    updateSocialCancellation:'api/api/updateSocialCancellation',
+    // getOneBiddingUsersRegister:'api/api/getOneBiddingUsersRegister',
+    // updateSocialUserfrozen:'api/api/updateSocialUserfrozen',
+    // getOneBiddingUsersRegister:'api/api/getOneBiddingUsersRegister',
+    // updateSocialUserfrozen:'api/api/updateSocialUserfrozen',
 
 
 
@@ -293,6 +323,9 @@ const base={
 
     // -------------------------社科管理------------------------------------
     updateSocialPassword:'api/api/updateSocialPassword',
+    deleteSocail:'api/api/deleteSocail',
+    addSocial:'api/api/addSocial',
+    // updateSocialPassword:'api/api/updateSocialPassword',
 
 
 

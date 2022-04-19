@@ -1,105 +1,259 @@
 <template>
   <div class="total">
-    <!-- <div id="myMiddleChart" :style="{ width: '300px', height: '300px' }"></div> -->
+    <el-form
+      :model="ruleForm"
+      ref="ruleForm"
+      label-width="100px"
+      :label-position="labelPosition"
+      class="form"
+    >
+      <el-row class="row" style="margin-top: 10px">
+        <el-col :span="10" class="col">
+          <el-form-item label="账号：" prop="b_id" class="form_item">
+            <el-input v-model="ruleForm.b_id" clearable disabled></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="10" :offset="2" class="col">
+          <el-form-item label="名称：" prop="name" class="form_item">
+            <el-input
+              v-model="ruleForm.name"
+              clearable
+              placeholder=""
+              :disabled="disabled"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="1"></el-col>
+      </el-row>
+      <el-row class="row" style="margin-top: 10px">
+        <el-col :span="10" class="col">
+          <el-form-item label="电话：" prop="phone" class="form_item">
+            <el-input
+              v-model="ruleForm.phone"
+              clearable
+              :disabled="disabled"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="10" :offset="2" class="col">
+          <el-form-item label="地址：" prop="address" class="form_item">
+            <el-input
+              v-model="ruleForm.address"
+              clearable
+              :disabled="disabled"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="1"></el-col>
+      </el-row>
+
+      <el-row class="row" style="margin-top: 10px">
+        <el-col :span="10" class="col">
+          <el-form-item label="法人：" prop="representative" class="form_item">
+            <el-input
+              v-model="ruleForm.representative"
+              clearable
+              :disabled="disabled"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="10" :offset="2" class="col">
+          <el-form-item
+            label="法人电话："
+            prop="representative_phone"
+            class="form_item"
+          >
+            <el-input
+              v-model="ruleForm.representative_phone"
+              clearable
+              :disabled="disabled"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="1"></el-col>
+      </el-row>
+
+      <!-- <el-row class="row" style="margin-top: 10px">
+        <el-col :span="22" class="col">
+          <el-form-item label="详细地址：" prop="address4" class="form_item">
+            <el-input
+              v-model="ruleForm.address4"
+              type="text"
+              clearable
+              placeholder="请输入详细地址"
+              class="input"
+              :disabled="disabled"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="1"></el-col>
+      </el-row> -->
+
+      <div class="mybt">
+        <el-button type="danger" @click="destory" round class="bt"
+          >注销账户</el-button
+        >
+        <el-button type="primary" @click="changePd" round class="bt"
+          >修改密码</el-button
+        >
+        <el-button
+          type="primary"
+          @click="changeInfo"
+          round
+          class="bt"
+          v-show="disabled"
+          >编辑</el-button
+        >
+        <el-button
+          type="primary"
+          @click="submit('ruleForm')"
+          round
+          class="bt"
+          v-show="!disabled"
+          >提交</el-button
+        >
+      </div>
+    </el-form>
+    <Password :datadetail="datadetail" ref="password" />
   </div>
 </template>
 
 <script>
-// import * as echarts from "echarts";
+import myFunctions from "@/myFunctions";
+import Password from "./password.vue";
 export default {
+  components: { Password },
   data() {
     return {
-      // //图表配置项对象
-      // middleChartExtend: {
-      //   color: ["#5ACC23"], //柱状图的柱子颜色
-      //   tooltip: {
-      //     //是否显示提示工具
-      //     show: true,
-      //   },
-      //   xAxis: {
-      //     //X坐标配置项
-      //     type: "category",
-      //     axisPointer: { show: true },
-      //     axisLine: {
-      //       show: false,
-      //     },
-      //     axisTick: {
-      //       show: false,
-      //     },
-      //     data: [
-      //       "Jan",
-      //       "Feb",
-      //       "Mar",
-      //       "Apr",
-      //       "May",
-      //       "Jun",
-      //       "Jul",
-      //       "Aug",
-      //       "Sep",
-      //       "Oct",
-      //       "Nov",
-      //       "Dec",
-      //     ],
-      //   },
-      //   yAxis: {
-      //     //y坐标配置项
-      //     type: "value",
-      //     minInterval: 1,
-      //     onZero: false,
-      //     axisLine: {
-      //       show: false,
-      //       show: false,
-      //     },
-      //     axisTick: {
-      //       show: false,
-      //     },
-      //     axisLabel: {
-      //       formatter: "{value} min",
-      //     },
-      //     splitLine: {
-      //       show: true,
-      //       lineStyle: {
-      //         // color: "#F5F7F8"
-      //       },
-      //     },
-      //   },
-      //   series: {
-      //     //图表内容数据配置项
-      //     name: "平均时间",
-      //     type: "bar", //显示成柱状图
-      //     barWidth: 10, //柱子宽度为10
-      //     data: [], //每项数据，动态赋予
-      //   },
-      //   grid: {
-      //     //图表属性配置项，一个图表对应一个grid
-      //     top: "3%",
-      //     left: "3%",
-      //     right: "3%",
-      //     bottom: "3%",
-      //     containLabel: true,
-      //   },
-      // },
-      // myMiddleChartObj: null, //图表对象
+      disabled: true,
+      labelPosition: "right",
+      ruleForm: {
+        b_id: "",
+        name: "",
+        address: "",
+        phone: "",
+        representative: "",
+        representative_phone: "",
+        representative_address: "",
+      },
+      datadetail: {},
     };
   },
+  created() {
+    this.getuserinfo();
+  },
   methods: {
-    // getData() {
-    //   //获取数据并赋值给middleChartExtend.series.data
-    // },
-    // drawMiddleChart() {
-    //   //绘制图表方法
-    //   this.myMiddleChartObj = this.$echarts.init(
-    //     document.getElementById("myMiddleChart")
-    //   );
-    //   //将图表配置项赋给图表,true参数表示不和之前的数据合并
-    //   this.myMiddleChartObj.setOption(this.middleChartExtend, true);
-    // },
+    destory() {
+      let h = this.$createElement;
+      this.$msgbox({
+        title: "警告",
+        message: h("p", null, [
+          h("span", { style: "color: red" }, `是否确定注销此账户`),
+        ]),
+        showCancelButton: true,
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then((action) => {
+        this.$api
+          .updateSocialCancellation({
+            b_id: this.ruleForm.b_id,
+            time: myFunctions.newDateToDatetime(new Date()),
+          })
+          .then((res) => {
+            if (res.status == 200) {
+              this.$message({
+                type: "success",
+                message: "注销成功",
+                offset: 150,
+              });
+              this.$router.push({ path: "/" });
+            } else {
+              this.$message({
+                type: "error",
+                message: "注销失败，请稍候再试",
+                offset: 150,
+              });
+            }
+          });
+      });
+    },
+    changeInfo() {
+      this.disabled = false;
+    },
+    changePd() {
+      this.$refs.password.visible = true;
+    },
+    submit(ruleForm) {
+      this.$refs[ruleForm].validate((valid) => {
+        if (valid) {
+          this.$api
+            .updateSocialInfo({
+              name: this.ruleForm.name,
+              b_id: this.ruleForm.b_id,
+              address: this.ruleForm.address,
+              phone: this.ruleForm.phone,
+              representative: this.ruleForm.representative,
+              representative_phone: this.ruleForm.representative_phone,
+              representative_address: this.ruleForm.representative_address,
+            })
+            .then((res) => {
+              if (res.status == 200) {
+                this.$message({
+                  type: "success",
+                  message: "修改成功",
+                  offset: 150,
+                });
+                this.disabled = true;
+              } else {
+                this.$message({
+                  type: "error",
+                  message: "修改失败，请稍候再试",
+                  offset: 150,
+                });
+              }
+            });
+        }
+      });
+    },
+    getuserinfo() {
+      this.$api
+        .getOneBiddingInfo({
+          userid: sessionStorage.getItem("userid"),
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            if (res.data.status == 200) {
+              let data = res.data.result[0];
+              this.ruleForm = data;
+              this.datadetail = data;
+            }
+          }
+        });
+    },
   },
-  mounted() {
-    // this.drawMiddleChart();
-  },
+  mounted() {},
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+.total {
+  height: 92vh;
+  display: flex;
+  justify-content: center;
+  // flex-flow: column;
+  .form {
+    width: 60%;
+    // border: 1px solid red;
+    height: auto;
+    padding-top: 100px;
+    .mybt {
+      margin-top: 100px;
+      display: flex;
+      justify-content: space-around;
+    }
+  }
+
+  // border: 1px solid red;
+}
 </style>

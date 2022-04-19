@@ -25,10 +25,8 @@ import Itemsso from '../viewSocial/Items/index.vue'
 import Biddingso from '../viewSocial/Items/Bidding/index.vue'
 import FirstExamineso from '../viewSocial/Items/FirstExamine/index.vue'
 import DeatilExamineso from '../viewSocial/Items/DetailExamine/index.vue'
-// import DetailedExamination from '../views/Items/DetailedExamination/index.vue'
-// import Calibration from "../views/Items/Calibration/index.vue"
-// import Schedule from '../views/Items/Schedule/index.vue'
 import Finishedso from '../viewSocial/Items/Finished/index.vue'
+import Socialuserso from '../viewSocial/socialusers/index.vue'
 import Userso from '../viewSocial/users/index.vue'
 
 // 专家
@@ -160,6 +158,11 @@ const routes = [
           }
         ]
       },{
+        path:'/socialuserso',
+        name:'socialuserso',
+        component:Socialuserso
+      },
+      {
         path:'/userso',
         name:'userso',
         component:Userso
@@ -228,7 +231,8 @@ const routes = [
   {
     path:'/Layoutad',
     component: Layoutad,
-    children:[{
+    children:[
+      {
       path:'/homead',
       name:'homead',
       component:Homead

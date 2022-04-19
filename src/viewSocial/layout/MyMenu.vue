@@ -20,7 +20,7 @@
       <el-submenu index="/itemsso">
         <template slot="title">
           <i class="el-icon-location"></i>
-          <span>我的项目</span>
+          <span>项目统计</span>
         </template>
         <el-menu-item-group>
           <el-menu-item index="/itemsso/biddingso">
@@ -36,21 +36,16 @@
             <i class="el-icon-cloudy-and-sunny"></i>
             <span slot="title">细审统计</span>
           </el-menu-item>
-          <!-- <el-menu-item index="/items/calibration">
-            <i class="el-icon-position"></i>
-            <span slot="title">项目定标</span>
-          </el-menu-item>
-          <el-menu-item index="/items/schedule">
-            <i class="el-icon-unlock"></i>
-            <span slot="title">进度跟踪</span>
-          </el-menu-item> -->
           <el-menu-item index="/itemsso/finishedso">
             <i class="el-icon-switch-button"></i>
             <span slot="title">完成项目</span>
           </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-
+      <el-menu-item index="/socialuserso">
+        <i class="el-icon-position"></i>
+        <span slot="title">成员管理</span>
+      </el-menu-item>
       <el-menu-item index="/userso">
         <i class="el-icon-setting"></i>
         <span slot="title">个人中心</span>

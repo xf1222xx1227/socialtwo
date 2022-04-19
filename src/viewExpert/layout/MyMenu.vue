@@ -6,12 +6,17 @@
       background-color="#317f87"
       text-color="#fff"
       active-text-color="#ffd04b"
+      :default-openeds="['/itemsex']"
       router
     >
-      <el-menu-item index="/homeex">
-        <i class="el-icon-menu"></i>
-        <span slot="title">首页</span>
-      </el-menu-item>
+      <keep-alive>
+        // 缓存路由
+        <el-menu-item index="/homeex">
+          <i class="el-icon-menu"></i>
+          <span slot="title">首页</span>
+        </el-menu-item>
+      </keep-alive>
+
       <el-menu-item index="/bidex">
         <i class="el-icon-circle-plus-outline"></i>
         <span slot="title">项目申报</span>

@@ -526,6 +526,44 @@ const api={
 
 
     // --------------------------------------------------------社科专家端口--------------------------------------------------------------
+    // -----------------------首页----------------------------
+    getOneExpertBidCount(params){               
+        return axios.get(base.getOneExpertBidCount,{
+            params
+        })
+    },
+    getOneExpertDetailInvitation(params){               
+        return axios.get(base.getOneExpertDetailInvitation,{
+            params
+        })
+    },
+    getOneExpertDetailExamineCount(params){               
+        return axios.get(base.getOneExpertDetailExamineCount,{
+            params
+        })
+    },
+    getOneExpertFinishedItems(params){               
+        return axios.get(base.getOneExpertFinishedItems,{
+            params
+        })
+    },
+    getOneExpertSchedule(params){               
+        return axios.get(base.getOneExpertSchedule,{
+            params
+        })
+    },
+    // updateBidItem(params){               
+    //     return axios.get(base.updateBidItem,{
+    //         params
+    //     })
+    // },
+
+
+
+
+
+
+
     // 项目投标页面-------------------------------
     // 获取社科
     getSocial(params){               
@@ -900,6 +938,78 @@ const api={
 
 
 
+    // ---------------------------下属管理------------------------------
+    getOneBiddingUsersRegister(params){
+        return axios.get(base.getOneBiddingUsersRegister,{
+            params
+        })
+    },  
+    updateSocialUserfrozen(params){
+        return axios.get(base.updateSocialUserfrozen,{
+            params
+        })
+    },
+    updateSocialUserApply(params){
+        return axios.get(base.updateSocialUserApply,{
+            params
+        })
+    },
+    addBiddingUsers(params){
+        return axios.get(base.addBiddingUsers,{
+            params
+        })
+    },
+    getOneBiddingUsersRegisterEliminate(params){
+        return axios.get(base.getOneBiddingUsersRegisterEliminate,{
+            params
+        })
+    },
+
+
+
+
+    // ---------------------------个人中心------------------------------
+    updateSocialInfo(params){
+        return axios.get(base.updateSocialInfo,{
+            params
+        })
+    },
+    updateSocialPassword(params){
+        return axios.get(base.updateSocialPassword,{
+            params
+        })
+    },
+    updateSocialCancellation(params){
+        return axios.get(base.updateSocialCancellation,{
+            params
+        })
+    },
+    // updateSocialPassword(params){
+    //     return axios.get(base.updateSocialPassword,{
+    //         params
+    //     })
+    // },
+    // updateSocialPassword(params){
+    //     return axios.get(base.updateSocialPassword,{
+    //         params
+    //     })
+    // },
+    // updateSocialPassword(params){
+    //     return axios.get(base.updateSocialPassword,{
+    //         params
+    //     })
+    // },
+    // updateSocialPassword(params){
+    //     return axios.get(base.updateSocialPassword,{
+    //         params
+    //     })
+    // },
+
+
+
+
+
+
 
 
 
@@ -930,6 +1040,29 @@ const api={
             params
         })
     },
+    deleteSocail(params){
+        return axios.get(base.deleteSocail,{
+            params
+        })
+    },
+    addSocial(params){
+        return axios.get(base.addSocial,{
+            params
+        })
+    },
+    // updateSocialPassword(params){
+    //     return axios.get(base.updateSocialPassword,{
+    //         params
+    //     })
+    // },
+    // updateSocialPassword(params){
+    //     return axios.get(base.updateSocialPassword,{
+    //         params
+    //     })
+    // },
+
+
+
 
 
     // -------------------------社科账户管理------------------------------------

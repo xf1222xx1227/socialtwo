@@ -143,6 +143,7 @@ export default {
     },
     // 获取某个项目的定标信息
     getCalibrationed(itid) {
+      this.dataCalibrationed = [];
       this.$api
         .getOneItemCalibrationed({
           it_id: itid,
@@ -152,12 +153,15 @@ export default {
             if (res.data.status == 200) {
               let data = res.data.result;
               this.dataCalibrationed = data;
-              console.log("项目定标信息", data);
+              // console.log("项目定标信息", data);
             }
+            this.getRank(itid);
           }
         });
     },
     getRank(newval) {
+      this.dataList = [];
+      this.dataListAll = [];
       this.$api
         .getCalibrationOneItemRank({
           it_id: newval,
@@ -221,7 +225,7 @@ export default {
 
               this.dataList = data;
               this.dataListAll = data;
-              console.log("项目排行信息", data);
+              // console.log("项目排行信息", data);
               // console.log(111, data);
             }
           }
@@ -242,14 +246,12 @@ export default {
   },
   watch: {
     dataitid(newval, val) {
-      this.dataCalibrationed = [];
       this.getCalibrationed(newval);
-      this.dataList = [];
-      this.dataListAll = [];
-      this.getRank(newval);
+
+      // this.getRank(newval);
     },
     visible(newval, val) {
-      console.log(newval);
+      // console.log(newval);
     },
     fresh(newval, val) {
       if (newval == "1") {

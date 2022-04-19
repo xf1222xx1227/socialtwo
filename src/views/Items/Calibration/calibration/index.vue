@@ -57,8 +57,8 @@
             @click="itemClick(item.it_id, item)"
             @mouseover="addHoverStyle(item.it_id)"
             @mouseout="deleteHoverStyle(item.it_id)"
-            @dblclick="finishExamine(item)"
           >
+            <!--  @dblclick="finishExamine(item)" -->
             {{ item.name }}
           </p>
           <div
@@ -218,10 +218,10 @@ export default {
       let dom = document.getElementsByClassName(data)[0];
       dom.style.color = "#ff00ff";
     },
-    finishExamine(data) {
-      this.datafinish = data;
-      this.$refs.dialogfinishfirst.visible = true;
-    },
+    // finishExamine(data) {
+    //   this.datafinish = data;
+    //   this.$refs.dialogfinishfirst.visible = true;
+    // },
     // 点击项目列表时
     itemClick(data, dataObj) {
       // console.log(222, dataObj);

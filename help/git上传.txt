@@ -1,0 +1,8 @@
+将项目所有文件添加到仓库中(git add .)(.表示所有文件) 
+将add的文件commit到仓库(git commit -m “注释”)(注释可以随便写，方便后续回退) 
+ 本地仓库关联外部仓库（git remote add origin 仓库地址）
+    （git仓库地址尽量使用SSH地址，少使用HTTP地址，如：Administrator@localhost:dwr/iotop-web.git）
+ 上传github之前，要先pull一下(git pull origin master)
+    (此时项目里面的代码会出现不同，合并区的东西查看应保存本地的【accept current change】还是仓库的【accept incoming chane】，
+    合并完成后添加到暂存区，点击√提交) 
+上传代码到github远程仓库 (git push -u origin master)

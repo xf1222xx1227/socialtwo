@@ -51,11 +51,11 @@ export default {
       // userid: "u00000",
       // radio: "1",
 
-      userid: "b00000000",
-      radio: "2",
+      // userid: "b00000000",
+      // radio: "2",
 
-      // userid: "S00000",
-      // radio: "3",
+      userid: "S00000",
+      radio: "3",
 
       // userid: "A00",
       // radio: "4",
@@ -234,7 +234,6 @@ export default {
         this.userdata = [];
         this.isorno = 1;
         this.userdata = this.dataExpert;
-        // console.log(111, this.userdata);
         for (let i = 0; i < this.userdata.length; i++) {
           if (this.userdata[i].ex_id == this.userid) {
             let datauser = {};
@@ -247,7 +246,6 @@ export default {
               break;
             } else {
               if (this.userdata[i].cancellation_time != "") {
-                // this.isorno = 4;
                 this.$message({
                   type: "error",
                   message: "账号已注销",
@@ -304,7 +302,7 @@ export default {
                   sessionStorage.setItem("userid", datauser.userid);
                   sessionStorage.setItem("usertype", datauser.usertype);
                   sessionStorage.setItem("usertypename", datauser.usertypename);
-                  this.$router.push({ path: "/homead" });
+                  this.$router.push({ path: "/expertad" });
                 }
               }
             }
@@ -330,6 +328,8 @@ export default {
         this.radio = "2";
       } else if (newval[0] == "S") {
         this.radio = "3";
+      } else if (newval[0] == "A") {
+        this.radio = "4";
       }
     },
   },

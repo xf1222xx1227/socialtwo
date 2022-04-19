@@ -303,9 +303,9 @@ export default {
     this.geteducation();
     this.getdegree();
     this.getaddress();
-    setTimeout(() => {
-      this.getuserinfo();
-    }, 0);
+    // setTimeout(() => {
+    this.getuserinfo();
+    // }, 0);
   },
   methods: {
     destory() {
@@ -543,8 +543,10 @@ export default {
         })
         .then((res) => {
           if (res.status == 200) {
+            // console.log(sessionStorage.getItem("userid"), res);
             if (res.data.status == 200) {
               let data = res.data.result[0];
+              // console.log(111, data);
               this.datadetail = data;
               this.ruleForm.name = data.name;
               this.ruleForm.phone = data.phone;
@@ -602,6 +604,7 @@ export default {
   justify-content: center;
   // flex-flow: column;
   .form {
+    padding-top: 40px;
     width: 60%;
     // border: 1px solid red;
     .mybt {

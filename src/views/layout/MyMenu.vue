@@ -1,19 +1,5 @@
 <template>
   <div>
-    <!-- <ul>
-      <li>
-        <router-link to="/">首页</router-link>
-      </li>
-      <li>
-        <router-link to="/launch">招标发起</router-link>
-      </li>
-      <li>
-        <router-link to="/items">我的项目</router-link>
-      </li>
-      <li>
-        <router-link to="/user">个人中心</router-link>
-      </li>
-    </ul> -->
     <el-menu
       default-active="/home"
       class="el-menu-vertical-demo style"
