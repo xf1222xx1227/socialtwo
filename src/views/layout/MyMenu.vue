@@ -6,15 +6,19 @@
       background-color="#317f87"
       text-color="#fff"
       active-text-color="#ffd04b"
+      :default-openeds="['/items']"
       router
     >
-      <el-menu-item index="/home">
-        <i class="el-icon-menu"></i>
-        <span slot="title">首页</span>
-      </el-menu-item>
+      <keep-alive>
+        <el-menu-item index="/home">
+          <i class="el-icon-menu"></i>
+          <span slot="title">首页</span>
+        </el-menu-item>
+      </keep-alive>
+
       <el-menu-item index="/launch">
         <i class="el-icon-circle-plus-outline"></i>
-        <span slot="title">项目发起</span>
+        <span slot="title">课题发布</span>
       </el-menu-item>
 
       <el-submenu index="/items">

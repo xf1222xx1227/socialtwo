@@ -125,8 +125,8 @@ export default {
             });
           } else {
             this.$api
-              .updateSocialUserPassword({
-                userid: this.datadetail.userid,
+              .updateAdminPassword({
+                id: this.datadetail.id,
                 password: this.ruleForm.password1,
               })
               .then((res) => {

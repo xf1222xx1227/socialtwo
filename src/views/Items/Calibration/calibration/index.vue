@@ -46,7 +46,7 @@
             flex-flow: row;
             border-top: 1px solid #7fffd4;
             align-items: center;
-            color: #ff00ff;
+            color: #668b8b;
             cursor: pointer;
           "
         >
@@ -58,7 +58,6 @@
             @mouseover="addHoverStyle(item.it_id)"
             @mouseout="deleteHoverStyle(item.it_id)"
           >
-            <!--  @dblclick="finishExamine(item)" -->
             {{ item.name }}
           </p>
           <div
@@ -216,16 +215,11 @@ export default {
     },
     deleteHoverStyle(data) {
       let dom = document.getElementsByClassName(data)[0];
-      dom.style.color = "#ff00ff";
+      dom.style.color = "#668B8B";
     },
-    // finishExamine(data) {
-    //   this.datafinish = data;
-    //   this.$refs.dialogfinishfirst.visible = true;
-    // },
     // 点击项目列表时
     itemClick(data, dataObj) {
-      // console.log(222, dataObj);
-      this.$refs.rank.visible = false;
+      // this.$refs.rank.visible = false;
       this.$refs.rank.visible = true;
       this.datarank = dataObj;
       this.dataitid = dataObj.it_id;
@@ -340,12 +334,14 @@ export default {
     .left {
       flex: 1;
       overflow: auto;
-      white-space: nowrap;
+      // white-space: nowrap;
       border-right: 1px solid blue;
       .listItem {
         height: 40px;
         font-size: 16px;
         padding-left: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
         .listP,
         .listDetail {
           height: 100%;

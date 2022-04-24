@@ -132,8 +132,6 @@ import myFunctions from "../../../myFunctions";
 import ItemDetail from "./examineingTable/itemDetail.vue";
 import BidDetail from "./examineingTable/bidDetail.vue";
 import Examine from "./examineingTable/examine.vue";
-// import Declare from "../../bid/declare.vue";
-// import Steps from "../../steps.vue";
 export default {
   components: { ItemDetail, BidDetail, Examine },
   // Declare,, , , Steps

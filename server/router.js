@@ -459,7 +459,9 @@ router.get("/getResearchDirection", (req, res) => {
 
 
 
-//----------------------项目新增page--------------------------------
+
+
+// --------------------------------------------------社科成员端----------------------------------------------
 // 获取某个社科账户信息
 router.get("/getOneBiddingUserInfo", (req, res) => {
     let userid = req.query.userid;
@@ -478,6 +480,150 @@ router.get("/getOneBiddingUserInfo", (req, res) => {
         }
     })
 })
+// ----------------------------首页--------------------------------
+// 获取某个社科成员发布项目总数
+router.get("/getOneBiddingUserBiddingItems", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `select count(*) as count from release_items where userid = '` + userid + `';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取某个社科成员初审项目
+router.get("/getOneBiddingUserFirstCount", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `select * from first_trial where userid = '` + userid + `';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取某个社科成员细审情况
+router.get("/getOneBiddingUserDetail", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `select * from review_details where examineid = '` + userid + `';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取某个社科成员细审邀请
+router.get("/getOneBiddingUserDetailInvitation", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `
+        select a.* from review_details_invitation a join release_items b 
+        where a.it_id = b.it_id and b.userid = '` + userid + `';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取未完成的项目细审邀请(还能进入审核)
+router.get("/getOneBiddingUserInvitationNow", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `
+        select a.* from review_details_invitation a join release_items b join item_state c 
+        where a.it_id = b.it_id and a.it_id = c.it_id 
+        and b.userid = '` + userid + `' and c.state < 4 ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+
+// 获取某个社科成员正在进行项目数量
+router.get("/getOneBiddingUserScheduleItems", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `
+        select a.*,c.name from bidopening a join item_state b join release_items c 
+        where a.it_id = b.it_id and a.it_id = c.it_id and a.userid = '`+userid+`' and b.state = 6 
+        ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取社科成员正在进行项目进度
+router.get("/getOneBiddingUserSchedule", (req, res) => {
+    let userid = req.query.userid;
+    const sql = `select * from schedules a join release_items b 
+        where a.it_id = b.it_id and b.userid = '`+userid+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+
+
+
+
+
+
+//----------------------项目发起page--------------------------------
 // 项目分类
 router.get("/itemCategory", (req, res) => {
     const sql = "select * from item_category group by categoryid;";
@@ -863,7 +1009,7 @@ router.get("/addReleaseItemsInvitation", (req, res) => {
     let it_id = req.query.it_id;
     let ex_id = req.query.ex_id;
     let type = req.query.type || 1;
-    console.log(33, it_id, ex_id);
+    // console.log(33, it_id, ex_id);
     const arr = [it_id, ex_id,type];
     const sql = "insert into release_items_invitation values(?,?,?)";
     sqlFn(sql, arr, (result) => {
@@ -1683,7 +1829,8 @@ router.get("/getCalibrationExaminedItem", (req, res) => {
 router.get("/getCalibrationOneItemRank", (req, res) => {
     let it_id = req.query.it_id;
     const sql = `
-        select a.it_id,a.ex_id,sum(score_technology) as total_score_technology, sum(score_economics) as total_score_economics,
+        select a.it_id,a.ex_id,sum(score_technology) as total_score_technology, 
+        sum(score_economics) as total_score_economics,
         sum(score_comprehensive) as total_score_comprehensive,sum(score_system) as total_score_system,
         count(*) as count,b.rate_economics,b.rate_technology,b.rate_comprehensive,c.*   
         from review_details a join release_items b join expert_personal c 
@@ -1901,10 +2048,11 @@ router.get("/addBidOpening", (req, res) => {
 // -------------------------查看开标后查看进度页面---------------------------
 // 获取某个社科人员开标项目
 router.get("/getOneSocialPersonScheduleItems", (req, res) => {    
-    // let ex_id = req.query.ex_id;
     let userid = req.query.userid;
-    const sql = `select a.*,c.name from bidopening a join item_state b join release_items c 
-    where a.it_id = b.it_id and a.it_id = c.it_id and a.userid = '`+userid+`' and b.state = 6 
+    const sql = `select a.*,c.name,d.name as exname 
+        from bidopening a join item_state b join release_items c join expert_personal d 
+        where a.it_id = b.it_id and a.it_id = c.it_id and a.ex_id=d.ex_id 
+        and a.userid = '`+userid+`' and b.state = 6 
         ;`;
     sqlFn(sql, null, (result) => {
         if (result.length > 0) {
@@ -2032,7 +2180,6 @@ router.get("/addFinishItem", (req, res) => {
 router.get("/getOneSocialUserFinishItemsCount", (req, res) => {    
     let userid = req.query.userid;
     let str = req.query.str || "";
-    // let userid = req.query.userid;
     const sql = `select count(*) as count  
         from release_items a join research_direction b join item_state c join finish_item d 
         join bidding_user f join bidding g 
@@ -2061,9 +2208,9 @@ router.get("/getOneSocialUserFinishItems", (req, res) => {
     let userid = req.query.userid;
     let pagesize = req.query.pagesize;
     let pagenum = req.query.pagenum;
-    let str = req.query.str;
+    let str = req.query.str || "";
     let begin = (pagenum-1) * pagesize;
-    const sql = `select a.*,b.name as re_name,d.ex_id,d.finilly_time,e.budget,f.username,g.name as bname,h.name as exname 
+    const sql = `select a.*,b.name as re_name,d.ex_id,d.finilly_time,e.budget,e.time_finilly,f.username,g.name as bname,h.name as exname 
         from release_items a join research_direction b join item_state c join finish_item d join calibration e 
         join bidding_user f join bidding g join expert_personal h
         where a.type = b.re_id and a.it_id = c.it_id and a.it_id = d.it_id 
@@ -2152,6 +2299,52 @@ router.get("/getOneItemReviewDetails", (req, res) => {
             res.send({
                 status: 500,
                 msg: "暂无数据"
+            })
+        }
+    })
+})
+
+
+// ---------------------------个人中心------------------------------
+// 修改账号信息
+router.get("/updateSocialUserInfo", (req, res) => {
+    let userid = req.query.userid;
+    let username = req.query.username;
+    let address = req.query.address;
+    let phone = req.query.phone
+
+    const sql = `update bidding_user set username=?,address=?,phone=? where userid = ?;`;
+    const arr = [username,address,phone,userid];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+//账户注销
+router.get("/updateSocialUserCancellation", (req, res) => {
+    let userid = req.query.userid;
+    let time = req.query.time;
+    const sql = `update bidding_user set cancellation_time=? where userid = ?;`;
+    const arr = [time,userid];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
             })
         }
     })
@@ -3618,7 +3811,7 @@ router.get("/getOneBiddingUsersDetailCategoryItems", (req, res) => {
 
 
 
-// ---------------------------细审统计------------------------------
+// ---------------------------完成统计------------------------------
 // 获取某个社科下属成员项目完成情况
 router.get("/getOneBiddingUsersFinishItems", (req, res) => {
     let userid = req.query.userid;
@@ -4016,7 +4209,7 @@ router.get("/addSocial", (req, res) => {
 
 
 
-// -------------------------社科账户管理------------------------------------
+// -------------------------社科账户管理---------------------------
 // 某个社科账号获取
 router.get("/getOneSocialUser", (req, res) => {
     let b_id = req.query.b_id;
@@ -4064,6 +4257,74 @@ router.get("/updateSocialUserPassword", (req, res) => {
         }
     })
 })
+
+
+
+// -------------------------个人中心-------------------------------
+//管理员信息修改
+router.get("/updateAdminInfo", (req, res) => {
+    let id = req.query.id;
+    let name = req.query.name;
+    let phone = req.query.phone;
+
+    const sql = `update admins set name=?,phone=? where id = ?;`;
+    const arr = [name,phone,id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+//管理员密码修改
+router.get("/updateAdminPassword", (req, res) => {
+    let id = req.query.id;
+    let password = req.query.password;
+
+    const sql = `update admins set password=? where id = ?;`;
+    const arr = [password,id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+// //账户注销
+// router.get("/updateExpertCancellation", (req, res) => {
+//     let ex_id = req.query.ex_id;
+//     let time = req.query.time;
+
+//     const sql = `update expert_personal set cancellation_time=? where ex_id = ?;`;
+//     const arr = [time,ex_id];
+//     sqlFn(sql, arr, (result) => {
+//         if (result.affecteRows > 0) {
+//             res.send({
+//                 status: 200,
+//                 msg: "修改成功"
+//             })
+//         } else {
+//             res.send({
+//                 status: 500,
+//                 msg: "修改失败"
+//             })
+//         }
+//     })
+// })
 
 
 

@@ -1,9 +1,9 @@
 <template>
   <div id="ltemLaunch">
     <div id="total">
-      <div class="steps" style="height: 50px; width: 100%">
+      <!-- <div class="steps" style="height: 50px; width: 100%">
         <Steps :index="0" />
-      </div>
+      </div> -->
       <el-form
         :model="ruleForm"
         :rules="rules"
@@ -679,6 +679,7 @@ export default {
     // margin-top: 20px;
     // border: 1px solid red;
     .form {
+      margin-top: 20px;
       flex: 1;
       .row {
         width: 100%;

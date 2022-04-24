@@ -253,7 +253,7 @@
         >
       </div>
     </el-form>
-    <Password :datadetail="datadetail" ref="password" />
+    <Password :datadetail="datadetail" ref="password" @refresh="reFresh" />
   </div>
 </template>
 
@@ -295,6 +295,8 @@ export default {
       dataAddress: [],
 
       datadetail: {},
+
+      fresh: "0",
     };
   },
   created() {
@@ -543,10 +545,8 @@ export default {
         })
         .then((res) => {
           if (res.status == 200) {
-            // console.log(sessionStorage.getItem("userid"), res);
             if (res.data.status == 200) {
               let data = res.data.result[0];
-              // console.log(111, data);
               this.datadetail = data;
               this.ruleForm.name = data.name;
               this.ruleForm.phone = data.phone;
@@ -572,6 +572,9 @@ export default {
           }
         });
     },
+    reFresh(val) {
+      this.fresh = val;
+    },
   },
   watch: {
     education(newval, val) {
@@ -592,6 +595,12 @@ export default {
         }
       }
       this.optionsDegree.push(this.dataDegree[this.dataDegree.length - 1]);
+    },
+    fresh(newval, val) {
+      if (newval != "0") {
+        this.getuserinfo();
+        this.fresh = "0";
+      }
     },
   },
 };

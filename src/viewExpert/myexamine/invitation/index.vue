@@ -17,6 +17,7 @@
         label="项目名称"
         sortable="custom"
         header-align="center"
+        width="300"
       >
       </el-table-column>
       <el-table-column
@@ -135,7 +136,7 @@ export default {
 
       this.$confirm(`是否确定参加项目{${data.name}}的细审工作?`, "提示", {
         confirmButtonText: "参加",
-        cancelButtonText: "取消",
+        cancelButtonText: "不参加",
         type: "info",
       })
         .then(() => {

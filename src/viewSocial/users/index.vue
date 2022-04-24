@@ -114,7 +114,7 @@
         >
       </div>
     </el-form>
-    <Password :datadetail="datadetail" ref="password" />
+    <Password :datadetail="datadetail" ref="password" @refresh="reFresh" />
   </div>
 </template>
 
@@ -137,6 +137,8 @@ export default {
         representative_address: "",
       },
       datadetail: {},
+
+      fresh: "0",
     };
   },
   created() {
@@ -231,8 +233,19 @@ export default {
           }
         });
     },
+    reFresh(val) {
+      this.fresh = val;
+    },
   },
   mounted() {},
+  watch: {
+    fresh(newval, val) {
+      if (newval != "0") {
+        this.getuserinfo();
+        this.fresh = "0";
+      }
+    },
+  },
 };
 </script>
 

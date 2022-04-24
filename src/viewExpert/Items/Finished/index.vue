@@ -93,6 +93,7 @@
             label="项目名称"
             header-align="center"
             align="center"
+            width="300"
           >
           </el-table-column>
           <el-table-column

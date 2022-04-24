@@ -40,8 +40,21 @@ const base={
 
     // -----------------------------------------------------------社科下属端-------------------------------------------------------
     getOneBiddingUserInfo: 'api/api/getOneBiddingUserInfo',
-    //---------------------------------------------
-    // 项目新增page
+
+
+
+    // ----------------------------首页------------------------------
+    getOneBiddingUserBiddingItems:'api/api/getOneBiddingUserBiddingItems',        
+    getOneBiddingUserFirstCount:'api/api/getOneBiddingUserFirstCount',
+    getOneBiddingUserDetail:'api/api/getOneBiddingUserDetail',
+    getOneBiddingUserDetailInvitation:'api/api/getOneBiddingUserDetailInvitation',
+    getOneBiddingUserInvitationNow:'api/api/getOneBiddingUserInvitationNow',
+    getOneBiddingUserScheduleItems:'api/api/getOneBiddingUserScheduleItems',
+    getOneBiddingUserSchedule:'api/api/getOneBiddingUserSchedule',
+
+
+
+    //----------------------------项目新增page--------------------------
     itemCategory: 'api/api/itemCategory',           // 项目分类
     getResearchDirection:'api/api/getResearchDirection',    // 项目类别-研究方向
     getReleaseAllItems:'api/api/getReleaseAllItems', 
@@ -141,6 +154,13 @@ const base={
     getOneItemReviewDetails:'api/api/getOneItemReviewDetails',
 
 
+
+    // -------------------------项目完成页面---------------------------
+    updateSocialUserInfo:'api/api/updateSocialUserInfo',
+    updateSocialUserCancellation:'api/api/updateSocialUserCancellation',
+
+
+    
 
 
 
@@ -300,10 +320,6 @@ const base={
     updateSocialInfo:'api/api/updateSocialInfo',
     updateSocialPassword:'api/api/updateSocialPassword',
     updateSocialCancellation:'api/api/updateSocialCancellation',
-    // getOneBiddingUsersRegister:'api/api/getOneBiddingUsersRegister',
-    // updateSocialUserfrozen:'api/api/updateSocialUserfrozen',
-    // getOneBiddingUsersRegister:'api/api/getOneBiddingUsersRegister',
-    // updateSocialUserfrozen:'api/api/updateSocialUserfrozen',
 
 
 
@@ -325,7 +341,6 @@ const base={
     updateSocialPassword:'api/api/updateSocialPassword',
     deleteSocail:'api/api/deleteSocail',
     addSocial:'api/api/addSocial',
-    // updateSocialPassword:'api/api/updateSocialPassword',
 
 
 
@@ -333,8 +348,13 @@ const base={
     getOneSocialUser:'api/api/getOneSocialUser',
     updateSocialUserPassword:'api/api/updateSocialUserPassword',
 
+    
 
 
+    // -------------------------个人中心-------------------------------
+    updateAdminInfo:'api/api/updateAdminInfo',
+    updateAdminPassword:'api/api/updateAdminPassword',
+    // addSocial:'api/api/addSocial',
 
 
 

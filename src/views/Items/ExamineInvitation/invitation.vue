@@ -123,7 +123,7 @@
         </div>
         <div class="iteminfo">
           <div class="info">
-            当前项目：<span style="color: #ff00ff; font-size: 16px">{{
+            当前项目：<span style="color: #668b8b; font-size: 16px">{{
               dataitem.name
             }}</span>
           </div>

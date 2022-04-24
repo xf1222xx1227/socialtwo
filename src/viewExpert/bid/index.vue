@@ -13,31 +13,21 @@
       ></el-tree>
     </div>
     <div id="rightTable">
-      <div class="steps">
+      <!-- <div class="steps">
         <Steps :index="1" />
-      </div>
+      </div> -->
       <div class="search">
         <div class="textboxp">
           <div class="p">项目名称：</div>
-          <el-input v-model="dataSearch.name" clearable class="text"></el-input>
+          <el-input
+            v-model="dataSearch.name"
+            clearable
+            class="text"
+            @keyup.enter.native="search"
+          ></el-input>
         </div>
         <div class="textboxp">
           <div class="p"><!--研究方向：--></div>
-          <!-- <el-select
-            v-model="dataSearch.type"
-            class="text"
-            filterable
-            clearable
-            placeholder="可输入"
-          >
-            <el-option
-              v-for="item in options_type"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select> -->
         </div>
         <div class="textboxp">
           <div class="p"><!--项目名称：--></div>
@@ -67,6 +57,7 @@
           label="项目名称"
           sortable="custom"
           header-align="center"
+          width="300"
         >
         </el-table-column>
         <el-table-column

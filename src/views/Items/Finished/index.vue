@@ -98,6 +98,7 @@
             label="项目名称"
             header-align="center"
             align="center"
+            width="300"
           >
           </el-table-column>
           <el-table-column
@@ -241,12 +242,12 @@ export default {
     };
   },
   created() {
-    let date1 = new Date();
-    let d2 = "2022-04-01";
-    let d3 = "2022-04-10 01:00:00";
-    let r1 = myFunctions.twoDateReduce(date1, d2);
-    let r2 = myFunctions.twoDateReduce(date1, d3);
-    console.log(111, r1, r2);
+    // let date1 = new Date();
+    // let d2 = "2022-04-01";
+    // let d3 = "2022-04-10 01:00:00";
+    // let r1 = myFunctions.twoDateReduce(date1, d2);
+    // let r2 = myFunctions.twoDateReduce(date1, d3);
+    // console.log(111, r1, r2);
     this.getResearch();
     this.getTableCount(this.str);
     this.getTableData(this.pageSize, this.currentPage, this.str);

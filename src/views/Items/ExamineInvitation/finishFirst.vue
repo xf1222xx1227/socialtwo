@@ -102,11 +102,51 @@ export default {
           .then((res) => {
             if (res.status == 200) {
               this.successorerror = "1";
+              this.detailToCalibration();
             } else {
               this.successorerror = "2";
             }
           });
       }
+    },
+    // 评标 分数-评语，需要一个标准（管理员定）
+    // 加一个撤回评标
+    // 预估
+    // 分类评价
+
+    // 下属联系方式，负责的业务，部门
+
+    // 管理员一键下载全部文件（便于管理）
+
+    detailToCalibration() {
+      // 细审结束变成定标项目
+      // myFunctions.detailToCalibration();
+      let date = myFunctions.newDateToDatetime(new Date());
+      this.$api.getFinishFirstTrial({}).then((res) => {
+        if (res.status == 200) {
+          if (res.data.status == 200) {
+            let data = res.data.result;
+            console.log(111, data);
+            for (let i = 0; i < data.length; i++) {
+              if (
+                data[i].detailfinishtime != "" &&
+                data[i].detailfinishtime < date
+              ) {
+                this.$api
+                  .updateDetailToCalibration({
+                    it_id: data[i].it_id,
+                  })
+                  .then((res) => {
+                    if (res.status == 200) {
+                      if (res.data.status == 200) {
+                      }
+                    }
+                  });
+              }
+            }
+          }
+        }
+      });
     },
   },
   watch: {

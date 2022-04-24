@@ -11,7 +11,7 @@
           flex-flow: row;
           border-top: 1px solid #7fffd4;
           align-items: center;
-          color: #ff00ff;
+          color: #668b8b;
           cursor: pointer;
         "
       >
@@ -81,7 +81,7 @@ export default {
     },
     deleteHoverStyle(data) {
       let dom = document.getElementsByClassName(data)[0];
-      dom.style.color = "#ff00ff";
+      dom.style.color = "#668B8B";
     },
     // 点击项目列表时
     itemClick(data, dataObj) {
@@ -232,13 +232,15 @@ export default {
   flex-flow: row;
   .leftList {
     flex: 1;
-    height: 100%;
+    // height: 100%;
     overflow: auto;
-    white-space: nowrap;
+    // white-space: nowrap;
     .listItem {
       height: 40px;
       font-size: 16px;
       padding-left: 20px;
+      padding-top: 10px;
+      padding-bottom: 10px;
       .listP,
       .listDetail {
         height: 100%;

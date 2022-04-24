@@ -83,7 +83,7 @@ export default {
   components: { Examine },
   data() {
     return {
-      visible: true,
+      visible: false,
       dataTable: [],
       dataTableAll: [],
       dataTableLength: 0,

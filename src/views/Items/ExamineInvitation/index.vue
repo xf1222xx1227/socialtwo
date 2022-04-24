@@ -11,7 +11,7 @@
           flex-flow: row;
           border-top: 1px solid #7fffd4;
           align-items: center;
-          color: #ff00ff;
+          color: #668b8b;
         "
       >
         <p
@@ -43,9 +43,9 @@
         <el-tab-pane label="专家邀请" name="first" class="tab_item">
           <Invitation :dataitem="dataitem" :dataitid="dataitem.it_id" />
         </el-tab-pane>
-        <el-tab-pane label="推荐邀请" name="second" class="tab_item">
+        <!-- <el-tab-pane label="推荐邀请" name="second" class="tab_item">
           推荐
-        </el-tab-pane>
+        </el-tab-pane> -->
         <el-tab-pane label="已邀请" name="third" class="tab_item">
           <Invitationed :dataitid="dataitem.it_id" />
         </el-tab-pane>
@@ -62,6 +62,7 @@ import Invitation from "./invitation.vue"; // 树和网格
 // import invitationDetail from "./invitationDetail.vue"; // 弃用
 import FinishFirst from "./finishFirst.vue"; // 结束初审
 import Invitationed from "./invitationed.vue"; // 已经邀请
+import Steps from "../../steps.vue";
 export default {
   components: {
     Details,
@@ -69,6 +70,7 @@ export default {
     // invitationDetail,
     FinishFirst,
     Invitationed,
+    Steps,
   },
   data() {
     return {
@@ -110,7 +112,7 @@ export default {
     },
     deleteHoverStyle(data) {
       let dom = document.getElementsByClassName(data)[0];
-      dom.style.color = "#ff00ff";
+      dom.style.color = "#668B8B"; //4D4D4D
       // dom.style.background = "#f5f5f5";
     },
     finishFirst(data) {
@@ -158,6 +160,8 @@ export default {
       height: 40px;
       font-size: 16px;
       padding-left: 20px;
+      padding-top: 10px;
+      padding-bottom: 10px;
       .listP,
       .listDetail {
         height: 100%;

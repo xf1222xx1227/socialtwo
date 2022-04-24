@@ -1,21 +1,21 @@
 <template>
   <div>
     <el-menu
-      default-active="/home"
+      default-active="/socialuserso"
       class="el-menu-vertical-demo style"
       background-color="#317f87"
       text-color="#fff"
       active-text-color="#ffd04b"
       router
     >
-      <el-menu-item index="/homeso">
+      <!-- <el-menu-item index="/homeso">
         <i class="el-icon-menu"></i>
         <span slot="title">首页</span>
-      </el-menu-item>
-      <!-- <el-menu-item index="/launch">
-        <i class="el-icon-circle-plus-outline"></i>
-        <span slot="title">项目发起</span>
       </el-menu-item> -->
+      <el-menu-item index="/socialuserso">
+        <i class="el-icon-position"></i>
+        <span slot="title">成员管理</span>
+      </el-menu-item>
 
       <el-submenu index="/itemsso">
         <template slot="title">
@@ -25,7 +25,7 @@
         <el-menu-item-group>
           <el-menu-item index="/itemsso/biddingso">
             <i class="el-icon-s-operation"></i>
-            <span slot="title">发布项目</span>
+            <span slot="title">发布统计</span>
           </el-menu-item>
           <el-menu-item index="/itemsso/firstExamineso">
             <i class="el-icon-cloudy"></i>
@@ -42,10 +42,7 @@
           </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-menu-item index="/socialuserso">
-        <i class="el-icon-position"></i>
-        <span slot="title">成员管理</span>
-      </el-menu-item>
+
       <el-menu-item index="/userso">
         <i class="el-icon-setting"></i>
         <span slot="title">个人中心</span>

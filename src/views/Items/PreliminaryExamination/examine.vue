@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    width="50%"
+    width="40%"
     title="项目初审"
     :visible.sync="visible"
     append-to-body
@@ -16,19 +16,26 @@
         :label-position="labelPosition"
         class="form"
       >
-        <!-- <div class="block">
-          <p class="blockmsg">审核结果</p>
-        </div> -->
         <el-row class="row" style="margin-top: 10px">
           <el-col :span="22" :offset="2" class="col">
             <el-form-item label="是否通过：" prop="pass" class="form_item">
-              <el-radio v-model="ruleForm.pass" label="1">通过</el-radio>
-              <el-radio v-model="ruleForm.pass" label="2">淘汰</el-radio>
+              <el-radio
+                v-model="ruleForm.pass"
+                label="1"
+                @change="passchange(ruleForm.pass)"
+                >通过</el-radio
+              >
+              <el-radio
+                v-model="ruleForm.pass"
+                label="2"
+                @change="passchange(ruleForm.pass)"
+                >淘汰</el-radio
+              >
             </el-form-item>
           </el-col>
         </el-row>
         <el-row class="row" style="margin-top: 10px">
-          <el-col :span="22" :offset="2" class="col">
+          <el-col :span="20" :offset="2" class="col">
             <el-form-item label="原因：" prop="reason" class="form_item">
               <el-input
                 type="textarea"
@@ -38,40 +45,8 @@
               ></el-input>
             </el-form-item>
           </el-col>
+          <el-col :span="2"></el-col>
         </el-row>
-        <!-- 
-        <div class="block">
-          <p class="blockmsg">确定细审各项评审占比</p>
-        </div>
-        <el-row class="row" style="margin-top: 10px">
-          <el-col :span="7" class="col">
-            <el-form-item
-              label="经济评审："
-              prop="rate_economics"
-              class="form_item slider"
-            >
-              <el-slider v-model="ruleForm.rate_economics"> </el-slider>
-            </el-form-item>
-          </el-col>
-          <el-col :span="7" :offset="1" class="col">
-            <el-form-item
-              label="技术评审："
-              prop="rate_technology"
-              class="form_item slider"
-            >
-              <el-slider v-model="ruleForm.rate_technology"></el-slider>
-            </el-form-item>
-          </el-col>
-          <el-col :span="7" :offset="1" class="col">
-            <el-form-item
-              label="综合评审："
-              prop="rate_comprehensive"
-              class="form_item slider"
-            >
-              <el-slider v-model="ruleForm.rate_comprehensive"> </el-slider>
-            </el-form-item>
-          </el-col>
-        </el-row> -->
       </el-form>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -83,13 +58,9 @@
 
 <script>
 import myFunctions from "@/myFunctions";
-// import myFunctions from "../../../../myFunctions";
-// import Invitation from "../../launch/invitation.vue";
-// import DetailsFiles from "./detailsFiles.vue";
-// import base from "../../../api/base";
+
 export default {
   props: ["datadetail"],
-  //   components: { Invitation, DetailsFiles },
 
   data() {
     return {
@@ -100,9 +71,6 @@ export default {
         ex_id: "",
         reason: "",
         pass: "1",
-        // rate_economics: "30",
-        // rate_technology: "60",
-        // rate_comprehensive: "10",
       },
       rules: {
         reason: [{ required: true, message: "请输入原因", trigger: "blur" }],
@@ -170,6 +138,18 @@ export default {
     // 取消键
     Cancel() {
       //   this.$emit("closeDialog", "关闭");
+    },
+    passchange(val) {
+      // if (val == 1) {
+      //   if (this.rules.pass) {
+      //     delete this.rules.reason;
+      //     console.log(this.rules);
+      //   }
+      // } else if (val == 2) {
+      //   this.rules.reason = [
+      //     { required: true, message: "请输入原因", trigger: "blur" },
+      //   ];
+      // }
     },
   },
   watch: {

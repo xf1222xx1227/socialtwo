@@ -150,9 +150,11 @@ export default {
         })
         .then((res) => {
           if (res.status == 200) {
+            // console.log(res);
             if (res.data.status == 200) {
               let data = res.data.result;
               this.dataCalibrationed = data;
+              // console.log(111, data);
               // console.log("项目定标信息", data);
             }
             this.getRank(itid);
@@ -167,6 +169,7 @@ export default {
           it_id: newval,
         })
         .then((res) => {
+          // console.log(111, res);
           if (res.status == 200) {
             if (res.data.status == 200) {
               let data = res.data.result;
@@ -247,12 +250,8 @@ export default {
   watch: {
     dataitid(newval, val) {
       this.getCalibrationed(newval);
-
-      // this.getRank(newval);
     },
-    visible(newval, val) {
-      // console.log(newval);
-    },
+    visible(newval, val) {},
     fresh(newval, val) {
       if (newval == "1") {
         for (let i = 0; i < this.dataList.length; i++) {

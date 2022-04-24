@@ -257,9 +257,15 @@ export default {
             if (res.data.status == 200) {
               this.dataFiles = xdata;
               this.$refs.dialogFiles.visible = true;
+            } else {
+              // console.log(111);
+              // this.$refs.dialogFiles.visible = true;
+              this.$message({
+                type: "info",
+                message: "暂无文件",
+                offset: 150,
+              });
             }
-          } else {
-            this.$refs.dialogFiles.visible = true;
           }
         });
     },

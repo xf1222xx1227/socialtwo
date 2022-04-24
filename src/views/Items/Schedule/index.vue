@@ -18,8 +18,10 @@
           </el-option>
         </el-select>
       </div>
-      <div class="textboxp"></div>
-      <!-- <div class="textboxp"></div> -->
+      <div class="textboxp">
+        <div class="p">接手专家：</div>
+        <div class="text">{{ dataexname }}</div>
+      </div>
       <div class="bt">
         <el-badge :value="badgeValue" class="item">
           <el-button
@@ -70,13 +72,6 @@
         align="center"
       >
       </el-table-column>
-      <!-- <el-table-column
-        prop="files"
-        label="文件列表"
-        header-align="center"
-        align="center"
-      >
-      </el-table-column> -->
 
       <el-table-column label="查看文件" align="center">
         <template slot-scope="scope">
@@ -97,7 +92,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- <Deatil ref="detail" :datadetail="dataDetail" /> -->
 
     <div class="pagination" style="text-align: center">
       <el-pagination
@@ -125,7 +119,6 @@ import myFunctions from "@/myFunctions";
 import DetailsFiles from "../Bidding/detailsFiles.vue";
 import FinishItem from "./finishitem.vue";
 
-// import Upload from "./upload.vue";
 export default {
   components: { DetailsFiles, FinishItem },
   data() {
@@ -134,6 +127,7 @@ export default {
       dataListAll: [],
       dataSelect: "",
       dataexid: "",
+      dataexname: "",
 
       disablebt: true,
 
@@ -176,6 +170,7 @@ export default {
               this.dataListAll = data;
               this.dataSelect = data[0].it_id;
               this.dataexid = data[0].ex_id;
+              this.dataexname = data[0].exname;
             }
           }
         });
@@ -209,6 +204,7 @@ export default {
     openDetailFiles(index, dataTable) {
       let data = dataTable[index];
       let uploadtime = data.time_schedule;
+      // console.log(111, data);
       this.dataFiles = [];
       this.$api
         .getSchedulesFiles({
@@ -217,14 +213,22 @@ export default {
           uploadtime: uploadtime,
         })
         .then((res) => {
+          console.log(res);
           if (res.status == 200) {
             let xdata = res.data.result;
             if (res.data.status == 200) {
               this.dataFiles = xdata;
+              // console.log(111);
               this.$refs.dialogFiles.visible = true;
+            } else {
+              // console.log(111);
+              // this.$refs.dialogFiles.visible = true;
+              this.$message({
+                type: "info",
+                message: "暂无文件",
+                offset: 150,
+              });
             }
-          } else {
-            this.$refs.dialogFiles.visible = true;
           }
         });
     },
@@ -368,6 +372,7 @@ export default {
         for (let i = 0; i < this.dataList.length; i++) {
           if (this.dataList[i].it_id == newval) {
             this.dataexid = this.dataList[i].ex_id;
+            this.dataexname = this.dataList[i].exname;
             this.getApplyFinishItem();
             break;
           }

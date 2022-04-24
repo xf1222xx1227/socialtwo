@@ -1,8 +1,8 @@
 <template>
   <div id="bid">
-    <div class="steps">
+    <!-- <div class="steps">
       <Steps :index="2" />
-    </div>
+    </div> -->
     <div class="search">
       <div class="textboxp">
         <div class="p">项目名称：</div>

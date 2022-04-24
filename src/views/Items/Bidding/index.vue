@@ -1,13 +1,18 @@
 <template>
   <div id="bidding">
     <div id="total">
-      <div class="steps" style="height: 50px; width: 100%">
+      <!-- <div class="steps" style="height: 50px; width: 100%">
         <Steps :index="1" />
-      </div>
+      </div> -->
       <div class="search">
         <div class="textboxp">
           <div class="p">项目名称：</div>
-          <el-input v-model="dataSearch.name" clearable class="text"></el-input>
+          <el-input
+            v-model="dataSearch.name"
+            clearable
+            class="text"
+            @keyup.enter.native="search"
+          ></el-input>
         </div>
         <div class="textboxp">
           <div class="p">研究方向：</div>
@@ -56,6 +61,7 @@
           label="项目名称"
           sortable="custom"
           header-align="center"
+          width="330"
         >
         </el-table-column>
         <el-table-column

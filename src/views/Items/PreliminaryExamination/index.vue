@@ -1,8 +1,8 @@
 <template>
   <div id="bid">
-    <div class="steps">
+    <!-- <div class="steps">
       <Steps :index="2" />
-    </div>
+    </div> -->
     <div class="search">
       <div class="textboxp">
         <div class="p">项目名称：</div>
@@ -212,7 +212,6 @@ export default {
           this.dataAllFirstTrial = [];
           if (res.data.status == 200) {
             let data = res.data.result;
-            // console.log(222, data);
             this.dataAllFirstTrial = data;
             if (number == 1) {
               this.filterItem(this.dataTableTotal, this.dataAllFirstTrial);
@@ -244,7 +243,6 @@ export default {
       this.dataTableAll = [];
       if (data.length > 0) {
         if (data2.length > 0) {
-          // let index = [];
           for (let i = 0; i < data.length; i++) {
             let ins = 0;
             for (let j = 0; j < data2.length; j++) {
@@ -339,14 +337,12 @@ export default {
     // 审核
     examine(index, dataTable) {
       let data = dataTable[index];
-      // console.log(111, data);
       this.dataExamine.it_id = data.it_id;
       this.dataExamine.name = data.name;
       this.dataExamine.ex_id = data.ex_id;
       this.dataExamine.rate_comprehensive = data.rate_comprehensive;
       this.dataExamine.rate_economics = data.rate_economics;
       this.dataExamine.rate_technology = data.rate_technology;
-      // console.log(111, data);
       this.$refs.examine.visible = true;
     },
     reFresh(val) {
@@ -366,10 +362,7 @@ export default {
   watch: {
     fresh(newval, val) {
       if (newval == "1") {
-        // console.log(111, newval);
         this.getAllFirstTrial(1);
-        // console.log(222, this.dataAllFirstTrial);
-        // this.filterItem(this.dataTableTotal, this.dataAllFirstTrial);
         this.fresh = "0";
       }
     },

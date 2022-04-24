@@ -178,7 +178,7 @@
             <div class="contentinfo contents">
               <div class="info">
                 <div class="text">未应答</div>
-                <div class="number">
+                <div class="number" @click="goto('examine')">
                   <el-badge :is-dot="examinenew != 0" class="item">
                     {{ examinenew }}
                   </el-badge>
@@ -191,6 +191,10 @@
               <div class="info">
                 <div class="text">不参与</div>
                 <div class="number">{{ examineunjoin }}</div>
+              </div>
+              <div class="info">
+                <div class="text">已过期</div>
+                <div class="number">{{ examineed }}</div>
               </div>
             </div>
             <div class="contenttotal content">
@@ -238,7 +242,9 @@ export default {
       examineinvitationtotal: 0, // 收到邀请的项目数量
       examinejoin: 0, // 参与审核
       examineunjoin: 0, // 不参与
+      examineed: 0, // 过期
       examinenew: 0, // 未应答项目数量
+      // examinenewnow: 0, // 未结束项目
       examinecounttotal: 0, // 审核记录数量
     };
   },
@@ -249,6 +255,7 @@ export default {
     this.getFirst();
     this.getDetail();
     this.getExamineInvitation();
+    // this.getExamineInvitationNow();
     this.getcalibration();
     this.getFinish();
     this.getExamineCount();
@@ -367,10 +374,29 @@ export default {
                   q3++;
                 }
               }
-              this.examinenew = q1;
+              // this.examinenew = q1;
               this.examinejoin = q2;
               this.examineunjoin = q3;
+              this.getExamineInvitationNow(q1);
             }
+          }
+        });
+    },
+    // 获取未完成的项目细审邀请(还能进入审核)
+    getExamineInvitationNow(q1) {
+      this.$api
+        .getInvitationExpertItems({
+          userid: this.exid,
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            let len = 0;
+            if (res.data.status == 200) {
+              let data = res.data.result;
+              len = data.length;
+            }
+            this.examinenew = len;
+            this.examineed = q1 - len;
           }
         });
     },

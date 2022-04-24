@@ -1,136 +1,454 @@
 <template>
   <div id="home">
-    <div id="total">
-      <el-form label-width="100px" :label-position="labelPosition" class="form">
-        <!-- 
-          ref: 获取dom元素
-          action: 必选参数，上传的地址
-          :on-preview：点击文件列表中已上传的文件时的钩子
-          on-remove：文件列表移除文件时的钩子
-          :before-remove：删除文件之前的钩子，参数为上传的文件和文件列表，若返回 false 或者返回 Promise 且被 reject，则停止删除
-          :on-exceed：文件超出个数限制时的钩子
-          :file-list：上传的文件列表, 例如: [{name: 'food.jpg', url: 'https://xxx.cdn.com/xxx.jpg'}]
-          multiple：选择多个文件
-          drag ：是否启用拖拽上传
-       -->
-        <el-upload
-          class="upload-demo"
-          ref="upload"
-          :action="url"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-          :auto-upload="false"
-          :on-success="successUpload"
-        >
-          <el-button slot="trigger" size="small" type="primary"
-            >选取文件</el-button
-          >
-          <el-button
-            style="margin-left: 10px"
-            size="small"
-            type="success"
-            @click="submitUpload"
-            >上传到服务器</el-button
-          >
-          <!-- <div slot="tip" class="el-upload__tip">
-            只能上传jpg/png文件，且不超过500kb
-          </div> -->
-        </el-upload>
-      </el-form>
-      <div>
-        <p>{{ imgurl }}</p>
-      </div>
-    </div>
-    <el-date-picker
-      v-model="value2"
-      type="daterange"
-      align="right"
-      unlink-panels
-      range-separator="至"
-      start-placeholder="开始日期"
-      end-placeholder="结束日期"
-      :picker-options="pickerOptions"
-    >
-    </el-date-picker>
-    <div>
-      <el-tag type="success"><i class="el-icon-check"></i></el-tag>
-    </div>
+    <el-row :gutter="12" class="row">
+      <el-col :span="8" class="col">
+        <el-card shadow="hover" class="card">
+          <div slot="header" class="clearfix">
+            <span class="cardtitle">我的发布</span>
+            <el-button
+              style="float: right; padding: 3px 0"
+              type="text"
+              @click="goto('bid')"
+              >前往</el-button
+            >
+          </div>
+          <div class="cardcontent">
+            <div class="contenttotal content">
+              <div class="text">总发布数：</div>
+              <div class="number">{{ bidtotal }}</div>
+            </div>
+            <div class="contentinfo contents">
+              <div class="info">
+                <div class="text">进行中</div>
+                <div class="number">{{ biding }}</div>
+              </div>
+              <div class="info">
+                <div class="text">已完成</div>
+                <div class="number">{{ bided }}</div>
+              </div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="8" class="col">
+        <el-card shadow="hover" class="card">
+          <div slot="header" class="clearfix">
+            <span class="cardtitle">初审统计</span>
+            <el-button
+              style="float: right; padding: 3px 0"
+              type="text"
+              @click="goto('first')"
+              >前往</el-button
+            >
+          </div>
+          <div class="cardcontent">
+            <div class="contenttotal content">
+              <div class="text">初审项目数：</div>
+              <div class="number">{{ firstitems }}</div>
+            </div>
+            <div class="contenttotal content">
+              <div class="text">初审记录数：</div>
+              <div class="number">{{ firsttotal }}</div>
+            </div>
+            <div class="contentinfo contents">
+              <div class="info">
+                <div class="text">待审</div>
+                <div class="number">{{ refirst }}</div>
+              </div>
+              <div class="info">
+                <div class="text">通过</div>
+                <div class="number">{{ firsted }}</div>
+              </div>
+              <div class="info">
+                <div class="text">不通过</div>
+                <div class="number">{{ unfirsted }}</div>
+              </div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="8" class="col">
+        <el-card shadow="hover" class="card">
+          <div slot="header" class="clearfix">
+            <span class="cardtitle">细审统计</span>
+            <el-button
+              style="float: right; padding: 3px 0"
+              type="text"
+              @click="goto('detail')"
+              >前往</el-button
+            >
+          </div>
+          <div class="cardcontent">
+            <div
+              class="contenttotal content"
+              style="border-bottom: 1px solid rgb(7, 191, 241)"
+            >
+              <div class="text">细审项目数：</div>
+              <div class="number">{{ detailtotal }}</div>
+            </div>
+            <div
+              class="contenttotal content"
+              style="border-bottom: 1px solid rgb(7, 191, 241)"
+            >
+              <div class="text">细审邀请专家数：</div>
+              <div class="number">{{ detailinvitation }}</div>
+            </div>
+            <div class="contentinfo contents">
+              <div class="info">
+                <div class="text">未应答</div>
+                <div class="number">
+                  {{ undetail }}
+                </div>
+              </div>
+              <div class="info">
+                <div class="text">接受</div>
+                <div class="number">{{ detailjoin }}</div>
+              </div>
+              <div class="info">
+                <div class="text">不接受</div>
+                <div class="number">{{ detailunjoin }}</div>
+              </div>
+              <div class="info">
+                <div class="text">已过期</div>
+                <div class="number">{{ detailed }}</div>
+              </div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row :gutter="12" class="row">
+      <el-col :span="8" class="col" style="overflow: scroll">
+        <el-card shadow="hover" class="card">
+          <div slot="header" class="clearfix">
+            <span class="cardtitle">进行中项目统计</span>
+            <el-button
+              style="float: right; padding: 3px 0"
+              type="text"
+              @click="goto('schedule')"
+              >前往</el-button
+            >
+          </div>
+          <div class="cardcontent">
+            <div
+              class="contenttotal content"
+              style="border-bottom: 1px solid rgb(7, 191, 241)"
+            >
+              <div class="text">进行中项目数：</div>
+              <div class="number">{{ scheduletotal }}</div>
+            </div>
+            <div class="list" :key="item.it_id" v-for="item in dataschedule">
+              <div class="name">{{ item.name }}</div>
+              <div class="schedules">{{ item.schedules }}%</div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="8" class="col">
+        <el-card shadow="hover" class="card">
+          <div slot="header" class="clearfix">
+            <span class="cardtitle">完成项目统计</span>
+            <el-button
+              style="float: right; padding: 3px 0"
+              type="text"
+              @click="goto('finish')"
+              >前往</el-button
+            >
+          </div>
+          <div class="cardcontent">
+            <div class="contenttotal content">
+              <div class="text">已完成数：</div>
+              <div class="number">{{ finishtotal }}</div>
+            </div>
+            <div class="contentinfo contents">
+              <div class="info">
+                <div class="text">按时完成</div>
+                <div class="number">{{ finishontime }}</div>
+              </div>
+              <div class="info">
+                <div class="text">超时完成</div>
+                <div class="number">{{ finishovertime }}</div>
+              </div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="8" class="col"></el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
-import base from "../../api/base";
 export default {
   data() {
     return {
-      labelPosition: "left",
-      fileList: [],
-      url: base.upload, // 图片地址服务器
-      imgurl: "",
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "最近一周",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "最近一个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "最近三个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-        ],
-      },
-      value2: "",
+      userid: "",
+
+      // 申报项目
+      bidtotal: 0,
+      biding: 0,
+      bided: 0,
+
+      // 初审
+      firstitems: 0, //初审项目数
+      firsttotal: 0, // 初审条数
+      refirst: 0, //待审
+      unfirsted: 0, // 初审不通过
+      firsted: 0, // 初审通过
+
+      // 细审
+      detailtotal: 0, // 细审项目
+      detailinvitation: 0, // 细审邀请
+      undetail: 0, // 未应答
+      detailjoin: 0, // 参与细审
+      detailunjoin: 0, // 不参与
+      detailed: 0, // 过期
+
+      // 正在完成
+      scheduletotal: 0, // 进行中项目数量
+      dataschedule: [],
+
+      // 完成项目
+      finishtotal: 0, // 完成总数
+      finishontime: 0, //按时完成
+      finishovertime: 0, // 超时完成
     };
   },
-  methods: {
-    // 点击上传按钮
-    submitUpload() {
-      this.$refs.upload.submit();
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    // 上传成功函数
-    successUpload(response, file, fileList) {
-      console.log("上传成功");
-      console.log(111, response);
-      // console.log(222, file);
-      // console.log(333, fileList);
-      this.imgurl = base.host + "/" + response.url.slice(7);
-      // console.log(444, this.imgurl);
-      // : "upload\1645962080571-班主任工作电子记录本(1)(1).docx";
-    },
-  },
-  computed: {
-    ...mapState(["userid"]),
-  },
-
   created() {
-    // console.log(111, this.userid);
+    this.userid = sessionStorage.getItem("userid");
+    this.getBidTotal();
+    this.getFirst();
+    this.getDetail();
+    this.getExamineInvitation();
+    this.getcalibration();
+    this.getFinish();
+    // this.getExamineCount();
+  },
+  methods: {
+    // 路由跳转
+    goto(val) {
+      if (val == "bid") {
+        this.$router.push({ path: "/items/bidding" });
+      } else if (val == "first") {
+        this.$router.push({ path: "/items/preliminaryexamination" });
+      } else if (val == "detail") {
+        this.$router.push({ path: "/items/detailedExamination" });
+      } else if (val == "schedule") {
+        this.$router.push({ path: "/items/schedule" });
+      } else if (val == "finish") {
+        this.$router.push({ path: "/items/finished" });
+      } else if (val == "examine") {
+        this.$router.push({ path: "/examine" });
+      }
+    },
+    // 获取社科成员总发布项目条数
+    getBidTotal() {
+      this.$api
+        .getOneBiddingUserBiddingItems({
+          userid: this.userid,
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            if (res.data.status == 200) {
+              this.bidtotal = res.data.result[0].count;
+              this.getBided();
+            }
+          }
+        });
+    },
+    // 获取社科成员完成项目数量
+    getBided() {
+      this.$api
+        .getOneSocialUserFinishItemsCount({
+          userid: this.userid,
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            if (res.data.status == 200) {
+              this.bided = res.data.result[0].count;
+            }
+          }
+          this.biding = this.bidtotal - this.bided;
+        });
+    },
+    // 获取初审情况
+    getFirst() {
+      this.$api
+        .getOneBiddingUserFirstCount({
+          userid: this.userid,
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            if (res.data.status == 200) {
+              let data = res.data.result;
+              this.firsttotal = data.length;
+              let q1 = 0;
+              let q2 = 0;
+              let q3 = 0;
+              let q4 = [];
+              for (let i = 0; i < data.length; i++) {
+                if (data[i].adopt == 0) {
+                  q1++;
+                } else if (data[i].adopt == 1) {
+                  q2++;
+                } else if (data[i].adopt == 2) {
+                  q3++;
+                }
+                let str = q4.join();
+                if (str.indexOf(data[i].it_id) == -1) {
+                  q4.push(data[i].it_id);
+                }
+              }
+              this.refirst = q1;
+              this.firsted = q2;
+              this.unfirsted = q3;
+              this.firstitems = q4.length;
+            }
+          }
+        });
+    },
+    // 获取细审项目情况
+    getDetail() {
+      this.$api
+        .getOneBiddingUserDetail({
+          userid: this.userid,
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            if (res.data.status == 200) {
+              let data = res.data.result;
+              this.detailtotal = data.length;
+            }
+          }
+        });
+    },
+    // 获取细审邀请数据
+    getExamineInvitation() {
+      this.$api
+        .getOneBiddingUserDetailInvitation({
+          userid: this.userid,
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            if (res.data.status == 200) {
+              let data = res.data.result;
+              this.detailinvitation = data.length;
+              let q1 = 0;
+              let q2 = 0;
+              let q3 = 0;
+              for (let i = 0; i < data.length; i++) {
+                if (data[i].state == 0) {
+                  q1++;
+                } else if (data[i].state == 1) {
+                  q2++;
+                } else if (data[i].state == 2) {
+                  q3++;
+                }
+              }
+              // this.examinenew = q1;
+              this.detailjoin = q2;
+              this.detailunjoin = q3;
+              this.getExamineInvitationNow(q1);
+            }
+          }
+        });
+    },
+    // 获取未完成的项目细审邀请(还能进入审核)
+    getExamineInvitationNow(q1) {
+      this.$api
+        .getOneBiddingUserInvitationNow({
+          userid: this.userid,
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            let len = 0;
+            if (res.data.status == 200) {
+              let data = res.data.result;
+              len = data.length;
+            }
+            this.undetail = len;
+            this.detailed = q1 - len;
+          }
+        });
+    },
+    // 获取正在进行项目数量
+    getcalibration() {
+      this.$api
+        .getOneBiddingUserScheduleItems({
+          userid: this.userid,
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            if (res.data.status == 200) {
+              let data = res.data.result;
+              this.scheduletotal = data.length;
+              this.getschedule(data);
+              // console.log(111, data);
+            }
+          }
+        });
+    },
+    // 获取正在进行项目进度
+    getschedule(xdata) {
+      this.$api
+        .getOneBiddingUserSchedule({
+          userid: this.userid,
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            this.dataschedule = [];
+            for (let i = 0; i < xdata.length; i++) {
+              xdata[i].schedules = 0;
+            }
+            if (res.data.status == 200) {
+              let data = res.data.result;
+              for (let i = 0; i < data.length; i++) {
+                for (let j = 0; j < xdata.length; j++) {
+                  if (data[i].it_id == xdata[j].it_id) {
+                    if (data[i].schedules > xdata[j].schedules) {
+                      xdata[j].schedules = data[i].schedules;
+                    }
+                    break;
+                  }
+                }
+              }
+            }
+            this.dataschedule = xdata;
+          }
+        });
+    },
+    // 获取完成项目
+    getFinish() {
+      this.$api
+        .getOneSocialUserFinishItems({
+          userid: this.userid,
+          pagesize: 1000,
+          pagenum: 1,
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            if (res.data.status == 200) {
+              let data = res.data.result;
+              this.finishtotal = data.length;
+              let q1 = 0;
+              let q2 = 0;
+              for (let i = 0; i < data.length; i++) {
+                if (data[i].finilly_time >= data[i].time_finilly) {
+                  q1++;
+                } else {
+                  q2++;
+                }
+              }
+              this.finishontime = q1;
+              this.finishovertime = q2;
+            }
+          }
+        });
+    },
+  },
+  // 进入页面时强制刷新
+  deactivated() {
+    this.$destroy();
   },
 };
 </script>
@@ -138,13 +456,106 @@ export default {
 <style lang="less" scoped>
 #home {
   width: 100%;
-  height: 100%;
-  border: 1px solid red;
-  #total {
-    width: 95%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 20px;
+  height: 92vh;
+  display: flex;
+  flex-flow: column;
+  overflow: auto;
+  .row {
+    flex: 1;
+    .col {
+      height: 100%;
+      padding: 10px;
+      .card {
+        height: 100%;
+        .clearfix {
+          .cardtitle {
+            font-size: 17px;
+            font-weight: bold;
+          }
+        }
+        .cardcontent {
+          .content {
+            height: 50px;
+            border-top: 1px solid rgb(7, 191, 241);
+            display: flex;
+            flex-flow: row;
+            align-items: center;
+
+            .text {
+              flex: 3;
+              font-size: 16px;
+            }
+            .number {
+              flex: 2;
+              font-size: 18px;
+            }
+          }
+          .contents {
+            height: 70px;
+            display: flex;
+            flex-flow: row;
+            border-top: 1px solid rgb(7, 191, 241);
+
+            .info {
+              flex: 1;
+              border-left: 1px solid rgb(7, 191, 241);
+              display: flex;
+              flex-flow: column;
+              .text {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 15px;
+              }
+              .number {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 18px;
+              }
+            }
+          }
+          .contents :nth-child(1) {
+            border: none;
+          }
+          // 正在进行项目列表样式
+          .list {
+            padding: 0px 10px;
+            // width: 90%;
+            height: 40px;
+            border-top: 1px solid rgb(157, 129, 144);
+            display: flex;
+            flex-flow: row;
+            align-items: center;
+            // justify-content: center;
+
+            .name {
+              flex: 3;
+              font-size: 15px;
+              text-align: center;
+              // border: 1px solid red;
+            }
+            .schedules {
+              flex: 2;
+              font-size: 18px;
+              text-align: center;
+            }
+          }
+          .list:nth-child(1) {
+            border: none;
+          }
+        }
+        .cardcontent :nth-child(1) {
+          border: none;
+        }
+      }
+    }
   }
 }
+// .el-card__body {
+//   padding: 10px;
+//   height: 100%;
+// }
 </style>

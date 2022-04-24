@@ -130,13 +130,13 @@ export default {
                 password: this.ruleForm.password1,
               })
               .then((res) => {
-                // console.log(res);
                 if (res.status == 200) {
                   this.$message({
                     type: "success",
                     message: "修改成功",
                     offset: 150,
                   });
+                  this.$emit("refresh", "1");
                   this.visible = false;
                 } else {
                   this.$message({

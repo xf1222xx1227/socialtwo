@@ -128,6 +128,47 @@ const api={
             params
         })
     },
+    // ----------------------------首页------------------------------
+    getOneBiddingUserBiddingItems(params){             
+        return axios.get(base.getOneBiddingUserBiddingItems,{
+            params
+        })
+    },
+    getOneBiddingUserFirstCount(params){             
+        return axios.get(base.getOneBiddingUserFirstCount,{
+            params
+        })
+    },
+    getOneBiddingUserDetail(params){            
+        return axios.get(base.getOneBiddingUserDetail,{
+            params
+        })
+    },
+    getOneBiddingUserDetailInvitation(params){             
+        return axios.get(base.getOneBiddingUserDetailInvitation,{
+            params
+        })
+    },
+    getOneBiddingUserInvitationNow(params){               
+        return axios.get(base.getOneBiddingUserInvitationNow,{
+            params
+        })
+    },
+    getOneBiddingUserScheduleItems(params){             
+        return axios.get(base.getOneBiddingUserScheduleItems,{
+            params
+        })
+    },
+    getOneBiddingUserSchedule(params){               
+        return axios.get(base.getOneBiddingUserSchedule,{
+            params
+        })
+    },
+
+
+
+
+
     //--------------------项目新增page-------------------------
     getResearchDirection(params){             
         return axios.get(base.getResearchDirection,{
@@ -514,8 +555,17 @@ const api={
     },
 
 
-
-
+    // -------------------------项目完成页面---------------------------
+    updateSocialUserInfo(params){
+        return axios.get(base.updateSocialUserInfo,{
+            params
+        })
+    },
+    updateSocialUserCancellation(params){
+        return axios.get(base.updateSocialUserCancellation,{
+            params
+        })
+    },
 
 
 
@@ -552,11 +602,7 @@ const api={
             params
         })
     },
-    // updateBidItem(params){               
-    //     return axios.get(base.updateBidItem,{
-    //         params
-    //     })
-    // },
+
 
 
 
@@ -1050,16 +1096,6 @@ const api={
             params
         })
     },
-    // updateSocialPassword(params){
-    //     return axios.get(base.updateSocialPassword,{
-    //         params
-    //     })
-    // },
-    // updateSocialPassword(params){
-    //     return axios.get(base.updateSocialPassword,{
-    //         params
-    //     })
-    // },
 
 
 
@@ -1077,6 +1113,33 @@ const api={
         })
     },
 
+
+
+
+
+
+
+    // -------------------------个人中心-------------------------------
+    updateAdminInfo(params){
+        return axios.get(base.updateAdminInfo,{
+            params
+        })
+    },
+    updateAdminPassword(params){
+        return axios.get(base.updateAdminPassword,{
+            params
+        })
+    },
+    // getOneSocialUser(params){
+    //     return axios.get(base.getOneSocialUser,{
+    //         params
+    //     })
+    // },
+    // updateSocialUserPassword(params){
+    //     return axios.get(base.updateSocialUserPassword,{
+    //         params
+    //     })
+    // },
 
 
 

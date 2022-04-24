@@ -20,10 +20,10 @@
         @keyup.enter.native="login"
       ></el-input>
       <div class="textbox mybt">
-        <!-- <el-radio v-model="radio" label="1">社科成员</el-radio>
+        <el-radio v-model="radio" label="1">社科成员</el-radio>
         <el-radio v-model="radio" label="2">社科账户</el-radio>
         <el-radio v-model="radio" label="3">社科专家</el-radio>
-        <el-radio v-model="radio" label="4">管理员</el-radio> -->
+        <el-radio v-model="radio" label="4">管理员</el-radio>
       </div>
       <div class="textbox mybt">
         <el-button
@@ -197,9 +197,6 @@ export default {
           if (res.status == 200) {
             this.userdata = [];
             this.isorno = 1;
-            // for (let i = 0; i < res.data.result.length; i++) {
-            //   this.userdata.push(res.data.result[i]);
-            // }
             this.userdata = res.data.result;
             for (let i = 0; i < this.userdata.length; i++) {
               if (this.userdata[i].b_id == this.userid) {
@@ -217,7 +214,7 @@ export default {
                   sessionStorage.setItem("userid", datauser.userid);
                   sessionStorage.setItem("usertype", datauser.usertype);
                   sessionStorage.setItem("usertypename", datauser.usertypename);
-                  this.$router.push({ path: "/homeso" });
+                  this.$router.push({ path: "/socialuserso" });
                 }
               }
             }

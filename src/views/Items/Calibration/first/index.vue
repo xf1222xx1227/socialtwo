@@ -46,7 +46,7 @@
             flex-flow: row;
             border-top: 1px solid #7fffd4;
             align-items: center;
-            color: #ff00ff;
+            color: #668b8b;
             cursor: pointer;
           "
         >
@@ -222,7 +222,7 @@ export default {
     },
     deleteHoverStyle(data) {
       let dom = document.getElementsByClassName(data)[0];
-      dom.style.color = "#ff00ff";
+      dom.style.color = "#668B8B";
     },
     finishExamine(data) {
       this.datafinish = data;
@@ -339,12 +339,14 @@ export default {
     .left {
       flex: 1;
       overflow: auto;
-      white-space: nowrap;
+      // white-space: nowrap;
       border-right: 1px solid blue;
       .listItem {
         height: 40px;
         font-size: 16px;
         padding-left: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
         .listP,
         .listDetail {
           height: 100%;
