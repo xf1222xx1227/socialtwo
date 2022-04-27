@@ -1,7 +1,66 @@
 const myFunctions={
+  // 获取课题研究类型
+  gettopicresearchtype(){
+    let data=[
+      {id:1,name:"应用性研究课题"},
+      {id:2,name:"经验研究性课题"},
+      {id:3,name:"实验性课题"}
+    ];
+    return data;
+  },
+  // 获取课题申报类型
+  gettopicdeclaretype(){
+    let data=[
+      {id:1,name:"基础理论类"},
+      {id:2,name:"应用理论类"}
+      // {id:3,name:"实验性课题"}
+    ];
+    return data;
+  },
+  gettopicgone(){
+    let data=[
+      {id:1,name:"公开出版"},
+      {id:2,name:"公开发表"},
+      {id:3,name:"提交相关部门"}
+    ];
+    return data;
+  },
+  getNewDeclareId(data){
+    let len = data.length;
+    let result="";
+    if(len<15){
+      result = data+"0001";
+    }else{
+      let left = data.substring(0,13);
+      let right = data.substring(13,17);
+      // console.log(111,left,right);
+      right = parseInt(right);
+      right +=1;
+      right = right+"";
+      for(let i=right.length;i<4;i++){
+        right = "0" +right;
+      }
+      result = left + right;
+    }
+    return result;
+},
+
+
+
+
+
+
+
+
+
     // new Date()转换为年月日
     newDateToDate(date) {
-        date=new Date(date);
+        if(date){
+          date=new Date(date);
+        }else{
+          var date = new Date();
+        }
+        
         let year = date.getFullYear();
         let month = date.getMonth() + 1;
         let day = date.getDate();
@@ -15,7 +74,11 @@ const myFunctions={
     },
     // new Date()转换为年月日时分秒
     newDateToDatetime(date) {
-        date=new Date(date);
+        if(date){
+          date=new Date(date);
+        }else{
+          var date = new Date();
+        }
         let year = date.getFullYear();
         let month = date.getMonth() + 1;
         let day = date.getDate();
@@ -366,14 +429,37 @@ const myFunctions={
       }
       return datenext;
     },
-
-
-    
     getLastDay(date){
       date = new Date(date);
       let day = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
       return day;
-    }
+    },
+
+    deepClone(obj, newObj) {
+      var newObj = newObj || {};
+      for (let key in obj) {
+          if (typeof obj[key] == 'object') {
+              newObj[key] = (obj[key].constructor === Array) ? [] : {}
+              deepClone(obj[key], newObj[key]);
+          } else {
+              newObj[key] = obj[key]
+          }
+      }
+      return newObj;
+    },
+    // 文件大小转换
+    filterfilesize(size) {
+      let sizes = "";
+      if (size >= 1000000) {
+        sizes = (size / 1000000).toFixed(2) + "MB";
+      } else if (size >= 1000) {
+        sizes = (size / 1000).toFixed(0) + "KB";
+      } else {
+        sizes = size / 1000 + "kb";
+      }
+      return sizes;
+    },
+    
 
    
 }

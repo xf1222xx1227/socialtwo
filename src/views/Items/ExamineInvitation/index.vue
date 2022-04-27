@@ -191,6 +191,6 @@ export default {
 }
 /* 设置滚动条的样式 */
 ::-webkit-scrollbar {
-  display: none; // 隐藏滚动条
+  // display: none; // 隐藏滚动条
 }
 </style>

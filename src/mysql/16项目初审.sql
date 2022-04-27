@@ -11,6 +11,11 @@ create table first_trial
    primary key (ex_id, it_id)
 )comment = '初审表';
 */
+
+select * from first_trial order by it_id;
+
+
+
 #	insert into first_trial values
 # ("S00000","XM20220102001",0,"","",""),
 # 	("S00000","XM20220102003",1,"思路清晰","u00000","2022-03-13 13:45:46"),
@@ -288,7 +293,7 @@ insert into first_trial (ex_id,it_id,adopt,reason,userid,time_examine) values ('
 
 
 
-select * from first_trial order by it_id;
+# select * from first_trial order by it_id;
 
 
 

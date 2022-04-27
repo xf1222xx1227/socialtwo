@@ -1,5 +1,92 @@
 
 
+select a.* from item_state a join finish_item b where a.it_id = b.it_id and a.state =7;
+
+
+
+select * from finish_item a join calibration b 
+        where a.it_id = b.it_id and a.userid = 'u00000' and b.state=1 order by a.it_id;
+
+
+select * from finish_item order by it_id;
+
+select it_id,ex_id,count(*) as count from finish_item group by it_id order by it_id;
+
+
+
+select * 
+        from item_state c join finish_item d 
+        where  c.it_id = d.it_id
+        and d.userid = 'u00000' and c.state = 7 
+        ;
+        
+        
+select a.*  
+        from release_items a  join item_state c join finish_item d join calibration e 
+        where  a.it_id = c.it_id and a.it_id = d.it_id 
+        and a.it_id = e.it_id and e.userid = 'u00000' and e.state = 1 
+        and d.userid = 'u00000' and c.state = 7 
+        order by d.finilly_time desc ;        
+        
+select * from calibration where state=1 order by it_id;
+
+
+
+
+
+
+       
+select * from finish_item;
+select count(*) from item_state where state=7;
+
+
+
+
+select a.* from item_state a where a.state =7 
+and a.it_id not in (select it_id from finish_item);
+
+select * from finish_first_trial where it_id = "XM20200102009";
+        
+        
+        
+        
+        
+select a.*,count(*) as count from bidding_user a join bidding b join finish_item c 
+        where a.b_id = b.b_id and b.b_id = 'b00000000' and a.userid = c.userid 
+        group by a.userid ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+select count(*) as count  
+        from release_items a join research_direction b join item_state c join finish_item d 
+        join bidding_user f join bidding g 
+        where a.type = b.re_id and a.it_id = c.it_id and a.it_id = d.it_id
+        and d.ex_id = 'S00004' 
+        and a.userid = f.userid and f.b_id = g.b_id ;
+        
+select c.state,a.*,b.name as re_name,d.finilly_time,e.budget,f.username,g.name as bname 
+        from release_items a join research_direction b join item_state c join finish_item d join calibration e 
+        join bidding_user f join bidding g 
+        where a.type = b.re_id and a.it_id = c.it_id and a.it_id = d.it_id and a.it_id = e.it_id and e.ex_id = 'S00004' 
+        and a.userid = f.userid and f.b_id = g.b_id 
+        and d.ex_id ="S00004";
+
+
+
+
+
+
+
 
 
 

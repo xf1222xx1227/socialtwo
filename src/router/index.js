@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 import Login from '../views/login/Login.vue'
 import Register from '../views/login/Register.vue'
+import Registerco from '../views/login/Registercompany.vue'
 
 // 社科用户
 import Layout from '../views/layout/Layout.vue'
@@ -34,7 +35,7 @@ import Layoutex from '../viewExpert/layout/Layout.vue'
 import Homeex from '../viewExpert/home/home.vue'
 import Bidex from '../viewExpert/bid/index.vue'
 import Examineex from '../viewExpert/myexamine/index.vue'
-import Userex from '../viewExpert/users/index.vue'
+
 import Itemsex from '../viewExpert/Items/index.vue'
 import Biddingex from "../viewExpert/Items/Bidding/index.vue"
 import DetailedExaminationex from '../viewExpert/Items/DetailedExamination/index.vue'
@@ -42,6 +43,10 @@ import PreliminaryExaminationex from "../viewExpert/Items/PreliminaryExamination
 import Calibrationex from '../viewExpert/Items/Calibration/index.vue'
 import Scheduleex from '../viewExpert/Items/Schedule/index.vue'
 import Finishedex from '../viewExpert/Items/Finished/index.vue'
+
+import Userex from '../viewExpert/users/index.vue'
+import Basicex from '../viewExpert/users/basic/index.vue'
+import Experienceex from '../viewExpert/users/experience/index.vue'
 
 // 管理员
 import Layoutad from '../viewAdmin/layout/Layout.vue'
@@ -64,6 +69,11 @@ const routes = [
     path:'/register',
     name:'register',
     component:Register
+  },
+  {
+    path:'/registerco',
+    name:'registerco',
+    component:Registerco
   },
   // 社科用户端口
   {
@@ -169,7 +179,7 @@ const routes = [
       }
     ]
   },
-  // 专家端口
+  // 用户端口
   {
     path:'/Layoutex',
     component: Layoutex,
@@ -220,12 +230,32 @@ const routes = [
       name:'examineex',
       component:Examineex
     },
-    
     {
       path:'/userex',
-      name:'Userex',
-      component:Userex
-    },]
+      name:'userex',
+      component:Userex,
+      redirect:'/userex/basicex',
+      children:[
+        {
+          path:'basicex',
+          name:'basicex',
+          component:Basicex
+        },{
+          path:'experienceex',
+          name:'experienceex',
+          component:Experienceex
+        },
+        
+      ]
+    },
+    
+    // {
+    //   path:'/userex',
+    //   name:'Userex',
+    //   component:Userex
+    // },
+  
+  ]
   },
   // 管理员端口
   {

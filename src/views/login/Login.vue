@@ -20,9 +20,9 @@
         @keyup.enter.native="login"
       ></el-input>
       <div class="textbox mybt">
-        <el-radio v-model="radio" label="1">社科成员</el-radio>
-        <el-radio v-model="radio" label="2">社科账户</el-radio>
-        <el-radio v-model="radio" label="3">社科专家</el-radio>
+        <el-radio v-model="radio" label="1">浙江省账户</el-radio>
+        <el-radio v-model="radio" label="2">单位</el-radio>
+        <el-radio v-model="radio" label="3">用户</el-radio>
         <el-radio v-model="radio" label="4">管理员</el-radio>
       </div>
       <div class="textbox mybt">
@@ -57,126 +57,54 @@ export default {
       userid: "S00000",
       radio: "3",
 
+      // userid: "C00000",
+      // radio: "1",
+
       // userid: "A00",
       // radio: "4",
 
       password: "1",
       userdata: [],
       isorno: 1,
-      dataExpert: [],
+      dataUsers: [],
     };
   },
   created() {
-    this.$api.getAllExpertPersonal({}).then((res) => {
+    this.$api.getUsers({}).then((res) => {
       if (res.status == 200) {
-        if (res.data.status == 200) {
-          this.dataExpert = res.data.result;
-        }
-      }
-    });
-    // 项目投标结束后转成初审状态
-    // myFunctions.bidToFirst();
-    let date = myFunctions.newDateToDatetime(new Date());
-    this.$api.getAllBiddingItems({}).then((res) => {
-      if (res.status == 200) {
-        if (res.data.status == 200) {
-          let data = res.data.result;
-          for (let i = 0; i < data.length; i++) {
-            if (data[i].time_end < date) {
-              this.$api
-                .updateBiddindToPre({
-                  it_id: data[i].it_id,
-                })
-                .then((res) => {
-                  if (res.status == 200) {
-                    if (res.data.status == 200) {
-                    }
-                  }
-                });
-            }
-          }
-        }
-      }
-    });
-    // 初审结束进入细审
-    // myFunctions.firstToDetail();
-    this.$api.getFinishFirstTrial({}).then((res) => {
-      if (res.status == 200) {
-        if (res.data.status == 200) {
-          let data = res.data.result;
-          for (let i = 0; i < data.length; i++) {
-            if (data[i].finishtime != "" && data[i].finishtime < date) {
-              this.$api
-                .updateBiddindPreToDetail({
-                  it_id: data[i].it_id,
-                })
-                .then((res) => {
-                  if (res.status == 200) {
-                    if (res.data.status == 200) {
-                    }
-                  }
-                });
-            }
-          }
-        }
-      }
-    });
-    // 细审结束变成定标项目
-    // myFunctions.detailToCalibration();
-    this.$api.getFinishFirstTrial({}).then((res) => {
-      if (res.status == 200) {
-        if (res.data.status == 200) {
-          let data = res.data.result;
-          for (let i = 0; i < data.length; i++) {
-            if (
-              data[i].detailfinishtime != "" &&
-              data[i].detailfinishtime < date
-            ) {
-              this.$api
-                .updateDetailToCalibration({
-                  it_id: data[i].it_id,
-                })
-                .then((res) => {
-                  if (res.status == 200) {
-                    if (res.data.status == 200) {
-                    }
-                  }
-                });
-            }
-          }
-        }
+        let data = res.data.result;
+        this.dataUsers = data;
       }
     });
   },
   methods: {
     login() {
-      // 社科成员
+      // 社科
       if (this.radio == "1") {
-        this.$api.getbiduserList({}).then((res) => {
+        this.$api.getProvinceSocial({}).then((res) => {
           if (res.status == 200) {
             this.userdata = [];
             this.isorno = 1;
+            // console.log(res);
             for (let i = 0; i < res.data.result.length; i++) {
               this.userdata.push(res.data.result[i]);
             }
             for (let i = 0; i < this.userdata.length; i++) {
-              if (this.userdata[i].userid == this.userid) {
+              if (this.userdata[i].id == this.userid) {
                 let datauser = {};
                 datauser.userid = this.userid;
                 datauser.usertype = this.radio;
-                datauser.usertypename = "社科下属";
+                datauser.usertypename = "省社科";
 
                 if (this.userdata[i].password != this.password) {
                   this.$message.error("密码出错了！");
                   this.isorno = 2;
                   break;
                 } else {
-                  // vuex传值；
-                  // this.$store.commit("getUserid", this.userid);
-                  // this.$store.commit("getUserType", "社科下属");
-                  this.isorno = 2;
+                  this.isorno = 3;
                   sessionStorage.setItem("userdata", datauser);
                   sessionStorage.setItem("userid", datauser.userid);
+                  // console.log(2222, datauser.userid);
                   sessionStorage.setItem("usertype", datauser.usertype);
                   sessionStorage.setItem("usertypename", datauser.usertypename);
                   this.$router.push({ path: "/home" });
@@ -226,48 +154,28 @@ export default {
           }
         });
       }
-      // 专家
+      // 用户
       else if (this.radio == "3") {
         this.userdata = [];
         this.isorno = 1;
-        this.userdata = this.dataExpert;
+        this.userdata = this.dataUsers;
         for (let i = 0; i < this.userdata.length; i++) {
           if (this.userdata[i].ex_id == this.userid) {
             let datauser = {};
             datauser.userid = this.userid;
             datauser.usertype = this.radio;
-            datauser.usertypename = "社科专家";
+            datauser.usertypename = "用户";
             if (this.userdata[i].password != this.password) {
               this.$message.error("密码出错了！");
               this.isorno = 2;
               break;
             } else {
-              if (this.userdata[i].cancellation_time != "") {
-                this.$message({
-                  type: "error",
-                  message: "账号已注销",
-                  offset: 150,
-                });
-              } else if (this.userdata[i].frozen != "") {
-                this.$alert(
-                  `此账户已被管理员冻结</br>
-                  冻结时间为：<b>${this.userdata[i].frozen}</b>
-                  冻结原因为：${this.userdata[i].frozen_reason}`,
-                  "冻结提醒",
-                  {
-                    dangerouslyUseHTMLString: true,
-                    confirmButtonText: "收到",
-                    cancelButtonText: "关闭",
-                  }
-                ).then(() => {});
-              } else {
-                this.isorno = 3;
-                sessionStorage.setItem("userdata", datauser);
-                sessionStorage.setItem("userid", datauser.userid);
-                sessionStorage.setItem("usertype", datauser.usertype);
-                sessionStorage.setItem("usertypename", datauser.usertypename);
-                this.$router.push({ path: "/homeex" });
-              }
+              this.isorno = 3;
+              sessionStorage.setItem("userdata", datauser);
+              sessionStorage.setItem("userid", datauser.userid);
+              sessionStorage.setItem("usertype", datauser.usertype);
+              sessionStorage.setItem("usertypename", datauser.usertypename);
+              this.$router.push({ path: "/homeex" });
             }
             break;
           }
@@ -313,20 +221,26 @@ export default {
       }
     },
     register() {
-      this.$router.push({ path: "/register" });
+      // this.$router.push({ path: "/register" });
+      this.$router.push({ path: "/registerco" });
     },
   },
 
   watch: {
     userid(newval, val) {
-      if (newval[0] == "u") {
+      // if (newval[0] == "u") {
+      //   this.radio = "1";
+      // } else if (newval[0] == "b") {
+      //   this.radio = "2";
+      // } else if (newval[0] == "S") {
+      //   this.radio = "3";
+      // } else if (newval[0] == "A") {
+      //   this.radio = "4";
+      // }
+      if (newval == "C00000") {
         this.radio = "1";
-      } else if (newval[0] == "b") {
-        this.radio = "2";
       } else if (newval[0] == "S") {
         this.radio = "3";
-      } else if (newval[0] == "A") {
-        this.radio = "4";
       }
     },
   },

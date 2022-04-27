@@ -24,17 +24,17 @@
       <el-submenu index="/items">
         <template slot="title">
           <i class="el-icon-location"></i>
-          <span>我的项目</span>
+          <span>我的课题</span>
         </template>
         <el-menu-item-group>
           <el-menu-item index="/items/bidding">
             <i class="el-icon-s-operation"></i>
-            <span slot="title">招标项目</span>
+            <span slot="title">招标课题</span>
           </el-menu-item>
-          <el-menu-item index="/items/preliminaryexamination">
+          <!-- <el-menu-item index="/items/preliminaryexamination">
             <i class="el-icon-cloudy"></i>
             <span slot="title">申报初审</span>
-          </el-menu-item>
+          </el-menu-item> -->
           <el-menu-item index="/items/examineinvition">
             <i class="el-icon-edit"></i>
             <span slot="title">细审专家邀请</span>

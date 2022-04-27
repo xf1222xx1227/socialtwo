@@ -54,8 +54,23 @@ body {
     width: 50%;
 }
 
+/* .el-table--scrollable-x .el-table__body-wrapper {
+    overflow-x: auto;
+  } */
+
 
 /* Descriptions 描述列表设置标题与内容的间隔 */
 .el-descriptions__header {
     margin-bottom: 10px;
 }
+
+
+/* .el-table{
+    position: absolute; width: auto; max-width: none;
+} */
+/* .el-table__body-wrapper {
+    overflow: scroll;
+  }
+  .el-table--scrollable-x .el-table__body-wrapper{
+    overflow: scroll;
+  } */

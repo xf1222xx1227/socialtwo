@@ -27,7 +27,7 @@ create table expert_personal
    frozen						varchar(20),			# 冻结时间
    frozen_reason				varchar(200),			# 冻结原因
    primary key (ex_id)
-)comment = '学者信息表';
+)comment = '用户信息表';
 
 insert into expert_personal values
 ("S00000","张三00","1","H000","2000-11-19","R000","博士研究生","D000","10101","13543678456","45436356@qq.com",330000,330100,330101,"白杨街道","中国移动浙江分公司",1,1,"","2022-02-01","","",""),
@@ -107,8 +107,90 @@ insert into expert_personal values
 ("S00074","张三124","1","H999","2000-12-19","R012","博士研究生","D012","#","13543678456","45436356@qq.com",110000,110100,999999,"","字节跳动",1,1,"","2022-02-01","","","");
 */
 
-# update expert_personal set password = "1" where ex_id = "S00074";
+/*
 
+# 改名
+update expert_personal set name = '高春梅' where ex_id = 'S00000';
+update expert_personal set name = '江勇' where ex_id = 'S00001';
+update expert_personal set name = '白瑞发' where ex_id = 'S00002';
+update expert_personal set name = '董军超' where ex_id = 'S00003';
+update expert_personal set name = '常继青' where ex_id = 'S00004';
+update expert_personal set name = '宋守军' where ex_id = 'S00005';
+update expert_personal set name = '曾其育' where ex_id = 'S00006';
+update expert_personal set name = '周晓霞' where ex_id = 'S00007';
+update expert_personal set name = '陈秋生' where ex_id = 'S00008';
+update expert_personal set name = '孙志刚' where ex_id = 'S00009';
+update expert_personal set name = '梁桂梅' where ex_id = 'S00010';
+update expert_personal set name = '张彦欣' where ex_id = 'S00011';
+update expert_personal set name = '覃章平' where ex_id = 'S00012';
+update expert_personal set name = '高勋金' where ex_id = 'S00013';
+update expert_personal set name = '李文建' where ex_id = 'S00014';
+update expert_personal set name = '朱文芳' where ex_id = 'S00015';
+update expert_personal set name = '何晓兵' where ex_id = 'S00016';
+update expert_personal set name = '李景峰' where ex_id = 'S00017';
+update expert_personal set name = '陈宏斌' where ex_id = 'S00018';
+update expert_personal set name = '金国栋' where ex_id = 'S00019';
+update expert_personal set name = '马桂英' where ex_id = 'S00020';
+update expert_personal set name = '韩晨兴' where ex_id = 'S00021';
+update expert_personal set name = '傅建平' where ex_id = 'S00022';
+update expert_personal set name = '陈锡凯' where ex_id = 'S00023';
+update expert_personal set name = '王振清' where ex_id = 'S00024';
+update expert_personal set name = '张利东' where ex_id = 'S00025';
+update expert_personal set name = '李秀华' where ex_id = 'S00026';
+update expert_personal set name = '张锦红' where ex_id = 'S00027';
+update expert_personal set name = '吕光娥' where ex_id = 'S00028';
+update expert_personal set name = '夏楠' where ex_id = 'S00029';
+update expert_personal set name = '严武松' where ex_id = 'S00030';
+update expert_personal set name = '李晓杰' where ex_id = 'S00031';
+update expert_personal set name = '史文辉' where ex_id = 'S00032';
+update expert_personal set name = '田迎利' where ex_id = 'S00033';
+update expert_personal set name = '郭春霞' where ex_id = 'S00034';
+update expert_personal set name = '董义博' where ex_id = 'S00035';
+update expert_personal set name = '宋志文' where ex_id = 'S00036';
+update expert_personal set name = '周丽红' where ex_id = 'S00037';
+update expert_personal set name = '杨富凯' where ex_id = 'S00038';
+update expert_personal set name = '张占民' where ex_id = 'S00039';
+update expert_personal set name = '祁玉良' where ex_id = 'S00040';
+update expert_personal set name = '武利军' where ex_id = 'S00041';
+update expert_personal set name = '苏秋萍' where ex_id = 'S00042';
+update expert_personal set name = '张庆华' where ex_id = 'S00043';
+update expert_personal set name = '张忠阳' where ex_id = 'S00044';
+update expert_personal set name = '吕海凤' where ex_id = 'S00045';
+update expert_personal set name = '李莉' where ex_id = 'S00046';
+update expert_personal set name = '陶小敏' where ex_id = 'S00047';
+update expert_personal set name = '杨银生' where ex_id = 'S00048';
+update expert_personal set name = '杨莉嘉' where ex_id = 'S00049';
+update expert_personal set name = '樊利星' where ex_id = 'S00050';
+update expert_personal set name = '罗炳恒' where ex_id = 'S00051';
+update expert_personal set name = '郭利妗' where ex_id = 'S00052';
+update expert_personal set name = '杨海银' where ex_id = 'S00053';
+update expert_personal set name = '黄智勇' where ex_id = 'S00054';
+update expert_personal set name = '刘建伟' where ex_id = 'S00055';
+update expert_personal set name = '薛松' where ex_id = 'S00056';
+update expert_personal set name = '高明杰' where ex_id = 'S00057';
+update expert_personal set name = '梦虹桥' where ex_id = 'S00058';
+update expert_personal set name = '宋华幸' where ex_id = 'S00059';
+update expert_personal set name = '杨爱民' where ex_id = 'S00060';
+update expert_personal set name = '严肃' where ex_id = 'S00061';
+update expert_personal set name = '赵克宁' where ex_id = 'S00062';
+update expert_personal set name = '范玉平' where ex_id = 'S00063';
+update expert_personal set name = '陈延权' where ex_id = 'S00064';
+update expert_personal set name = '邓景芬' where ex_id = 'S00065';
+update expert_personal set name = '林鹏' where ex_id = 'S00066';
+update expert_personal set name = '葛云龙' where ex_id = 'S00067';
+update expert_personal set name = '蔺海丰' where ex_id = 'S00068';
+update expert_personal set name = '何煦' where ex_id = 'S00069';
+update expert_personal set name = '柳雄伟' where ex_id = 'S00070';
+update expert_personal set name = '陈思艳' where ex_id = 'S00071';
+update expert_personal set name = '万梦菊' where ex_id = 'S00072';
+update expert_personal set name = '柯月财' where ex_id = 'S00073';
+update expert_personal set name = '邓守玉' where ex_id = 'S00074';
+
+
+*/
+
+# update expert_personal set password = "1" where ex_id = "S00074";
+use social;
 select * from expert_personal;
 
 

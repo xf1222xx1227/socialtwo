@@ -1,188 +1,208 @@
 <template>
-  <div id="bid">
-    <!-- 页面内容 -->
-    <div id="leftTree">
-      <el-tree
-        :data="dataTree"
-        :props="defaultProps"
-        :highlight-current="true"
-        node-key="id"
-        :default-expanded-keys="['all']"
-        @node-click="handleNodeClick"
-        class="tree"
-      ></el-tree>
-    </div>
-    <div id="rightTable">
-      <!-- <div class="steps">
-        <Steps :index="1" />
-      </div> -->
-      <div class="search">
-        <div class="textboxp">
-          <div class="p">项目名称：</div>
-          <el-input
-            v-model="dataSearch.name"
-            clearable
-            class="text"
-            @keyup.enter.native="search"
-          ></el-input>
-        </div>
-        <div class="textboxp">
-          <div class="p"><!--研究方向：--></div>
-        </div>
-        <div class="textboxp">
-          <div class="p"><!--项目名称：--></div>
-          <!-- <el-input v-model="dataSearch.name" clearable class="text"></el-input> -->
-          <div class="text"></div>
-        </div>
-        <div class="bt">
-          <el-button type="primary" @click="search" icon="el-icon-search" round
-            >搜索</el-button
+  <div id="bidding">
+    <div id="total">
+      <el-row class="row">
+        <el-col :span="5" class="col">
+          <div class="left" style="height: 100%">
+            <el-tree
+              :data="treedata"
+              :props="defaultProps"
+              @node-click="handleNodeClick"
+              node-key="id"
+              :default-expanded-keys="['all']"
+              highlight-current
+              class="tree"
+            ></el-tree>
+          </div>
+        </el-col>
+        <el-col :span="19" class="col">
+          <div class="search" style="height: 10%">
+            <div class="textboxp">
+              <div class="p">课题主题：</div>
+              <el-input
+                v-model="dataSearch.name"
+                clearable
+                class="text"
+                @keyup.enter.native="search"
+              ></el-input>
+            </div>
+            <div class="textboxp"></div>
+            <div class="textboxp"></div>
+            <div class="bt">
+              <el-button
+                type="primary"
+                @click="search"
+                icon="el-icon-search"
+                round
+                >搜索</el-button
+              >
+            </div>
+          </div>
+          <el-table
+            :data="
+              dataTable.slice(
+                (currentPage - 1) * pageSize,
+                currentPage * pageSize
+              )
+            "
+            style="width: 100%"
+            stripe
+            border
+            @sort-change="sortChange"
+            class="table"
+            height="80%"
           >
-        </div>
-      </div>
-      <el-table
-        :data="
-          dataTable.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-        "
-        style="width: 100%; overflow: auto"
-        height="80%"
-        stripe
-        border
-        @sort-change="sortChange"
-        class="table"
-      >
-        <!-- :default-sort="{ prop: 'name', order: 'ascending' }" -->
-        <el-table-column
-          prop="name"
-          label="项目名称"
-          sortable="custom"
-          header-align="center"
-          width="300"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="bidname"
-          label="发布社科"
-          sortable="custom"
-          header-align="center"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="typename"
-          label="研究方向"
-          sortable="custom"
-          header-align="center"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="time_release"
-          label="发布时间"
-          sortable="custom"
-          header-align="center"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="time_end"
-          label="截至申报"
-          sortable="custom"
-          header-align="center"
-        >
-        </el-table-column>
+            <!-- <el-table-column
+              prop="id"
+              label="课题编号"
+              sortable="custom"
+              header-align="center"
+              width="150"
+              align="center"
+            >
+            </el-table-column> -->
+            <el-table-column
+              prop="name"
+              label="课题主题"
+              sortable="custom"
+              header-align="center"
+              width="200"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="time_release"
+              label="发布时间"
+              sortable="custom"
+              header-align="center"
+              width="110"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="time_declare"
+              label="截至申报时间"
+              header-align="center"
+              sortable="custom"
+              width="130"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="releasename"
+              label="发布人"
+              header-align="center"
+              align="center"
+              width="80"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="companyname"
+              label="发布机构"
+              header-align="center"
+              align="center"
+              width="150"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="topic_typename"
+              label="课题类别"
+              header-align="center"
+              align="center"
+              width="150"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="achievementstypename"
+              label="成果形式"
+              header-align="center"
+              align="center"
+              width="150"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="directions"
+              label="参考选题"
+              header-align="center"
+              align="center"
+              width="200"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="count"
+              label="申报人数"
+              header-align="center"
+              align="center"
+              width="100"
+            >
+            </el-table-column>
 
-        <el-table-column label="操作" align="center">
-          <template slot-scope="scope">
-            <el-button
-              @click.native.prevent="getDetail(scope.$index, dataTable)"
-              type="text"
-              size="small"
-              style="width: 45%"
+            <el-table-column
+              label="操作"
+              align="center"
+              width="150"
+              fixed="right"
             >
-              <i class="el-icon-s-operation"></i>
-              详情
-            </el-button>
-            <el-button
-              @click.native.prevent="declare(scope.$index, dataTable)"
-              type="text"
-              size="small"
-              style="width: 45%"
+              <template slot-scope="scope">
+                <el-button
+                  @click.native.prevent="details(scope.$index, dataTable)"
+                  type="text"
+                  size="small"
+                >
+                  <i class="el-icon-s-operation"></i>
+                  详情
+                </el-button>
+                <el-button
+                  @click.native.prevent="bidding(scope.$index, dataTable)"
+                  type="text"
+                  size="small"
+                >
+                  <i class="el-icon-edit"></i>
+                  申报
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="pagination" style="text-align: center; height: 10%">
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="1"
+              :page-sizes="[5, 10, 20, 50, 100]"
+              :page-size="nowPageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="dataTableLength"
             >
-              <i class="el-icon-plus"></i>
-              申报
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="pagination" style="text-align: center">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="1"
-          :page-sizes="[5, 10, 20, 50, 100]"
-          :page-size="nowPageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="dataTableLength"
-        >
-        </el-pagination>
-      </div>
+            </el-pagination>
+          </div>
+          <Detail ref="dialogAdd" :datadetail="dataadd" :data="dataDetail" />
+          <Bidding
+            ref="dialogbidding"
+            :datadetail="dataadd"
+            :data="dataDetail"
+            @refresh="reFresh"
+          />
+        </el-col>
+      </el-row>
     </div>
-    <Detail ref="detail" :datadetail="dataDetail" />
-    <Declare
-      ref="declare"
-      :datadetail="dataDetail"
-      @refresh="refreshdata"
-      :wherefrom="declarewherefrom"
-    />
   </div>
 </template>
 
 <script>
-import myFunctions from "../../myFunctions";
-import Detail from "./detail.vue";
-import Declare from "./declare.vue";
-import Steps from "../steps.vue";
+import Detail from "../../views/Items/Bidding/add.vue";
+import Bidding from "./bidding.vue";
+import myFunctions from "@/myFunctions";
 export default {
-  components: { Detail, Declare, Steps },
+  components: {
+    Detail,
+    Bidding,
+  },
   data() {
     return {
       // 树
-      dataTree: [
-        {
-          label: "全部分类",
-          id: "all",
-          type: "all",
-          children: [
-            {
-              label: "研究方向",
-              id: "research",
-              type: "research1",
-              children: [],
-            },
-            {
-              label: "发布社科",
-              id: "social",
-              type: "social1",
-              children: [],
-            },
-            {
-              label: "项目类别",
-              id: "category",
-              type: "category1",
-              children: [],
-            },
-          ],
-        },
-      ],
+      treedata: [],
       defaultProps: {
         children: "children",
         label: "label",
       },
-      dataResearchSpecialty: [],
-      dataSocial: [], // 社科联
-      dataCategory: [], // 类别一层节点
-      dataCategoryname: [], // 二层节点
-      dataCategoryAll: [], // 类别总数居
-      // 搜索
-      dataSearch: { name: "" },
+      str: "",
       // 表格
       dataTable: [],
       dataTableAll: [],
@@ -190,143 +210,139 @@ export default {
       currentPage: 1, // 页码
       pageSize: 10,
       nowPageSize: 10,
-      str: "",
-      // 网格与树连接
-      // 详情页传递数据
+      // 详情页数据
       dataDetail: {},
-      // 申报刷新
-      refresh: "0",
-      declarewherefrom: "bid",
+      // 编辑页数据
+      dataEdit: {},
+      // 搜索框
+      dataSearch: {
+        name: "",
+        type: "",
+      },
+      options_type: [],
+
+      dataachievementstype: [],
+      datatopictype: [],
+      datasocial: [],
+
+      dataadd: {},
+      dataDetail: {},
+
+      fresh: "0",
+
+      loadtree: "0",
+      loadtree1: "0",
+      loadtree2: "0",
+
+      // treeclick: {},
+      // treeclicknode: {},
     };
   },
   created() {
-    //   获取研究方向
-    this.$api.getResearchDirection({}).then((res) => {
-      if (res.status == 200) {
-        let data = res.data.result;
-        if (res.data.status == 200) {
-          for (let i = 0; i < data.length; i++) {
-            data[i].label = data[i].name;
-            data[i].value = data[i].name;
-            data[i].type = "research2";
-            data[i].id = data[i].re_id;
-            this.dataResearchSpecialty.push(data[i]);
-          }
-          this.dataTree[0].children[0].children = this.dataResearchSpecialty;
-        }
-      }
-    });
-    //   获取社科
-    this.$api.getSocial({}).then((res) => {
-      if (res.status == 200) {
-        let data = res.data.result;
-        if (res.data.status == 200) {
-          for (let i = 0; i < data.length; i++) {
-            data[i].label = data[i].name;
-            data[i].value = data[i].name;
-            data[i].type = "social2";
-            data[i].id = data[i].b_id;
-            this.dataSocial.push(data[i]);
-          }
-          this.dataTree[0].children[1].children = this.dataSocial;
-        }
-      }
-    });
-    // 所有项目类别
-    this.$api.getAllItemCategory({}).then((res) => {
-      if (res.status == 200) {
-        let data = res.data.result;
-        if (res.data.status == 200) {
-          for (let i = 0; i < data.length; i++) {
-            data[i].label = data[i].categoryname;
-            data[i].value = data[i].categoryname;
-            data[i].type = "category3";
-            data[i].id = data[i].cid;
-            this.dataCategoryAll.push(data[i]);
-          }
-        }
-      }
-    });
-    // 项目类别一二层
-    this.$api.itemCategory({}).then((res) => {
-      if (res.status == 200) {
-        let data = res.data.result;
-        // console.log(12212, data);
-        if (res.data.status == 200) {
-          for (let i = 0; i < data.length; i++) {
-            data[i].label = data[i].categoryid;
-            data[i].value = data[i].categoryid;
-            data[i].type = "category2";
-            data[i].id = data[i].cid;
-            this.dataCategory.push(data[i]);
-          }
-          this.dataTree[0].children[2].children = this.dataCategory;
-          // 二层
-          for (let i = 0; i < this.dataCategory.length; i++) {
-            let xdata = [];
-            for (let j = 0; j < this.dataCategoryAll.length; j++) {
-              if (
-                this.dataCategoryAll[j].categoryid ==
-                this.dataCategory[i].categoryid
-              ) {
-                xdata.push(this.dataCategoryAll[j]);
-              }
-            }
-            this.dataCategoryname.push(xdata);
-            this.dataTree[0].children[2].children[i].children = xdata;
-
-            // console.log(i, this.dataCategoryname[i]);
-          }
-        }
-      }
-    });
-    // 获取全部项目
-    this.getAllItems();
+    this.getachievementstype();
+    this.gettopictype();
+    this.getallsocial();
+    this.dataadd.userid = sessionStorage.getItem("userid");
   },
   methods: {
-    // 选中树节点事件
-    handleNodeClick(data) {
-      let type = data.type;
-      this.str = "";
-      // 根节点
-      if (data.type == "all" || data.type[data.type.length - 1] == "1") {
-        this.getAllItems();
+    // 获取树
+    gettree() {
+      let data = [];
+      data[0] = {};
+      data[0].label = "全部节点";
+      data[0].id = "all";
+      data[0].level = 1;
+      data[0].children = [];
+
+      // 课题类别 datatopictype
+      // let treetopic_type = [];
+      let treetopic_type = {};
+      treetopic_type.label = "课题分类";
+      treetopic_type.id = "topic_type";
+      treetopic_type.level = 2;
+      treetopic_type.index = 0;
+      treetopic_type.children = [];
+      // console.log(111, this.datatopictype);
+      for (let i = 0; i < this.datatopictype.length; i++) {
+        let xdata = {};
+        xdata.id = this.datatopictype[i].id;
+        xdata.label = this.datatopictype[i].name;
+        xdata.table = "topic_type";
+        xdata.level = 3;
+        treetopic_type.children.push(xdata);
       }
-      // 二层节点
-      else if (data.type[data.type.length - 1] == "2") {
-        //研究方向筛选
-        if (type == "research2") {
-          let id = data.re_id;
-          this.str = ` and research_direction.re_id = '` + id + `' `;
-          this.getAllItems(this.str);
-        }
-        //社科筛选
-        else if (type == "social2") {
-          let id = data.b_id;
-          this.str = ` and bidding.b_id = '` + id + `' `;
-          this.getAllItems(this.str);
-        }
-        // 项目类别
-        else if (type == "category2") {
-          let id = data.categoryid;
-          this.str = ` and item_category.categoryid = '` + id + `' `;
-          this.getAllItems(this.str);
-        }
+      data[0].children[0] = treetopic_type;
+      // 成果类别 dataachievementstype
+      // let treeachievementstype = [];
+      let treeachievementstype = {};
+      treeachievementstype.label = "成果形式";
+      treeachievementstype.id = "achievementstype";
+      treeachievementstype.level = 2;
+      treeachievementstype.index = 1;
+      treeachievementstype.children = [];
+      // console.log(111, this.datatopictype);
+      for (let i = 0; i < this.dataachievementstype.length; i++) {
+        let xdata = {};
+        xdata.id = this.dataachievementstype[i].id;
+        xdata.label = this.dataachievementstype[i].name;
+        xdata.table = "achievementstype";
+        xdata.level = 3;
+        treeachievementstype.children.push(xdata);
       }
-      // 三层
-      else if (data.type[data.type.length - 1] == "3") {
-        // 项目类别三层
-        if (type == "category3") {
-          let id = data.categoryname;
-          this.str = ` and item_category.categoryname = '` + id + `' `;
-          this.getAllItems(this.str);
-        }
+      data[0].children[1] = treeachievementstype;
+      this.treedata = data;
+
+      // 发布社科
+      let treesocial = {};
+      treesocial.label = "发布社科";
+      treesocial.id = "social";
+      treesocial.level = 2;
+      treesocial.index = 2;
+      treesocial.children = [];
+      // console.log(111, this.datatopictype);
+      for (let i = 0; i < this.datasocial.length; i++) {
+        let xdata = {};
+        xdata.id = this.datasocial[i].id;
+        xdata.label = this.datasocial[i].name;
+        xdata.table = "company";
+        xdata.level = 3;
+        treesocial.children.push(xdata);
       }
-      // console.log(111, data);
+      data[0].children[2] = treesocial;
+      this.treedata = data;
     },
+    // 树点击
+    handleNodeClick(data, node) {
+      if (data.level == 1 || data.level == 2) {
+        this.str = "";
+        this.gettopic(this.str);
+      } else if (data.level == 3) {
+        if (data.table == "topic_type") {
+          this.str = " and topic_type = " + data.id;
+          this.gettopic(this.str);
+        } else if (data.table == "achievementstype") {
+          this.str = " and achievementstype like '%" + data.id + "%'";
+          this.gettopic(this.str);
+        } else if (data.table == "company") {
+          this.str = " and b.company ='" + data.id + "' ";
+          this.gettopic(this.str);
+        }
+      }
+    },
+    // 搜索
+    search() {
+      this.dataTable = [];
+      this.dataTableLength = 0;
+      for (let i = 0; i < this.dataTableAll.length; i++) {
+        if (this.dataTableAll[i].name.indexOf(this.dataSearch.name) != -1) {
+          this.dataTable.push(this.dataTableAll[i]);
+        }
+      }
+      this.dataTableLength = this.dataTable.length;
+    },
+
     // 改变每页显示条数时触发
     handleSizeChange(val) {
-      // console.log(`每页 ${val} 条`);
       this.pageSize = val;
     },
     // 改变页码时触发
@@ -353,88 +369,168 @@ export default {
         }
       };
     },
-    // 获取正在招标但是还未申报的
-    getAllItems(str) {
-      this.$api
-        .getAllItems({
-          str: str,
-          userid: sessionStorage.getItem("userid"),
-        })
-        .then((res) => {
-          if (res.status == 200) {
-            this.dataTableLength = 0;
-            this.dataTable = [];
-            this.dataTableAll = [];
-            let data = res.data.result;
-            if (res.data.status == 200) {
-              for (let i = 0; i < data.length; i++) {
-                data[i].id = data[i].it_id;
-              }
-              this.filterReviewDetail(data);
-            }
-          }
-        });
+    // 打开详情弹窗
+    details(index, dataTable) {
+      let data = dataTable[index];
+      this.dataDetail = data;
+      this.dataadd.type = "detail";
+      this.dataadd.power = "detail";
+      this.$refs.dialogAdd.visible = true;
     },
-    // 过滤参与细审的项目
-    filterReviewDetail(datas) {
+    // 申报
+    bidding(index, dataTable) {
+      let data = dataTable[index];
+      this.dataDetail = data;
+      this.dataadd.type = "add";
+      this.$refs.dialogbidding.visible = true;
+    },
+
+    getachievementstype() {
+      this.$api.getachievementstype({}).then((res) => {
+        if (res.status == 200) {
+          let data = res.data.result;
+          if (res.data.status == 200) {
+            this.dataachievementstype = data;
+          }
+          this.loadtree2 = "1";
+        }
+      });
+    },
+    gettopictype() {
+      this.$api.gettopic_type({}).then((res) => {
+        if (res.status == 200) {
+          let data = res.data.result;
+          if (res.data.status == 200) {
+            this.datatopictype = data;
+          }
+          this.loadtree = "1";
+        }
+      });
+    },
+    getallsocial() {
+      this.$api.getallsocial({}).then((res) => {
+        if (res.status == 200) {
+          let data = res.data.result;
+          if (res.data.status == 200) {
+            this.datasocial = data;
+          }
+          this.loadtree1 = "1";
+        }
+      });
+    },
+    // 获取招标课题
+    gettopic(str) {
+      this.dataTable = [];
+      this.dataTableAll = [];
+      this.dataTableLength = 0;
       this.$api
-        .getOneExpertReviewDetailsItem({
+        .getTopics({
           ex_id: sessionStorage.getItem("userid"),
+          str: str,
+          date: myFunctions.newDateToDate(),
         })
         .then((res) => {
           if (res.status == 200) {
-            let data = res.data.result;
             if (res.data.status == 200) {
-              let resdata = [];
-              for (let i = 0; i < datas.length; i++) {
+              let data = res.data.result;
+              for (let i = 0; i < data.length; i++) {
+                data[i].time_release = myFunctions.newDateToDate(
+                  data[i].time_release
+                );
+                data[i].time_declare = myFunctions.newDateToDate(
+                  data[i].time_declare
+                );
+                // 人数过滤
+                if (data[i].mincount == data[i].maxcount) {
+                  data[i].count = "= " + data[i].mincount + " 人";
+                } else if (data[i].mincount == 0) {
+                  data[i].count = "< " + data[i].maxcount + " 人";
+                } else if (data[i].maxcount == 0) {
+                  data[i].count = "> " + data[i].mincount + " 人";
+                }
+                // 参考选题长度限制
+                if (data[i].direction.length > 20) {
+                  data[i].directions = data[i].direction.substring(0, 20);
+                  data[i].directions += "...";
+                } else {
+                  data[i].directions = data[i].direction;
+                }
+                for (let j = 0; j < this.datatopictype.length; j++) {
+                  if (data[i].topic_type == this.datatopictype[j].id) {
+                    data[i].topic_typename = this.datatopictype[j].name;
+                  }
+                }
                 if (
-                  myFunctions.dataInJson(datas[i].ex_id, "ex_id", data) == 0
+                  data[i].achievementstype &&
+                  data[i].achievementstype.length > 0
                 ) {
-                  resdata.push(datas[i]);
+                  let type = data[i].achievementstype.split(",");
+                  for (let j = 0; j < type.length; j++) {
+                    type[j] = parseInt(type[j]);
+                    for (let k = 0; k < this.dataachievementstype.length; k++) {
+                      if (this.dataachievementstype[k].id == type[j]) {
+                        if (j > 0) {
+                          data[i].achievementstypename += ";";
+                          data[i].achievementstypename +=
+                            this.dataachievementstype[k].name;
+                        } else {
+                          data[i].achievementstypename =
+                            this.dataachievementstype[k].name;
+                        }
+                      }
+                    }
+                  }
                 }
               }
-              this.dataTableLength = resdata.length;
-              this.dataTable = resdata;
-              this.dataTableAll = resdata;
-            } else {
-              this.dataTableLength = datas.length;
-              this.dataTable = datas;
-              this.dataTableAll = datas;
+              this.dataTable = data;
+              this.dataTableAll = data;
+              this.dataTableLength = data.length;
             }
-          } else {
-            this.dataTableLength = datas.length;
-            this.dataTable = datas;
-            this.dataTableAll = datas;
           }
         });
     },
-    getDetail(index, dataTable) {
-      this.dataDetail = dataTable[index];
-      this.$refs.detail.visible = true;
-    },
-    declare(index, dataTable) {
-      this.dataDetail = dataTable[index];
-      this.$refs.declare.visible = true;
-    },
-    refreshdata(val) {
-      this.refresh = "1";
-    },
-    // 搜索
-    search() {
-      this.dataTable = [];
-      for (let i = 0; i < this.dataTableAll.length; i++) {
-        if (this.dataTableAll[i].name.indexOf(this.dataSearch.name) != -1) {
-          this.dataTable.push(this.dataTableAll[i]);
-        }
-      }
-      this.dataTableLength = this.dataTable.length;
+    reFresh(val) {
+      this.fresh = val;
     },
   },
   watch: {
-    refresh(newval, val) {
-      if (newval == "1") {
-        this.getAllItems(this.str);
-        this.refresh = "0";
+    fresh(n, o) {
+      if (n != "0") {
+        this.gettopic("");
+        this.fresh = "0";
+      }
+    },
+    loadtree(n, o) {
+      if (
+        this.loadtree == "1" &&
+        this.loadtree1 == "1" &&
+        this.loadtree2 == "1"
+      ) {
+        this.gettree();
+      }
+      if (this.loadtree == "1" && this.loadtree2 == "1") {
+        this.gettopic();
+      }
+    },
+    loadtree1(n, o) {
+      if (
+        this.loadtree == "1" &&
+        this.loadtree1 == "1" &&
+        this.loadtree2 == "1"
+      ) {
+        this.gettree();
+      }
+    },
+    loadtree2(n, o) {
+      if (
+        this.loadtree == "1" &&
+        this.loadtree1 == "1" &&
+        this.loadtree2 == "1"
+      ) {
+        this.gettree();
+      }
+      if (this.loadtree == "1" && this.loadtree2 == "1") {
+        this.gettopic();
       }
     },
   },
@@ -442,85 +538,72 @@ export default {
 </script>
 
 <style lang="less" scoped>
-#bid {
-  height: 90vh;
+#bidding {
+  height: 92vh;
   width: 100%;
-  display: flex;
-  flex-flow: row;
-  // border: 1px solid red;
-  #leftTree {
-    flex: 1;
-    // border: 1px solid red;
-    overflow: auto;
-    height: 100%;
-    width: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  #rightTable {
-    flex: 5;
-    border-left: 1px solid blue;
-    overflow: auto;
-    width: 100%;
-    height: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
 
-    display: flex;
-    flex-flow: column;
-    .steps {
-      height: 50px;
-      width: 100%;
-    }
-    .search {
-      flex: 1.8;
+  #total {
+    height: 100%;
+    width: 100%;
+    .row {
       height: 100%;
-      display: flex;
-      flex-flow: row;
-      align-items: center;
-      .textboxp {
-        flex: 4;
-        display: flex;
-        align-items: center;
-        flex-flow: row;
-        .p {
-          flex: 2;
-          text-align: center;
+      width: 100%;
+      .col {
+        height: 100%;
+        .left {
+          border-right: 1px solid blue;
+          display: flex;
+          flex-flow: column;
+          overflow: auto;
+          .button {
+            height: 35px;
+            padding: 5px 0px;
+            display: flex;
+            flex-flow: row;
+            justify-content: space-around;
+            .bt {
+              // flex: 1;
+              width: 80px;
+            }
+          }
+          .tree {
+            flex: 1;
+            // border: 1px solid red;
+          }
         }
-        .text {
-          flex: 4;
+        .search {
+          display: flex;
+          flex-flow: row;
+          align-items: center;
+          .textboxp {
+            flex: 4;
+            display: flex;
+            align-items: center;
+            flex-flow: row;
+            .p {
+              flex: 2;
+              text-align: center;
+            }
+            .text {
+              flex: 4;
+            }
+          }
+          .bt {
+            flex: 2;
+            text-align: center;
+          }
+        }
+        .table {
+          overflow: auto;
+        }
+        .pagination {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
       }
-      .bt {
-        flex: 2;
-        text-align: center;
-      }
-    }
-    .table {
-      flex: 15;
-    }
-    .pagination {
-      flex: 1;
     }
   }
-}
-
-/* 设置滚动条的样式 */
-::-webkit-scrollbar {
-  width: 7px;
-}
-/* 滚动槽 */
-::-webkit-scrollbar-track {
-  // -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-}
-/* 滚动条滑块 */
-::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.1);
-  // -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
-}
-::-webkit-scrollbar-thumb:window-inactive {
-  background: rgba(11, 221, 211, 0.4);
 }
 </style>

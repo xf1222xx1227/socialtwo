@@ -186,6 +186,65 @@ select * from item_state where it_id = "XM20220101040";
 /*
 update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = "XM20220101040";
 update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = "XM20220101041";
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101032';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101033';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101037';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101038';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101039';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101042';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101043';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101044';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101045';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101046';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101047';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101048';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101049';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101050';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101051';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101052';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101053';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101054';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101055';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101056';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101057';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101074';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101075';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101076';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101077';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101078';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220101080';
+update item_state set release_items = 2,review_details=2,calibratio=2,bid_opening=2,finish = 2, state = 7 where it_id = 'XM20220102005';
+
+
+*/
+
+
+/*
+
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20200102009';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20200102010';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20200102011';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20200102012';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220101008';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220101009';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220101010';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220101011';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220101012';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220301002';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220302011';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220302012';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220402011';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220402012';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220404007';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220405008';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220406009';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220406010';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220408006';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220408007';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220408008';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220408009';
+update item_state set releases=2,bid=1, release_items = 0,review_details=0,calibratio=0,bid_opening=0,finish = 0, state = 2 where it_id = 'XM20220409012';
+
 
 */
 

@@ -4331,6 +4331,1277 @@ router.get("/updateAdminPassword", (req, res) => {
 
 
 
+// --------------------------------------------------社科----------------------------------------------------------
+
+// 获取省社科信息
+router.get("/getProvinceSocial", (req, res) => {
+    const sql = `select * from adcompany where id="C00000";`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// -------------------------我的发布------------------
+// 获取某个社科发布的课题
+router.get("/getOneSocialTopic", (req, res) => {
+    let str = req.query.str || "";
+    let releaseid = req.query.releaseid;
+    let date = req.query.date;
+    const sql = `select a.*, b.name as releasename,c.name as companyname  
+        from topic a join adcompany b join company c 
+        where a.releaseid = b.id and b.company = c.id and a.time_declare > '`+date+`' 
+        and a.releaseid="`+releaseid+`"`+str+`;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+    // console.log(sql);
+})
+// 获取课题类别
+router.get("/gettopic_type", (req, res) => {
+    const sql = `select * from topic_type ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 课题类别新增
+router.get("/addtopic_type", (req, res) => {
+    let id = req.query.id;
+    let name = req.query.name;
+
+    const sql = "insert into topic_type values(?,?)";
+    const arr = [id, name];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// 课题类别修改
+router.get("/updatetopic_type", (req, res) => {
+    let id = req.query.id;
+    let name = req.query.name;
+
+    const sql = `update topic_type set name=? where id = ?;`;
+    const arr = [name,id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+// 课题类别删除
+router.get("/deletetopic_type", (req, res) => {
+    let id = req.query.id;
+    const sql = `delete from topic_type where id =? `;
+    const arr = [id];
+    sqlFn(sql, arr, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                msg: "删除成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "删除失败"
+            })
+        }
+    })
+})
+// 获取成果形式
+router.get("/getachievementstype", (req, res) => {
+    const sql = `select * from achievementstype ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 成果形式新增
+router.get("/addachievementstype", (req, res) => {
+    let id = req.query.id;
+    let name = req.query.name;
+
+    const sql = "insert into achievementstype values(?,?)";
+    const arr = [id, name];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// 成果形式修改
+router.get("/updateachievementstype", (req, res) => {
+    let id = req.query.id;
+    let name = req.query.name;
+
+    const sql = `update achievementstype set name=? where id = ?;`;
+    const arr = [name,id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+// 成果形式删除
+router.get("/deleteachievementstype", (req, res) => {
+    let id = req.query.id;
+    const sql = `delete from achievementstype where id =? `;
+    const arr = [id];
+    sqlFn(sql, arr, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                msg: "删除成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "删除失败"
+            })
+        }
+    })
+})
+// 获取全部课题
+router.get("/getAllTopic", (req, res) => {
+    const sql = `select *  from topic order by id;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 添加课题
+router.get("/addtopic", (req, res) => {
+    let id = req.query.id;
+    let name = req.query.name;
+    let content = req.query.content;
+    let nature = req.query.nature;
+    let direction = req.query.direction;
+    let topic_type = req.query.topic_type;
+    let achievementstype = req.query.achievementstype;
+    let time_release = req.query.time_release;
+    let time_declare = req.query.time_declare;
+    let releaseid = req.query.releaseid;
+    let mincount = req.query.mincount;
+    let maxcount = req.query.maxcount;
+    let rateEconomics = req.query.rateEconomics;
+    let rateTechnology = req.query.rateTechnology;
+    let rateComprehensive = req.query.rateComprehensive;
+
+    const sql = "insert into topic values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    const arr = [id, name, content, nature, direction, topic_type,achievementstype,time_release,
+        time_declare,releaseid,mincount,maxcount,rateEconomics,rateTechnology,rateComprehensive];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// 添加课题发布文件
+router.get("/addTopicFiles", (req, res) => {
+    let id = req.query.id;
+    let upurl = req.query.upurl;
+    let uid = req.query.uid;
+    let url = req.query.url;
+    let name = req.query.name;
+    let uploadtime = req.query.uploadtime;
+    let size = req.query.size;
+
+    const arr = [id, upurl,uid,url,name,uploadtime,size];
+    const sql = "insert into topic_files values(?,?,?,?,?,?,?)";
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// 删除文件
+router.get("/deleteTopicFiles", (req, res) => {
+    let id = req.query.id;
+    let url = req.query.url;
+    const sql = `delete from topic_files where id =?  and url=?`;
+    const arr = [id,url];
+    sqlFn(sql, arr, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                msg: "删除成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "删除失败"
+            })
+        }
+    })
+})
+// 获取课题文件
+router.get("/getOneTopicFiles", (req, res) => {
+    let id = req.query.id;
+    const sql = `select *  from topic_files where id = '`+id+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+    // console.log(sql)
+})
+// 修改课题
+router.get("/updatetopic", (req, res) => {
+    let id = req.query.id;
+    let name = req.query.name;
+    let content = req.query.content;
+    let nature = req.query.nature;
+    let direction = req.query.direction;
+    let topic_type = req.query.topic_type;
+    let achievementstype = req.query.achievementstype;
+    let time_release = req.query.time_release || "";
+    let time_declare = req.query.time_declare;
+    // let releaseid = req.query.releaseid;
+    let mincount = req.query.mincount;
+    let maxcount = req.query.maxcount;
+    let rateEconomics = req.query.rateEconomics;
+    let rateTechnology = req.query.rateTechnology;
+    let rateComprehensive = req.query.rateComprehensive;
+
+    const sql = `update topic set name=?,content=?,nature=?,direction=?,topic_type=?,achievementstype=?,
+    time_declare=?,mincount=?,maxcount=?,rateEconomics=?,rateTechnology=?,rateComprehensive=? where id=?`;
+    const arr = [name, content, nature, direction, topic_type,achievementstype,
+        time_declare,mincount,maxcount,rateEconomics,rateTechnology,rateComprehensive,id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// 删除课题
+router.get("/deleteTopic", (req, res) => {
+    let id = req.query.id;
+    const sql = `delete from topic where id =?`;
+    const arr = [id];
+    sqlFn(sql, arr, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                msg: "删除成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "删除失败"
+            })
+        }
+    })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// --------------------------------------------------用户端-----------------------------------------------------
+// 获取个人账户信息
+router.get("/getOneUser", (req, res) => {
+    let ex_id=req.query.ex_id;
+    const sql = `select * from users where ex_id = '`+ex_id+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// -----------------------个人注册---------------------------
+// 获取单位分类
+router.get("/getCompanyType", (req, res) => {
+    const sql = `select * from company where pid="" and id !="c0000";`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取单位
+router.get("/getCompany", (req, res) => {
+    let pid = req.query.pid;
+    const sql = `select * from company where pid='`+pid+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取个人注册信息
+router.get("/getUserRegister", (req, res) => {
+    const sql = `select * from users_register;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取全部个人账户信息
+router.get("/getUsers", (req, res) => {
+    const sql = `select * from users;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 添加个人注册
+router.get("/addUserRegister", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let company = req.query.company;
+    let name = req.query.name;
+    let gender = req.query.gender;
+    let birthdate = req.query.birthdate;
+    let phone = req.query.phone;
+    let card = req.query.card;
+    let email = req.query.email;
+    let password = req.query.password;
+    let register_time = req.query.register_time;
+
+    const sql = "insert into users_register values(?,?,?,?,?,?,?,?,?,?)";
+    const arr = [ex_id, company, name, gender, birthdate, phone,card,email,password,register_time];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// -------------------个人中心--------------------
+// 获取民族
+router.get("/getNations", (req, res) => {
+    const sql = `select * from nation;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+//用户密码修改
+router.get("/updateUserPassword", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let password = req.query.password;
+
+    const sql = `update users set password=? where ex_id = ?;`;
+    const arr = [password,ex_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+//用户信息修改
+router.get("/updateuserInfo", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let name = req.query.name;
+    let gender = req.query.gender;
+    let honor = req.query.honor;
+    let birthdate = req.query.birthdate;
+    let research_specialty = req.query.research_specialty;
+    let education = req.query.education;
+    let degree = req.query.degree;
+    let major = req.query.major;
+    let phone = req.query.phone;
+    let email = req.query.email;
+    let address = req.query.address;
+    let workcompany = req.query.workcompany;
+    let workphone = req.query.workphone;
+    let companytype = req.query.companytype;
+    let company = req.query.company;
+    let nation = req.query.nation;
+    let card = req.query.card;
+    let post = req.query.post || "";
+    let title = req.query.title || "";
+
+
+    const sql = `update users set name=?,gender=?,honor=?,birthdate=?,research_specialty=?,
+        education=?,degree=?,major=?,phone=?,email=?,address=?,workcompany=?,workphone=?,
+        companytype=?,company=?,nation=?,card=?,post=?,title=?  
+        where ex_id = ?;`;
+    const arr = [name,gender, honor,birthdate,research_specialty,education,degree,major,phone,
+            email,address,workcompany,workphone,companytype,
+            company,nation,card,post,title,ex_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+// 获取研究经历
+router.get("/getExperience", (req, res) => {
+    let ex_id = req.query.ex_id
+    const sql = `select a.*,b.name from experience a join users b 
+        where a.ex_id = b.ex_id and a.ex_id = '`+ex_id+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 添加研究经历
+router.get("/addExperience", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let experience = req.query.experience;
+    let item = req.query.item;
+    let prize = req.query.prize;
+    let apply = req.query.apply;
+    let plan = req.query.plan;
+    let publish = req.query.publish;
+    let responsibility = req.query.responsibility;
+    let media = req.query.media;
+    let overseas = req.query.overseas;
+    let resume = req.query.resume;
+    let parttime = req.query.parttime;
+    let honor = req.query.honor;
+    let establish = req.query.establish;
+    let establishtime = req.query.establishtime;
+    let edit = req.query.edit;
+    let edittime = req.query.edittime;
+
+    const sql = "insert into experience values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    const arr = [ex_id, experience, item, prize, apply, plan,publish,responsibility,media,overseas,resume,parttime,honor,establish,establishtime,edit,edittime];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// 修改研究经历
+router.get("/updateExperience", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let experience = req.query.experience;
+    let item = req.query.item;
+    let prize = req.query.prize;
+    let apply = req.query.apply;
+    let plan = req.query.plan;
+    let publish = req.query.publish;
+    let responsibility = req.query.responsibility;
+    let media = req.query.media;
+    let overseas = req.query.overseas;
+    let resume = req.query.resume;
+    let parttime = req.query.parttime;
+    let honor = req.query.honor;
+    let edit = req.query.edit;
+    let edittime = req.query.edittime;
+
+    const sql = `update experience set experience=?,item=?,prize=?,apply=?,plan=?,publish=?,responsibility=?,
+        media=?,overseas=?,resume=?,parttime=?,honor=?,edit=?,edittime=? where ex_id=?;`;
+    const arr = [experience, item, prize, apply, plan,publish,responsibility,media,
+        overseas,resume,parttime,honor,edit,edittime,ex_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+
+
+// --------------------申报----------------------------
+// 获取社科
+router.get("/getallsocial", (req, res) => {
+    const sql = `select * from company where id = "c0000" or pid = 'c1000' order by id;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取社科发布的课题
+router.get("/getTopics", (req, res) => {
+    let str = req.query.str || "";
+    let date = req.query.date;
+    let ex_id = req.query.ex_id;
+    const sql = `select a.*, b.name as releasename,c.name as companyname  
+        from topic a join adcompany b join company c 
+        where a.releaseid = b.id and b.company = c.id and a.time_declare > '`+date+`' `+str+` 
+        and a.id not in (select topicid from declares where ex_id = '`+ex_id+`');`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取一级学科
+router.get("/getOneMajors", (req, res) => {
+    const sql = `select * from majors where level=2 order by id;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取二级学科
+router.get("/getTwoMajors", (req, res) => {
+    let parentid =req.query.pid;
+    const sql = `select * from majors where parentid='`+parentid+`' and level=3 order by id;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取某个课题的申报
+router.get("/getOneTopicsDeclares", (req, res) => {
+    let id = req.query.id;
+    const sql = `select * from declares where topicid = '`+id+`' order by sb_id;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 添加课题申报
+router.get("/addDeclare", (req, res) => {
+    let sb_id = req.query.sb_id;
+    let topicid = req.query.topicid;
+    let ex_id = req.query.ex_id;
+    let name = req.query.name;
+    let companytype = req.query.companytype;
+    let company = req.query.company;
+    let declaretype = req.query.declaretype;
+    let researchtype = req.query.researchtype;
+    let majorone = req.query.majorone;
+    let majortwo = req.query.majortwo;
+    let checkList = req.query.checkList;
+    let number = req.query.number;
+    let checkListGone = req.query.checkListGone;
+    let finishdate = req.query.finishdate;
+    let demonstration = req.query.demonstration;
+    let declaretime = req.query.declaretime;
+    let nosupport = req.query.nosupport;
+    let usereducation = req.query.usereducation;
+    let userdegree = req.query.userdegree;
+    let useraddress = req.query.useraddress;
+    let userbirthdate = req.query.userbirthdate;
+    let useremail = req.query.useremail;
+    let usergender = req.query.usergender;
+    let username = req.query.username;
+    let usernation = req.query.usernation;
+    let userphone = req.query.userphone;
+    let userpost = req.query.userpost;
+    let usertitle = req.query.usertitle;
+    let userpostoffice = req.query.userpostoffice;
+    let userresearch_specialty = req.query.userresearch_specialty;
+    let usertutor = req.query.usertutor;
+    let userworkcompany = req.query.userworkcompany;
+    let userworkphone = req.query.userworkphone;
+
+    const sql = "insert into declares values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    const arr = [sb_id, topicid, ex_id, name, companytype, company,declaretype,researchtype,majorone,majortwo,
+        checkList,number,checkListGone,finishdate,demonstration,declaretime,nosupport,
+        usereducation,userdegree,useraddress,userbirthdate,useremail,usergender,username,usernation,userphone,
+        userpost,usertitle,userpostoffice,userresearch_specialty,usertutor,userworkcompany,userworkphone];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// 修改课题申报
+router.get("/updateDeclare", (req, res) => {
+    let sb_id = req.query.sb_id;
+    let topicid = req.query.topicid || "";
+    let ex_id = req.query.ex_id || "";
+    let name = req.query.name;
+    let companytype = req.query.companytype;
+    let company = req.query.company;
+    let declaretype = req.query.declaretype;
+    let researchtype = req.query.researchtype;
+    let majorone = req.query.majorone;
+    let majortwo = req.query.majortwo;
+    let checkList = req.query.checkList;
+    let number = req.query.number;
+    let checkListGone = req.query.checkListGone;
+    let finishdate = req.query.finishdate;
+    let demonstration = req.query.demonstration;
+    let declaretime = req.query.declaretime;
+    let nosupport = req.query.nosupport;
+    let usereducation = req.query.usereducation;
+    let userdegree = req.query.userdegree;
+    let useraddress = req.query.useraddress;
+    let userbirthdate = req.query.userbirthdate;
+    let useremail = req.query.useremail;
+    let usergender = req.query.usergender;
+    let username = req.query.username;
+    let usernation = req.query.usernation;
+    let userphone = req.query.userphone;
+    let userpost = req.query.userpost;
+    let usertitle = req.query.usertitle;
+    let userpostoffice = req.query.userpostoffice;
+    let userresearch_specialty = req.query.userresearch_specialty;
+    let usertutor = req.query.usertutor;
+    let userworkcompany = req.query.userworkcompany;
+    let userworkphone = req.query.userworkphone;
+
+    const sql = `update declares set name=?,companytype=?,company=?,declaretype=?,researchtype=?,majorone=?,majortwo=?,
+        checkList=?,number=?,checkListGone=?,finishdate=?,demonstration=?,declaretime=?,nosupport=?,usereducation=?,
+        userdegree=?,useraddress=?,userbirthdate=?,useremail=?,
+        usergender=?,username=?,usernation=?,userphone=?,userpost=?,usertitle=?,userpostoffice=?,userresearch_specialty=?,
+        usertutor=?,userworkcompany=?,userworkphone=? 
+        where sb_id=?;`;
+    const arr = [name,companytype,company,declaretype,researchtype,majorone,majortwo,checkList,
+        number,checkListGone,finishdate,demonstration,declaretime,
+        nosupport,usereducation,userdegree,useraddress,userbirthdate,useremail,usergender,username,usernation,
+        userphone,userpost,usertitle,userpostoffice,userresearch_specialty,usertutor,userworkcompany,
+        userworkphone,sb_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+    // console.log(111,sql);
+})
+// 获取课题申报
+router.get("/getOneExOneTopicDeclare", (req, res) => {
+    let ex_id = req.query.ex_id;
+    let topicid = req.query.topicid;
+    const sql = `select * from declares where ex_id = '`+ex_id+`' and topicid = '`+topicid+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 添加课题申报文件
+router.get("/addDeclareFiles", (req, res) => {
+    let topicid = req.query.topicid;
+    let sb_id = req.query.sb_id;
+    let upurl = req.query.upurl;
+    let uid = req.query.uid;
+    let url = req.query.url;
+    let name = req.query.name;
+    let uploadtime = req.query.uploadtime;
+    let size = req.query.size;
+
+    const arr = [topicid,sb_id, upurl,uid,url,name,uploadtime,size];
+    const sql = "insert into declares_files values(?,?,?,?,?,?,?,?)";
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// 删除课题申报文件
+router.get("/deleteDeclareFiles", (req, res) => {
+    let sb_id = req.query.sb_id;
+    let url = req.query.url;
+    const sql = `delete from topic_files where sb_id =?  and url=?`;
+    const arr = [sb_id,url];
+    sqlFn(sql, arr, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                msg: "删除成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "删除失败"
+            })
+        }
+    })
+})
+// 删除课题申报所有文件
+router.get("/deleteOneDeclareAllFiles", (req, res) => {
+    let sb_id = req.query.sb_id;
+    const sql = `delete from declares_files where sb_id =?`;
+    const arr = [sb_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                msg: "删除成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "删除失败"
+            })
+        }
+    })
+})
+// 获取课题申报
+router.get("/getDeclareFiles", (req, res) => {
+    let sb_id = req.query.sb_id;
+    const sql = `select * from declares_files where sb_id = '`+sb_id+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 添加课题申报成员
+router.get("/addDeclareMenbers", (req, res) => {
+    let topicid = req.query.topicid;
+    let sb_id = req.query.sb_id;
+    let indexs = req.query.indexs;
+    let name = req.query.name;
+    let gender = req.query.gender;
+    let birthdate = req.query.birthdate;
+    let title = req.query.title;
+    let post = req.query.post;
+    let education = req.query.education;
+    let degree = req.query.degree;
+    let workcompany = req.query.workcompany;
+
+    const arr = [topicid,sb_id, indexs,name,gender,birthdate,title,post,education,degree,workcompany];
+    const sql = "insert into declaresmenber values(?,?,?,?,?,?,?,?,?,?,?)";
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// 删除课题申报成员
+router.get("/deleteDeclareMenbers", (req, res) => {
+    let sb_id = req.query.sb_id;
+    const sql = `delete from declaresmenber where sb_id =?;`;
+    const arr = [sb_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                msg: "删除成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "删除失败"
+            })
+        }
+    })
+})
+// 获取课题申报成员
+router.get("/getOneDeclareMenbers", (req, res) => {
+    let sb_id = req.query.sb_id;
+    const sql = `select * from declaresmenber where sb_id = '`+sb_id+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 添加课题申报状态
+router.get("/addDeclareState", (req, res) => {
+    let topicid = req.query.topicid;
+    let sb_id = req.query.sb_id;
+    let state = req.query.state;
+
+    const arr = [topicid,sb_id, state];
+    const sql = "insert into declaresstate values(?,?,?)";
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "添加成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "添加失败"
+            })
+        }
+    })
+})
+// 获取某个课题的申报状态
+router.get("/getOneDeclareState", (req, res) => {
+    let sb_id = req.query.sb_id;
+    const sql = `select * from declaresstate where sb_id = '`+sb_id+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 修改状态
+router.get("/updateOneDeclareState", (req, res) => {
+    let sb_id = req.query.sb_id;
+    let state = req.query.state;
+
+    const sql = `update declaresstate set state=? where sb_id=?;`;
+    const arr = [state,sb_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.affecteRows > 0) {
+            res.send({
+                status: 200,
+                msg: "修改成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "修改失败"
+            })
+        }
+    })
+})
+
+
+
+
+// ------------------暂存-------------------
+// 获取暂存的课题
+router.get("/getoneexpertstorage", (req, res) => {
+    let date = req.query.date;
+    let ex_id = req.query.ex_id;
+    const sql = `select a.*, b.name as releasename,c.name as companyname,
+        d.sb_id,d.name as declarename,d.declaretime,d.finishdate,d.checkList,d.checkListGone,
+        d.declaretype,d.checkListGone,d.name as declarename,f.count as prople     
+        from topic a join adcompany b join company c join declares d join declaresstate e 
+        join (select count(*)+1 as count,topicid from declaresmenber group by topicid) f 
+        where a.releaseid = b.id and b.company = c.id and a.id = d.topicid 
+        and d.sb_id = e.sb_id and e.state = 0 and d.ex_id = '`+ex_id+`' 
+        and a.id = f.topicid   
+        and a.time_declare > '`+date+`' ;`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取某个申报信息
+router.get("/getOneExOneTopicDeclareInfo", (req, res) => {
+    let sb_id = req.query.sb_id;
+    const sql = `select * from declares where sb_id = '`+sb_id+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取成员信息
+router.get("/getOneExOneTopicDeclareMenberInfo", (req, res) => {
+    let sb_id = req.query.sb_id;
+    const sql = `select * from declaresmenber where sb_id = '`+sb_id+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 获取成员信息
+router.get("/getOneExOneTopicDeclareFilesInfo", (req, res) => {
+    let sb_id = req.query.sb_id;
+    const sql = `select * from declares_files where sb_id = '`+sb_id+`';`;
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+// 撤销申报
+router.get("/deleteDeclare", (req, res) => {
+    let sb_id = req.query.sb_id;
+    const sql = `delete from declares where sb_id =?;`;
+    const arr = [sb_id];
+    sqlFn(sql, arr, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                msg: "删除成功"
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "删除失败"
+            })
+        }
+    })
+})
+
+
+// --------------------流程----------------------
+// 获取暂存的课题
+router.get("/getoneexpertprocess", (req, res) => {
+    // let date = req.query.date;
+    let ex_id = req.query.ex_id;
+    const sql = `select a.*, b.name as releasename,c.name as companyname,
+        d.sb_id,d.name as declarename,d.declaretime,d.finishdate,d.checkList,d.checkListGone,
+        d.declaretype,d.checkListGone,d.name as declarename,f.count as prople     
+        from topic a join adcompany b join company c join declares d join declaresstate e 
+        join (select count(*)+1 as count,topicid from declaresmenber group by topicid) f 
+        where a.releaseid = b.id and b.company = c.id and a.id = d.topicid 
+        and d.sb_id = e.sb_id and e.state != 0 and d.ex_id = '`+ex_id+`' 
+        and a.id = f.topicid ;`;  
+        // and a.time_declare > '`+date+`' 
+    sqlFn(sql, null, (result) => {
+        if (result.length > 0) {
+            res.send({
+                status: 200,
+                result
+            })
+        } else {
+            res.send({
+                status: 500,
+                msg: "暂无数据"
+            })
+        }
+    })
+})
+
+
+
+
+
+
+
+
+
+
 
 // 添加测试
 router.get("/add", (req, res) => {

@@ -1,16 +1,13 @@
 <template>
   <div id="bid">
-    <!-- <div class="steps">
-      <Steps :index="2" />
-    </div> -->
     <div class="search">
       <div class="textboxp">
-        <div class="p">项目名称：</div>
+        <div class="p">课题名称：</div>
         <el-input
           v-model="dataSearch.name"
-          @keyup.enter.native="search"
           clearable
           class="text"
+          @keyup.enter.native="search"
         ></el-input>
       </div>
       <div class="textboxp">
@@ -33,17 +30,26 @@
       :data="
         dataTable.slice((currentPage - 1) * pageSize, currentPage * pageSize)
       "
-      height="80%"
+      style="width: 100%"
       stripe
       border
       @sort-change="sortChange"
       class="table"
+      height="80%"
     >
       <el-table-column
-        prop="itemname"
-        label="项目名称"
+        prop="name"
+        label="课题主题"
         sortable="custom"
         header-align="center"
+        width="200"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="declarename"
+        label="申报名称"
+        header-align="center"
+        width="200"
       >
       </el-table-column>
       <el-table-column
@@ -51,94 +57,143 @@
         label="发布时间"
         sortable="custom"
         header-align="center"
+        width="110"
       >
       </el-table-column>
       <el-table-column
-        prop="bid_time"
+        prop="declaretime"
         label="申报时间"
-        sortable="custom"
         header-align="center"
+        sortable="custom"
+        width="130"
       >
       </el-table-column>
       <el-table-column
-        prop="tag"
-        label="初审结果"
+        prop="finishdate"
+        label="计划完成时间"
+        header-align="center"
+        sortable="custom"
+        width="130"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="prople"
+        label="申报人数"
         header-align="center"
         align="center"
-        :filters="[
-          { text: '通过', value: '通过' },
-          { text: '未通过', value: '未通过' },
-        ]"
-        :filter-method="filterTag"
-        filter-placement="bottom-end"
+        width="100"
       >
-        <template slot-scope="scope">
-          <el-tag
-            :type="
-              scope.row.tag === '未通过'
-                ? 'warning'
-                : scope.row.tag === '通过'
-                ? 'success'
-                : ''
-            "
-            disable-transitions
-            >{{ scope.row.tag }}</el-tag
-          >
-        </template>
+      </el-table-column>
+      <el-table-column
+        prop="declaretype"
+        label="申报类型"
+        header-align="center"
+        align="center"
+        width="120"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="checkListGone"
+        label="成果去向"
+        header-align="center"
+        align="center"
+        width="150"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="time_declare"
+        label="截至申报时间"
+        header-align="center"
+        sortable="custom"
+        width="130"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="releasename"
+        label="发布人"
+        header-align="center"
+        align="center"
+        width="80"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="companyname"
+        label="发布机构"
+        header-align="center"
+        align="center"
+        width="150"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="topic_typename"
+        label="课题类别"
+        header-align="center"
+        align="center"
+        width="150"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="achievementstypename"
+        label="成果形式"
+        header-align="center"
+        align="center"
+        width="150"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="directions"
+        label="参考选题"
+        header-align="center"
+        align="center"
+        width="200"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="count"
+        label="要求人数"
+        header-align="center"
+        align="center"
+        width="100"
+      >
       </el-table-column>
 
-      <el-table-column prop="reason" label="审核原因" header-align="center">
-      </el-table-column>
-
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" align="center" width="220" fixed="right">
         <template slot-scope="scope">
-          <el-tooltip
-            effect="light"
-            content="项目详情"
-            placement="left"
-            style="width: 40%"
+          <el-button
+            @click.native.prevent="details(scope.$index, dataTable)"
+            type="text"
+            size="small"
           >
-            <el-button
-              @click.native.prevent="getItemDetail(scope.$index, dataTable)"
-              type="text"
-              size="small"
-            >
-              <i class="el-icon-view"></i>
-            </el-button>
-          </el-tooltip>
-          <el-tooltip
-            effect="light"
-            content="我的申报详情"
-            placement="top"
-            style="width: 40%"
+            <!-- <i class="el-icon-s-operation"></i> -->
+            课题详情
+          </el-button>
+          <el-button
+            @click.native.prevent="biddingDetail(scope.$index, dataTable)"
+            type="text"
+            size="small"
           >
-            <el-button
-              @click.native.prevent="getBidDetail(scope.$index, dataTable)"
-              type="text"
-              size="small"
-            >
-              <i class="el-icon-s-operation"></i>
-            </el-button>
-          </el-tooltip>
-          <!-- <el-tooltip
-            effect="light"
-            content="投标信息修改"
-            placement="top"
-            style="width: 18%"
+            <!-- <i class="el-icon-edit"></i> -->
+            申报详情
+          </el-button>
+          <el-button
+            @click.native.prevent="process(scope.$index, dataTable)"
+            type="text"
+            size="small"
           >
-            <el-button
-              @click.native.prevent="bidEdit(scope.$index, dataTable)"
-              type="text"
-              size="small"
-            >
-              <i class="el-icon-edit"></i>
-            </el-button>
-          </el-tooltip> -->
+            <!-- <i class="el-icon-edit"></i> -->
+            流程
+          </el-button>
+          <el-button
+            @click.native.prevent="revoke(scope.$index, dataTable)"
+            type="text"
+            size="small"
+          >
+            撤销
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
-
-    <div class="pagination" style="text-align: center">
+    <div class="pagination" style="text-align: center; height: 10%">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -149,30 +204,28 @@
         :total="dataTableLength"
       >
       </el-pagination>
+      <Detail
+        ref="dialogTopicDetail"
+        :datadetail="dataadd"
+        :data="dataDetail"
+      />
+      <BidDetail
+        ref="dialogDeclareDetail"
+        :datadetail="datadetail"
+        @refresh="reFresh"
+      />
     </div>
-    <ItemDetail ref="detail" :datadetail="dataDetail" />
-    <BidDetail ref="bidDetail" :datadetail="dataBidDetail" @Fresh="refresh" />
-    <!-- <Declare
-      ref="bidEdit"
-      :datadetail="dataBidDetail"
-      :wherefrom="declarewherefrom"
-      @Fresh="refresh"
-    /> -->
   </div>
 </template>
 
 <script>
-import myFunctions from "@/myFunctions";
-import ItemDetail from "../../bid/detail.vue"; // 申报页面详情页
-import BidDetail from "../Bidding/detailBid"; // 我的投标详情页
-import Declare from "../../bid/declare.vue";
-import Steps from "../../steps.vue";
+import myFunctions from "../../../myFunctions";
+import BidDetail from "../Bidding/detailBid";
+import Detail from "../../../views/Items/Bidding/add.vue";
 export default {
-  components: { ItemDetail, BidDetail, Declare, Steps },
+  components: { Detail, BidDetail },
   data() {
     return {
-      // 搜索
-      dataSearch: { name: "" },
       // 表格
       dataTable: [],
       dataTableAll: [],
@@ -180,21 +233,50 @@ export default {
       currentPage: 1, // 页码
       pageSize: 10,
       nowPageSize: 10,
-      str: "",
-      // 网格与树连接
-      // 详情页传递数据
+      // 详情页数据
       dataDetail: {},
-      dataBidDetail: {},
-      // 申报刷新
-      refresh: "0",
-      declarewherefrom: "bidedit",
+      datadetail: {},
+      // 编辑页数据
+      dataEdit: {},
+      // 搜索框
+      dataSearch: {
+        name: "",
+        type: "",
+      },
+      options_type: [],
+
+      dataachievementstype: [],
+      datatopictype: [],
+
+      dataadd: {},
+      dataDetail: {},
+
+      fresh: "0",
+
+      userid: "",
+
+      getdata: 0,
     };
   },
   created() {
-    // 获取全部项目
-    this.getAllItems();
+    this.getachievementstype();
+    this.gettopictype();
+    this.userid = sessionStorage.getItem("userid");
+    // this.getoneexpertstorage();
+    this.dataadd.userid = sessionStorage.getItem("userid");
   },
   methods: {
+    // 搜索
+    search() {
+      this.dataTable = [];
+      this.dataTableLength = 0;
+      for (let i = 0; i < this.dataTableAll.length; i++) {
+        if (this.dataTableAll[i].name.indexOf(this.dataSearch.name) != -1) {
+          this.dataTable.push(this.dataTableAll[i]);
+        }
+      }
+      this.dataTableLength = this.dataTable.length;
+    },
     // 改变每页显示条数时触发
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`);
@@ -224,138 +306,184 @@ export default {
         }
       };
     },
-    getAllItems() {
+    getachievementstype() {
+      this.$api.getachievementstype({}).then((res) => {
+        if (res.status == 200) {
+          let data = res.data.result;
+          if (res.data.status == 200) {
+            this.dataachievementstype = data;
+          }
+          this.getdata++;
+        }
+      });
+    },
+    gettopictype() {
+      this.$api.gettopic_type({}).then((res) => {
+        if (res.status == 200) {
+          let data = res.data.result;
+          if (res.data.status == 200) {
+            this.datatopictype = data;
+          }
+          this.getdata++;
+        }
+      });
+    },
+    // 获取表格数据
+    getoneexpertstorage() {
+      this.dataTable = [];
+      this.dataTableAll = [];
+      this.dataTableLength = 0;
       this.$api
-        .getBidItemsFirstTrialResult({
+        .getoneexpertprocess({
           ex_id: sessionStorage.getItem("userid"),
+          // date: myFunctions.newDateToDate(),
         })
         .then((res) => {
           if (res.status == 200) {
-            this.dataTableLength = 0;
-            this.dataTable = [];
-            this.dataTableAll = [];
-            let data = res.data.result;
             if (res.data.status == 200) {
-              // console.log(111, data);
+              let data = res.data.result;
               for (let i = 0; i < data.length; i++) {
-                if (data[i].adopt == 1) {
-                  data[i].result = "通过";
-                  data[i].tag = "通过";
-                } else if (data[i].adopt == 0) {
-                  data[i].tag = "审核中";
+                data[i].time_release = myFunctions.newDateToDate(
+                  data[i].time_release
+                );
+                data[i].time_declare = myFunctions.newDateToDate(
+                  data[i].time_declare
+                );
+                // 申报时间过滤
+                data[i].declaretime = myFunctions.newDateToDate(
+                  data[i].declaretime
+                );
+                // 完成时间过滤
+                data[i].finishdate = myFunctions.newDateToDate(
+                  data[i].finishdate
+                );
+                // 人数过滤
+                if (data[i].mincount == data[i].maxcount) {
+                  data[i].count = "= " + data[i].mincount + " 人";
+                } else if (data[i].mincount == 0) {
+                  data[i].count = "< " + data[i].maxcount + " 人";
+                } else if (data[i].maxcount == 0) {
+                  data[i].count = "> " + data[i].mincount + " 人";
+                }
+                // 参考选题长度限制
+                if (data[i].direction.length > 20) {
+                  data[i].directions = data[i].direction.substring(0, 20);
+                  data[i].directions += "...";
                 } else {
-                  data[i].tag = "未通过";
+                  data[i].directions = data[i].direction;
+                }
+                for (let j = 0; j < this.datatopictype.length; j++) {
+                  if (data[i].topic_type == this.datatopictype[j].id) {
+                    data[i].topic_typename = this.datatopictype[j].name;
+                  }
+                }
+                if (
+                  data[i].achievementstype &&
+                  data[i].achievementstype.length > 0
+                ) {
+                  let type = data[i].achievementstype.split(",");
+                  for (let j = 0; j < type.length; j++) {
+                    type[j] = parseInt(type[j]);
+                    for (let k = 0; k < this.dataachievementstype.length; k++) {
+                      if (this.dataachievementstype[k].id == type[j]) {
+                        if (j > 0) {
+                          data[i].achievementstypename += ";";
+                          data[i].achievementstypename +=
+                            this.dataachievementstype[k].name;
+                        } else {
+                          data[i].achievementstypename =
+                            this.dataachievementstype[k].name;
+                        }
+                      }
+                    }
+                  }
                 }
               }
-              this.dataTableLength = data.length;
               this.dataTable = data;
               this.dataTableAll = data;
-              // console.log(111, this.dataTable);
+              this.dataTableLength = data.length;
             }
           }
         });
     },
-    // 标记
-    filterTag(value, row) {
-      return row.tag === value;
+    // 打开课题详情弹窗
+    details(index, dataTable) {
+      let data = dataTable[index];
+      this.dataDetail = data;
+      this.dataadd.type = "detail";
+      this.dataadd.power = "detail";
+      this.$refs.dialogTopicDetail.visible = true;
     },
-    // 连接投标时查看详情的界面
-    getItemDetail(index, dataTable) {
-      let it_id = dataTable[index].it_id;
-      this.$api
-        .getOneItem({
-          it_id: it_id,
-        })
-        .then((res) => {
-          if (res.status == 200) {
-            let data = res.data.result;
-            if (res.data.status == 200) {
-              // console.log(111, data);
-              this.dataDetail = data[0];
-              this.$refs.detail.visible = true;
-            }
-          }
-        });
+    // 打开申报详情
+    biddingDetail(index, dataTable) {
+      let data = dataTable[index];
+      this.datadetail.topicid = data.id;
+      this.datadetail.name = data.name;
+      this.datadetail.ex_id = data.ex_id;
+      this.datadetail.sb_id = data.sb_id;
+      this.datadetail.type = "detail";
+      this.datadetail.power = "detail";
+      this.datadetail.mincount = data.mincount;
+      this.datadetail.maxcount = data.maxcount;
+      this.$refs.dialogDeclareDetail.visible = true;
     },
-    // 投标详情
-    getBidDetail(index, dataTable) {
-      this.dataBidDetail = dataTable[index];
-      // console.log(111, this.dataBidDetail);
-      this.$refs.bidDetail.visible = true;
+    // 流程查看
+    process(index, dataTable) {
+      // let data = dataTable[index];
+      // this.datadetail.topicid = data.id;
+      // this.datadetail.name = data.name;
+      // this.datadetail.ex_id = data.ex_id;
+      // this.datadetail.sb_id = data.sb_id;
+      // this.datadetail.type = "edit";
+      // this.datadetail.mincount = data.mincount;
+      // this.datadetail.maxcount = data.maxcount;
+      // this.$refs.dialogDeclareDetail.visible = true;
     },
-    // 修改投标
-    bidEdit(index, dataTable) {
-      this.dataBidDetail = dataTable[index];
-      // console.log(111, this.dataBidDetail);
-      this.$refs.bidEdit.visible = true;
-    },
-    Fresh(val) {
-      this.refresh = val;
-    },
-    // 撤销投标
+    // 撤销
     revoke(index, dataTable) {
-      // this.dataBidDetail = dataTable[index];
-      // console.log(111, this.dataBidDetail);
-      // this.$refs.bidDetail.visible = true;
-      let ex = dataTable[index].ex_id;
-      let it = dataTable[index].it_id;
-      this.$confirm("是否确定撤销申报?", "提示", {
+      let data = dataTable[index];
+      let sb_id = data.sb_id;
+      this.$confirm("确定申报?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "info",
-      })
-        .then(() => {
-          // 申报撤销
-          this.$api
-            .deleteDeclareItem({
-              ex_id: ex,
-              it_id: it,
-            })
-            .then((res) => {
-              if (res.status == 200) {
-                this.$message({
-                  type: "success",
-                  message: "撤销成功",
-                  offset: 100,
-                });
-                this.refresh = "1";
-              } else {
-                this.$message({
-                  type: "error",
-                  message: "撤销失败！请重试",
-                  offset: 100,
-                });
-              }
-            });
-          this.$api
-            .deleteDeclareFiles({
-              ex_id: ex,
-              it_id: it,
-            })
-            .then((res) => {
-              if (res.status == 200) {
-              }
-            });
-        })
-        .catch(() => {});
+      }).then(() => {
+        this.$api
+          .deleteDeclare({
+            sb_id: sb_id,
+          })
+          .then((res) => {
+            if (res.status == 200) {
+              this.$message({
+                type: "success",
+                message: "撤销成功",
+                offset: 150,
+              });
+            } else {
+              this.$message({
+                type: "error",
+                message: "撤销失败，请稍后再试",
+                offset: 150,
+              });
+            }
+          });
+      });
     },
 
-    // 搜索
-    search() {
-      this.dataTable = [];
-      for (let i = 0; i < this.dataTableAll.length; i++) {
-        if (this.dataTableAll[i].itemname.indexOf(this.dataSearch.name) != -1) {
-          this.dataTable.push(this.dataTableAll[i]);
-        }
-      }
-      this.dataTableLength = this.dataTable.length;
+    reFresh(val) {
+      this.fresh = val;
     },
   },
   watch: {
-    refresh(newval, val) {
-      if (newval == "1") {
-        this.getAllItems();
-        this.refresh = "0";
+    fresh(n, o) {
+      if (n != "0") {
+        this.getoneexpertstorage();
+        this.fresh = "0";
+      }
+    },
+    getdata(n, o) {
+      if (n == 2) {
+        this.getoneexpertstorage();
       }
     },
   },

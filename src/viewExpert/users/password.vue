@@ -117,7 +117,6 @@ export default {
     Ok(ruleForm) {
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
-          // console.log(111, this.datadetail);
           if (this.ruleForm.password != this.datadetail.password) {
             this.$message({
               type: "error",
@@ -126,13 +125,14 @@ export default {
             });
           } else {
             this.$api
-              .updateExpertPassword({
+              .updateUserPassword({
                 ex_id: sessionStorage.getItem("userid"),
                 password: this.ruleForm.password1,
               })
               .then((res) => {
-                // console.log(res);
                 if (res.status == 200) {
+                  this.$emit("refresh", "1");
+                  this.visible = false;
                   this.$message({
                     type: "success",
                     message: "修改成功",

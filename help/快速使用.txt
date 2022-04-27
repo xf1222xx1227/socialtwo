@@ -1,0 +1,45 @@
+1. 提示框
+this.$message({
+    type: "error",
+    message: "提交失败，请稍后再试",
+    offset: 150,
+});
+this.$message({
+    type: "error",
+    message: "撤销失败，请稍后再试",
+    offset: 150,
+});
+// 提示框，需要点击关闭
+this.$alert(
+    `此账户已被管理员冻结</br>
+    冻结时间为：<b>${this.userdata[i].frozen}</b>
+    冻结原因为：${this.userdata[i].frozen_reason}`,
+    "冻结提醒",
+    {
+    dangerouslyUseHTMLString: true,
+    confirmButtonText: "收到",
+    cancelButtonText: "关闭",
+    }
+).then(() => {});
+// 确认框
+this.$confirm("确定申报?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "info",
+      }).then(() => {});
+
+// 消息输入框
+this.$prompt("", "节点名称", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+        })
+          .then(({ value }) => {});
+
+2. 接口
+this.$api.getCompanyType({}).then((res) => {
+    if (res.status == 200) {
+        if(res.data.status==200){
+            let data = res.data.result;
+        }    
+    }
+});

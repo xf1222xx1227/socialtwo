@@ -98,7 +98,7 @@ insert into finish_item  values ('XM20220409011','S00006','2022-04-15',1,'u00000
 
 */
 
-# select * from finish_item order by it_id limit 1,2;
+ select * from finish_item where ex_id = "S00004";
 
 # update finish_item set ex_id = "S00000" where it_id = "XM20220101007";
 

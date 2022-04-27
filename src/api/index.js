@@ -1130,13 +1130,345 @@ const api={
             params
         })
     },
-    // getOneSocialUser(params){
-    //     return axios.get(base.getOneSocialUser,{
+
+
+
+
+
+    // --------------------------------------------------省社科----------------------------------------------------
+    getProvinceSocial(params){
+        return axios.get(base.getProvinceSocial,{
+            params
+        })
+    },
+
+
+
+
+
+
+    // -------------------------我的发布------------------
+    getOneSocialTopic(params){
+        return axios.get(base.getOneSocialTopic,{
+            params
+        })
+    },
+    gettopic_type(params){
+        return axios.get(base.gettopic_type,{
+            params
+        })
+    },
+    getachievementstype(params){
+        return axios.get(base.getachievementstype,{
+            params
+        })
+    },
+    getAllTopic(params){
+        return axios.get(base.getAllTopic,{
+            params
+        })
+    },
+    addtopic(params){
+        return axios.get(base.addtopic,{
+            params
+        })
+    },
+    addTopicFiles(params){
+        return axios.get(base.addTopicFiles,{
+            params
+        })
+    },
+    deleteTopicFiles(params){
+        return axios.get(base.deleteTopicFiles,{
+            params
+        })
+    },
+    getOneTopicFiles(params){
+        return axios.get(base.getOneTopicFiles,{
+            params
+        })
+    },
+    updatetopic(params){
+        return axios.get(base.updatetopic,{
+            params
+        })
+    },
+    deleteTopic(params){
+        return axios.get(base.deleteTopic,{
+            params
+        })
+    },
+    addtopic_type(params){
+        return axios.get(base.addtopic_type,{
+            params
+        })
+    },
+    addachievementstype(params){
+        return axios.get(base.addachievementstype,{
+            params
+        })
+    },
+    updatetopic_type(params){
+        return axios.get(base.updatetopic_type,{
+            params
+        })
+    },
+    updateachievementstype(params){
+        return axios.get(base.updateachievementstype,{
+            params
+        })
+    },
+    deletetopic_type(params){
+        return axios.get(base.deletetopic_type,{
+            params
+        })
+    },
+    deleteachievementstype(params){
+        return axios.get(base.deleteachievementstype,{
+            params
+        })
+    },
+    // deleteDeclare(params){
+    //     return axios.get(base.deleteDeclare,{
     //         params
     //     })
     // },
-    // updateSocialUserPassword(params){
-    //     return axios.get(base.updateSocialUserPassword,{
+    // deleteTopicFiles(params){
+    //     return axios.get(base.deleteTopicFiles,{
+    //         params
+    //     })
+    // },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // --------------------------------------------------个人注册--------------------------------------------------
+    getCompanyType(params){
+        return axios.get(base.getCompanyType,{
+            params
+        })
+    },
+    // 
+    getCompany(params){
+        return axios.get(base.getCompany,{
+            params
+        })
+    },
+    getUserRegister(params){
+        return axios.get(base.getUserRegister,{
+            params
+        })
+    },
+    getUsers(params){
+        return axios.get(base.getUsers,{
+            params
+        })
+    },
+    addUserRegister(params){
+        return axios.get(base.addUserRegister,{
+            params
+        })
+    },
+
+
+
+
+
+
+    // --------------------------------------------------用户端-----------------------------------------------------
+    getOneUser(params){
+        return axios.get(base.getOneUser,{
+            params
+        })
+    },
+
+
+    // -----------------个人中心---------------
+    getNations(params){
+        return axios.get(base.getNations,{
+            params
+        })
+    },
+    updateUserPassword(params){
+        return axios.get(base.updateUserPassword,{
+            params
+        })
+    },
+    updateuserInfo(params){
+        return axios.get(base.updateuserInfo,{
+            params
+        })
+    },
+    getExperience(params){
+        return axios.get(base.getExperience,{
+            params
+        })
+    },
+    addExperience(params){
+        return axios.get(base.addExperience,{
+            params
+        })
+    },
+    updateExperience(params){
+        return axios.get(base.updateExperience,{
+            params
+        })
+    },
+
+
+
+    // --------------------申报----------------------------
+    getallsocial(params){
+        return axios.get(base.getallsocial,{
+            params
+        })
+    },
+    getTopics(params){
+        return axios.get(base.getTopics,{
+            params
+        })
+    },
+    getOneMajors(params){
+        return axios.get(base.getOneMajors,{
+            params
+        })
+    },
+    getTwoMajors(params){
+        return axios.get(base.getTwoMajors,{
+            params
+        })
+    },
+    getOneTopicsDeclares(params){
+        return axios.get(base.getOneTopicsDeclares,{
+            params
+        })
+    },
+    addDeclare(params){
+        return axios.get(base.addDeclare,{
+            params
+        })
+    },
+    addDeclareFiles(params){
+        return axios.get(base.addDeclareFiles,{
+            params
+        })
+    },
+    addDeclareMenbers(params){
+        return axios.get(base.addDeclareMenbers,{
+            params
+        })
+    },
+    addDeclareState(params){
+        return axios.get(base.addDeclareState,{
+            params
+        })
+    },
+    getOneDeclareState(params){
+        return axios.get(base.getOneDeclareState,{
+            params
+        })
+    },
+    updateOneDeclareState(params){
+        return axios.get(base.updateOneDeclareState,{
+            params
+        })
+    },
+    updateDeclare(params){
+        return axios.get(base.updateDeclare,{
+            params
+        })
+    },
+    deleteDeclareFiles(params){
+        return axios.get(base.deleteDeclareFiles,{
+            params
+        })
+    },
+    deleteDeclareMenbers(params){
+        return axios.get(base.deleteDeclareMenbers,{
+            params
+        })
+    },
+    getOneExOneTopicDeclare(params){
+        return axios.get(base.getOneExOneTopicDeclare,{
+            params
+        })
+    },
+    getOneDeclareMenbers(params){
+        return axios.get(base.getOneDeclareMenbers,{
+            params
+        })
+    },
+    getDeclareFiles(params){
+        return axios.get(base.getDeclareFiles,{
+            params
+        })
+    },
+    deleteOneDeclareAllFiles(params){
+        return axios.get(base.deleteOneDeclareAllFiles,{
+            params
+        })
+    },
+
+
+
+    // ------------------暂存----------------
+    getoneexpertstorage(params){
+        return axios.get(base.getoneexpertstorage,{
+            params
+        })
+    },
+    getOneExOneTopicDeclareInfo(params){
+        return axios.get(base.getOneExOneTopicDeclareInfo,{
+            params
+        })
+    },
+    getOneExOneTopicDeclareMenberInfo(params){
+        return axios.get(base.getOneExOneTopicDeclareMenberInfo,{
+            params
+        })
+    },
+    getOneExOneTopicDeclareFilesInfo(params){
+        return axios.get(base.getOneExOneTopicDeclareFilesInfo,{
+            params
+        })
+    },
+    deleteDeclare(params){
+        return axios.get(base.deleteDeclare,{
+            params
+        })
+    },
+
+
+
+
+    // -----------------流程---------------------
+    getoneexpertprocess(params){
+        return axios.get(base.getoneexpertprocess,{
+            params
+        })
+    },
+    // getNations(params){
+    //     return axios.get(base.getNations,{
+    //         params
+    //     })
+    // },
+    // getNations(params){
+    //     return axios.get(base.getNations,{
+    //         params
+    //     })
+    // },
+    // getNations(params){
+    //     return axios.get(base.getNations,{
     //         params
     //     })
     // },

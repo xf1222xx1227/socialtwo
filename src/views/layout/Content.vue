@@ -2,7 +2,7 @@
   <div>
     <div class="header">
       <p class="headerRow title">社科项目揭榜挂帅系统--社科用户端</p>
-      <div class="hello">{{ this.userdata.username }}&nbsp;{{ hello }}</div>
+      <div class="hello">{{ this.userdata.name }}&nbsp;{{ hello }}</div>
       <div class="headerRow backBt">
         <el-button
           type="primary"
@@ -30,18 +30,14 @@ export default {
     };
   },
   created() {
-    this.$api
-      .getOneBiddingUserInfo({
-        userid: sessionStorage.getItem("userid"),
-      })
-      .then((res) => {
-        if (res.status == 200) {
-          if (res.data.status == 200) {
-            let data = res.data.result;
-            this.userdata = data[0];
-          }
+    this.$api.getProvinceSocial({}).then((res) => {
+      if (res.status == 200) {
+        if (res.data.status == 200) {
+          let data = res.data.result;
+          this.userdata = data[0];
         }
-      });
+      }
+    });
     this.hello = myFunctions.gethello();
   },
   methods: {

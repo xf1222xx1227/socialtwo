@@ -1,4 +1,6 @@
 
+
+select * from review_details where it_id="XM20220101008";
 /*
 drop table if exists review_details;
 create table review_details
@@ -265,7 +267,7 @@ insert into review_details  values ('S00006','XM20220409011','u00000',2,70,'好'
 
 
 
-select * from review_details;
+select * from review_details ;
 
 
 

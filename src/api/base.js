@@ -354,8 +354,97 @@ const base={
     // -------------------------个人中心-------------------------------
     updateAdminInfo:'api/api/updateAdminInfo',
     updateAdminPassword:'api/api/updateAdminPassword',
-    // addSocial:'api/api/addSocial',
+    
 
+
+
+
+    // --------------------------------------------------省社科----------------------------------------------------
+    getProvinceSocial:'api/api/getProvinceSocial',
+
+
+
+    // -------------------------我的发布------------------
+    getOneSocialTopic:'api/api/getOneSocialTopic',
+    gettopic_type:'api/api/gettopic_type',
+    getachievementstype:'api/api/getachievementstype',
+    getAllTopic:'api/api/getAllTopic',
+    addtopic:'api/api/addtopic',
+    addTopicFiles:'api/api/addTopicFiles',
+    deleteTopicFiles:'api/api/deleteTopicFiles',
+    getOneTopicFiles:'api/api/getOneTopicFiles',
+    updatetopic:'api/api/updatetopic',
+    deleteTopic:'api/api/deleteTopic',
+    addtopic_type:'api/api/addtopic_type',
+    addachievementstype:'api/api/addachievementstype',
+    updatetopic_type:'api/api/updatetopic_type',
+    updateachievementstype:'api/api/updateachievementstype',
+    deletetopic_type:'api/api/deletetopic_type',
+    deleteachievementstype:'api/api/deleteachievementstype',
+    // deleteDeclare:'api/api/deleteDeclare',
+    // getOneTopicFiles:'api/api/getOneTopicFiles',
+    // getOneTopicFiles:'api/api/getOneTopicFiles',
+
+
+
+
+
+
+
+    // ---------------------个人注册--------------------------
+    getCompanyType:'api/api/getCompanyType',
+    getCompany:'api/api/getCompany',
+    getUserRegister:'api/api/getUserRegister',
+    getUsers:'api/api/getUsers',
+    addUserRegister:'api/api/addUserRegister',
+
+
+
+    // --------------------------------------------------用户端-----------------------------------------------------
+    getOneUser:'api/api/getOneUser',
+    // -------------个人中心-------------------
+    getNations:'api/api/getNations',
+    updateUserPassword:'api/api/updateUserPassword',
+    updateuserInfo:'api/api/updateuserInfo',
+    getExperience:'api/api/getExperience',
+    addExperience:'api/api/addExperience',
+    updateExperience:'api/api/updateExperience',
+
+
+
+    // --------------------申报------------------------
+    getallsocial:'api/api/getallsocial',
+    getTopics:'api/api/getTopics',
+    getOneMajors:'api/api/getOneMajors',
+    getTwoMajors:'api/api/getTwoMajors',
+    getOneTopicsDeclares:'api/api/getOneTopicsDeclares',
+    addDeclare:'api/api/addDeclare',
+    addDeclareFiles:'api/api/addDeclareFiles',
+    addDeclareMenbers:'api/api/addDeclareMenbers',
+    addDeclareState:'api/api/addDeclareState',
+    getOneDeclareState:'api/api/getOneDeclareState',
+    updateOneDeclareState:'api/api/updateOneDeclareState',
+    updateDeclare:'api/api/updateDeclare',
+    deleteDeclareFiles:'api/api/deleteDeclareFiles',
+    deleteDeclareMenbers:'api/api/deleteDeclareMenbers',
+    getOneExOneTopicDeclare:'api/api/getOneExOneTopicDeclare',
+    getOneDeclareMenbers:'api/api/getOneDeclareMenbers',
+    getDeclareFiles:'api/api/getDeclareFiles',
+    deleteOneDeclareAllFiles:'api/api/deleteOneDeclareAllFiles',
+
+    // ---------------暂存--------------------
+    getoneexpertstorage:'api/api/getoneexpertstorage',
+    getOneExOneTopicDeclareInfo:'api/api/getOneExOneTopicDeclareInfo',
+    getOneExOneTopicDeclareMenberInfo:'api/api/getOneExOneTopicDeclareMenberInfo',
+    getOneExOneTopicDeclareFilesInfo:'api/api/getOneExOneTopicDeclareFilesInfo',
+    deleteDeclare:'api/api/deleteDeclare',
+
+
+    // -----------------流程-----------------
+    getoneexpertprocess:'api/api/getoneexpertprocess',
+    // getNations:'api/api/getNations',
+    // getNations:'api/api/getNations',
+    // getNations:'api/api/getNations',
 
 
 
