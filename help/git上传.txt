@@ -6,3 +6,20 @@
     (此时项目里面的代码会出现不同，合并区的东西查看应保存本地的【accept current change】还是仓库的【accept incoming chane】，
     合并完成后添加到暂存区，点击√提交) 
 上传代码到github远程仓库 (git push -u origin master)
+
+
+
+仓库换源
+    1：删除原服务端
+        git remote remove origin
+    2：添加新目标服务端地址
+        git remote add origin 仓库地址(ssh或http都可以)
+
+
+
+
+
+
+
+
+
